@@ -151,5 +151,32 @@ function filterCars($filters) {
     }
 }
 
+// La función updateUser podría ser algo así:
+function updateUser($userID, $valuesToUpdate) {
+    $conn = connectDB();
+
+    $sql = "UPDATE usuarios SET ";
+    foreach ($valuesToUpdate as $field => $value) {
+        $sql .= "$field=:$field, ";
+    }
+    $sql = rtrim($sql, ', ') . " WHERE UserID=:userId";
+    $stmt = $conn->prepare($sql);
+    foreach ($valuesToUpdate as $field => $value) {
+        $stmt->bindValue(':' . $field, $value);
+    }
+
+    $stmt->bindValue(':userId', $userID, PDO::PARAM_INT);
+    $result = $stmt->execute();
+
+    // Si la actualización fue exitosa, actualiza la variable de sesión del nombre
+    if ($result && array_key_exists('nombre', $valuesToUpdate)) {
+        $_SESSION['nombre'] = $valuesToUpdate['nombre'];
+    }
+
+    return $result;
+}
+
+
+
 
 

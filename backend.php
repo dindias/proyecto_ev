@@ -69,5 +69,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             session_destroy();
             break;
         }
+        case 'modificar_perfil':
+            $userID = $_SESSION['user_id'];
+            $valuesToUpdate = array();
+
+            if (!empty($_POST['nombre'])) {
+                $valuesToUpdate['nombre'] = $_POST['nombre'];
+            }
+            if (!empty($_POST['apellido'])) {
+                $valuesToUpdate['apellido'] = $_POST['apellido'];
+            }
+            if (!empty($_POST['email'])) {
+                $valuesToUpdate['email'] = $_POST['email'];
+            }
+            if (!empty($_POST['nacimiento'])) {
+                $valuesToUpdate['nacimiento'] = $_POST['nacimiento'];
+            }
+            if (!empty($_POST['numeroCuenta'])) {
+                $valuesToUpdate['numeroCuenta'] = $_POST['numeroCuenta'];
+            }
+            if (!empty($_POST['direccion'])) {
+                $valuesToUpdate['direccion'] = $_POST['direccion'];
+            }
+            if (!empty($_POST['password'])) {
+                $valuesToUpdate['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
+            }
+            updateUser($userID, $valuesToUpdate);
+            break;
+
     }
 }

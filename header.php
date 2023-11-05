@@ -27,7 +27,7 @@ session_start();
                                     data-toggle="dropdown"><?php echo $_SESSION['nombre']; ?>
                                 <span class="caret"></span></button>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Panel de control</a></li>
+                                <li><a href="control_panel.php">Panel de control</a></li>
                                 <li><a id="logoutlink" href="#">Cerrar sesión</a></li>
                             </ul>
                         </div>
