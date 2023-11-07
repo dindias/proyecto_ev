@@ -262,79 +262,78 @@ include ("register.php");
 
     //Modificación tabla usuarios
 
-    //Adición coches
-    $(document).ready(function() {
-        $('#perfil form').on('submit', function(e) {
+    document.addEventListener('DOMContentLoaded', function() {
+        // Reemplaza $('#perfil form').on('submit', ...) con una versión en JS puro
+        document.querySelector('#perfil form').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            // Recogemos los datos del formulario
-            var formData = $(this).serializeArray();
-
-            $.ajax({
-                url: 'backend.php',
-                type: 'POST',
-                data: formData,
-                success: function(response) {
-                    $('.container').html(response);
-                }
-            });
-        });
-
-        $("#addCarModal form").on("submit", function(e) {
-            e.preventDefault();
-
-            // Usamos FormData en lugar de serializeArray()
+            // Prepara el objeto FormData
             var formData = new FormData(this);
 
+            fetch('backend.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.text())
+                .then(response => {
+                    document.querySelector('.container').innerHTML = response;
+                });
+        });
+
+        // Reemplaza $("#addCarModal form").on("submit", ...) con JS puro
+        document.querySelector("#addCarModal form").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            // Prepara el objeto FormData y agrega el campo 'action'
+            var formData = new FormData(this);
             formData.append("action", "añadir_coche");
 
-            $.ajax({
-                url: 'backend.php',
-                type: 'POST',
-                data: formData,
-                contentType: false, // Indica a jQuery que no establezca el tipo de contenido
-                processData: false, // Impide que jQuery convierta los datos en una cadena de consulta
-                success: function(response) {
-                    $('.container').html(response);
+            fetch('backend.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.text())
+                .then(response => {
+                    document.querySelector('.container').innerHTML = response;
                     $('#addCarModal').modal('hide');
-
-                    // Añade este código
                     window.location.hash = "anuncios";
-                }
+                });
+        });
+
+        // Obtén todos los botones deleteCarBtn y agrega eventos
+        var deleteCarButtons = document.querySelectorAll('.deleteCarBtn');
+        deleteCarButtons.forEach(function(button) {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                // Obtiene el ID del coche usando dataset en lugar de getAttribute
+                var carID = this.dataset.carId; // 'carId' es la versión camelCase de 'car-id'
+                console.log(carID);
+
+                // Adjunta el ID del coche al botón de confirmación en el modal de eliminación
+                var confirmDeleteButton = document.querySelector('#deleteCarModal .confirmDelete');
+                confirmDeleteButton.dataset.carId = carID; // Asigna el valor usando dataset también
             });
         });
 
-        //Eliminación coches
-        $(document).ready(function() {
-            $('.deleteCarBtn').on('click', function(e) {
-                e.preventDefault();
+        // Para el botón de confirmación del borrado
+        document.querySelector('#deleteCarModal .confirmDelete').addEventListener('click', function() {
+            var carID = this.getAttribute('data-car-id');
+            var formData = new FormData();
+            formData.append('action', 'eliminar_coche');
+            formData.append('carID', carID);
 
-                var carID = $(this).attr('car-id');
-                console.log(carID);
-
-                $('#deleteCarModal .confirmDelete').data('car-id', carID); // Attach the car id data to the confirm button
-            });
-
-            $('#deleteCarModal .confirmDelete').on('click', function() {
-                var carID = $(this).data('car-id');
-
-                $.ajax({
-                    type: 'POST',
-                    url: 'backend.php',
-                    data: {
-                        action: 'eliminar_coche',
-                        carID: carID
-                    },
-                    success: function(data) {
-                        // Aquí puedes manejar qué sucede después de recibir una respuesta exitosa de tu archivo backend.php
-                        console.log('Coche eliminado con éxito');
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                        // Aquí puedes manejar qué sucede si ocurre un error durante la solicitud AJAX
-                    }
+            fetch('backend.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.text())
+                .then(data => {
+                    console.log('Coche eliminado con éxito');
+                })
+                .catch(error => {
+                    console.error(error);
                 });
-            });
         });
     });
 </script>
