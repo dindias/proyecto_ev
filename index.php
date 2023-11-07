@@ -117,10 +117,10 @@ include ("register.php");
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Sin filtro</a></li>
                         <?php
-                        $anos = get_unique_values('Año', 'coches');
-                        foreach($anos as $ano):
+                        $años = get_unique_values('Año', 'coches');
+                        foreach($años as $año):
                             ?>
-                            <li><a class="dropdown-item" href="#"><?php echo $ano; ?></a></li>
+                            <li><a class="dropdown-item" href="#"><?php echo $año; ?></a></li>
                         <?php endforeach; ?>
                     </ul>
                 </li>
