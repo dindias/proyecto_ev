@@ -35,7 +35,7 @@ session_start();
                         <label for="password">Contraseña:</label>
                         <input type="password" class="form-control" id="password" name="password">
                     </div>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     <button type="submit" class="btn btn-primary">Registrarse</button>
                 </form>
 

@@ -1,9 +1,6 @@
 <?php
 session_start();
 include("funciones_BD.php");
-echo '<pre>';
-var_dump($_SESSION);
-echo '</pre>';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,13 +8,10 @@ echo '</pre>';
     <title>Hispania EV</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <style>
         /* Remove the navbar's default rounded borders and increase the bottom margin */
         .navbar {
-            margin-bottom: 50px;
             border-radius: 0;
         }
         .filtro-coches{
@@ -25,30 +19,27 @@ echo '</pre>';
             top: 0;
         }
 
-        .navbar-inverse {
-            margin-top: 1%;
-        }
-
         /* Add a gray background color and some padding to the footer */
         footer {
             background-color: #f2f2f2;
             padding: 25px;
         }
-        .carousel-inner {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+
+        .container {
+            overflow-x: auto;
+            white-space: nowrap;
         }
 
-        .carousel-inner > .item > img {
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover;
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
         }
-        .container {
-            width: 50%; /* O el ancho que prefieras */
-            height: 70%; /* O el ancho que prefieras */
+
+        .cell {
+            flex: 0 0 calc(33.333% - 10px);
+            margin: 5px;
         }
+
 
     </style>
 </head>
@@ -70,202 +61,203 @@ include ("login.php");
 include ("register.php");
 ?>
 
-<div class="container-fluid">  <!-- contenedor full-width -->
-    <div class="row">   <!-- nueva fila -->
-        <div class="col-xs-12">  <!-- columna de ancho completo -->
-            <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                <!-- Indicators -->
-                <ol class="carousel-indicators">
-                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                    <li data-target="#myCarousel" data-slide-to="1"></li>
-                    <li data-target="#myCarousel" data-slide-to="2"></li>
-                </ol>
-
-                <!-- Wrapper for slides -->
-                <div class="carousel-inner">
-                    <div class="item active justify-content-center min-vh-100">
-                        <img src="img/turismo_ID.png" alt="Volkswagen ID.4">
-                    </div>
-                </div>
-
-                <!-- Left and right controls -->
-                <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-                    <span class="glyphicon glyphicon-chevron-left"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="right carousel-control" href="#myCarousel" data-slide="next">
-                    <span class="glyphicon glyphicon-chevron-right"></span>
-                    <span class="sr-only">Next</span>
-                </a>
-            </div>
+<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="img/turismo_ID.png" class="d-block w-100" alt="...">
         </div>
     </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
 </div>
 
-<div class="row">
-    <div class="col-xs-12">
-        <nav class="navbar navbar-inverse filtro-coches">
-            <ul class="nav navbar-nav">
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
                 <!-- Marca -->
-                <li class="filtro dropdown" data-filtro="marca">
-                    <a href="#" onclick="return false;" class="dropdown-toggle" data-toggle="dropdown">Marca<span class="caret"></span></a>
+                <li class="nav-item dropdown filtro" data-filtro="marca">
+                    <a class="nav-link dropdown-toggle" href="#" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">Marca</a>
                     <ul class="dropdown-menu">
-                        <li><a href="#" onclick="return false;">Sin filtro</a></li>
+                        <li><a class="dropdown-item" href="#">Sin filtro</a></li>
                         <?php
                         $marcas = get_unique_values('Marca', 'coches');
                         foreach($marcas as $marca):
                             ?>
-                            <li><a href="#" onclick="return false;"><?php echo $marca; ?></a></li>
+                            <li><a class="dropdown-item" href="#"><?php echo $marca; ?></a></li>
                         <?php endforeach; ?>
                     </ul>
                 </li>
 
                 <!-- Modelo -->
-                <li class="filtro dropdown" data-filtro="modelo">
-                    <a href="#" onclick="return false;" class="dropdown-toggle" data-toggle="dropdown">Modelo<span class="caret"></span></a>
+                <li class="nav-item dropdown filtro" data-filtro="modelo">
+                    <a class="nav-link dropdown-toggle" href="#" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">Modelo</a>
                     <ul class="dropdown-menu">
-                        <li><a href="#" onclick="return false;">Sin filtro</a></li>
+                        <li><a class="dropdown-item" href="#">Sin filtro</a></li>
                         <?php
                         $modelos = get_unique_values('Modelo', 'coches');
                         foreach($modelos as $modelo):
                             ?>
-                            <li><a href="#" onclick="return false;"><?php echo $modelo; ?></a></li>
+                            <li><a class="dropdown-item" href="#"><?php echo $modelo; ?></a></li>
                         <?php endforeach; ?>
                     </ul>
                 </li>
 
                 <!-- Año -->
-                <!-- Recuerda cambiar el valor del atributo data-filtro a 'ano' -->
-                <li class="filtro dropdown" data-filtro="ano">
-                    <a href="#" onclick="return false;" class="dropdown-toggle" data-toggle="dropdown">Año<span class="caret"></span></a>
+                <li class="nav-item dropdown filtro" data-filtro="ano">
+                    <a class="nav-link dropdown-toggle" href="#" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">Año</a>
                     <ul class="dropdown-menu">
-                        <li><a href="#" onclick="return false;">Sin filtro</a></li>
+                        <li><a class="dropdown-item" href="#">Sin filtro</a></li>
                         <?php
                         $anos = get_unique_values('Año', 'coches');
                         foreach($anos as $ano):
                             ?>
-                            <li><a href="#" onclick="return false;"><?php echo $ano; ?></a></li>
+                            <li><a class="dropdown-item" href="#"><?php echo $ano; ?></a></li>
                         <?php endforeach; ?>
                     </ul>
                 </li>
 
                 <!-- Kilometraje -->
-                <!-- Recuerda cambiar el valor del atributo data-filtro a 'kilometraje' -->
-                <li class="filtro dropdown" data-filtro="kilometraje">
-                    <a href="#" onclick="return false;" class="dropdown-toggle" data-toggle="dropdown">Kilometraje<span class="caret"></span></a>
+                <li class="nav-item dropdown filtro" data-filtro="kilometraje">
+                    <a class="nav-link dropdown-toggle" href="#" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">Kilometraje</a>
                     <ul class="dropdown-menu">
-                        <li><a href="#" onclick="return false;">Sin filtro</a></li>
+                        <li><a class="dropdown-item" href="#">Sin filtro</a></li>
                         <?php
                         $kilometros = get_unique_values('Kilometraje', 'coches');
                         foreach($kilometros as $kilometro):
                             ?>
-                            <li><a href="#" onclick="return false;" onclick="return false;"><?php echo $kilometro; ?></a></li>
+                            <li><a class="dropdown-item" href="#"><?php echo $kilometro; ?></a></li>
                         <?php endforeach; ?>
                     </ul>
                 </li>
 
                 <!-- Precio -->
-                <!-- Recuerda cambiar el valor del atributo data-filtro a 'precio' -->
-                <li class="filtro dropdown" data-filtro="precio">
-                    <a href="#" onclick="return false;" class="dropdown-toggle" data-toggle="dropdown">Precio<span class="caret"></span></a>
+                <li class="nav-item dropdown filtro" data-filtro="precio">
+                    <a class="nav-link dropdown-toggle" href="#" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">Precio</a>
                     <ul class="dropdown-menu">
-                        <li><a href="#" onclick="return false;" onclick="return false;">Sin filtro</a></li>
+                        <li><a class="dropdown-item" href="#">Sin filtro</a></li>
                         <?php
                         $precios = get_unique_values('Precio', 'coches');
                         foreach($precios as $precio):
                             ?>
-                            <li><a href="#" onclick="return false;"><?php echo $precio; ?></a></li>
+                            <li><a class="dropdown-item" href="#"><?php echo $precio; ?></a></li>
                         <?php endforeach; ?>
                     </ul>
                 </li>
             </ul>
-        </nav>
+        </div>
     </div>
-</div>
+</nav>
+
+
 
 <div class="container">
-    <div class="row">
+    <div class="grid">
         <?php
-        $counter = 0;
-        $cars = getCars(); // Obtiene los coches de la base de datos
-
-        foreach($cars as $car)
-        {
-        if($counter != 0 && $counter % 4 == 0){
-        ?>
-    </div>
-    <div class="row">
-        <?php
-        }
-        ?>
-        <div class="col-sm-3">
-            <div class="panel panel-primary">
-                <div class="panel-heading"><?php echo $car['Marca'] . " " . $car['Modelo']; ?></div>
-                <div class="panel-body"><?php echo '<img src="https://placehold.it/150x80?text=' . $car['Matricula'] . '" class="img-responsive" style="width:100%" alt="Image">' ?></div>
-                <div class="panel-footer"><?php echo $car['Descripcion']; ?></div>
+        $cars = getCars();
+        foreach($cars as $car) {
+            ?>
+            <div class="card m-3" style="width: 18rem;" id="card<?php echo $car['CarID']; ?>">
+                <img class="card-img-top" src="<?php echo $car['imagenes']; ?>" alt="Card image cap" width="200px">
+                <div class="card-body">
+                    <h5 class="card-title"><?php echo $car['Marca'] . " " . $car['Modelo']; ?></h5>
+                    <p class="card-text">
+                        Año: <?php echo $car['Año']; ?><br>
+                        Kilometraje: <?php echo $car['Kilometraje']; ?><br>
+                        Descripción: <?php echo $car['Descripcion']; ?><br>
+                        Precio: <?php echo $car['Precio']; ?>
+                    </p>
+                </div>
             </div>
-        </div>
-        <?php
-        $counter++;
+            <?php
         }
         ?>
     </div>
 </div><br><br>
 
-<script>
-    $('.filtro .dropdown-menu li a').click(function(e) {
-        e.preventDefault();
 
-        var filtro = $(this).closest('.filtro').data('filtro');
-        var valor = $(this).text();
 
-        $.ajax({
-            url: 'backend.php',
-            type: 'POST',
-            data: {
-                action: 'filtro_coches',
-                filters: { [filtro]: valor }
-            },
-            success: function(response) {
-                $('.container').html(response);
-            }
-        });
-    });
-
-    //Botón de logout
-    document.addEventListener("DOMContentLoaded", function() {
-        var logoutlink = document.getElementById("logoutlink");
-
-        if(logoutlink) {
-            logoutlink.addEventListener("click", function(event) {
-                // Prevenir comportamiento por defecto del link
-                event.preventDefault();
-
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "backend.php", false); // `false` hace que la solicitud sea síncrona
-                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState == 4 && xhr.status == 200) {
-                        // La petición se ha completado satisfactoriamente.
-                        console.log(xhr.responseText);
-
-                        // Redirección al index.php
-                        window.location.href = 'index.php';
-                    }
-                };
-                xhr.send("action=logout");
-            });
-        }
-    });
-
-</script>
 <footer class="container-fluid text-center">
     <?php
     include ("footer.php");
     ?>
 </footer>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var filtros_activos = {};   // Objeto para almacenar los filtros activos
 
+        document.querySelectorAll('.filtro .dropdown-menu li a').forEach(function(element) {
+            element.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                var filtro = this.closest('.filtro').getAttribute('data-filtro');
+                var valor = this.textContent;
+
+                filtros_activos[filtro] = valor; // Actualizar el objeto de filtros activos
+
+                fetch('backend.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                    },
+                    body: `action=filtro_coches&filters=${encodeURIComponent(JSON.stringify(filtros_activos))}`  // Enviar todos los filtros activos
+                })
+                    .then(response => response.text())
+                    .then(response => {
+                        document.querySelector('.container').innerHTML = response;
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+        });
+    });
+
+
+
+    //Botón de logout
+    document.addEventListener('DOMContentLoaded', (event) => {
+        document.getElementById('logoutlink').addEventListener('click', function(e){
+            console.log("hola");
+            e.preventDefault();
+
+            fetch('backend.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'action': 'logout'
+                })
+            })
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data)
+
+                    // Recargar la página
+                    location.reload();
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    });
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 </html>

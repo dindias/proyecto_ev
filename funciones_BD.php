@@ -176,7 +176,62 @@ function updateUser($userID, $valuesToUpdate) {
     return $result;
 }
 
+function getUserCars($userID) {
+    $conn = connectDB();
+    $query = 'SELECT * FROM `coches` WHERE `UserID` = :userID';
+    $statement = $conn->prepare($query);
+    $statement->execute([':userID' => $userID]);
 
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function insertCar($userID, $marca, $modelo, $ano, $matricula, $kilometraje, $descripcion, $precio, $imagen) {
+    try {
+        $conn = connectDB();
+
+        $query = 'INSERT INTO `coches` (`UserID`, `Marca`, `Modelo`, `Año`, `Matricula`, `Kilometraje`, `Descripcion`, `Precio`, `imagenes`) 
+                  VALUES (:userID, :marca, :modelo, :ano, :matricula, :kilometraje, :descripcion, :precio, :imagen)';
+        $params = [
+            ':userID' => $userID,
+            ':marca' => $marca,
+            ':modelo' => $modelo,
+            ':ano' => $ano,
+            ':matricula' => $matricula,
+            ':kilometraje' => $kilometraje,
+            ':descripcion' => $descripcion,
+            ':precio' => $precio,
+            ':imagen' => $imagen
+        ];
+
+        $statement = $conn->prepare($query);
+
+        if($statement->execute($params)) {
+            return true;
+        } else {
+            var_dump($statement->errorInfo());
+            return false;
+        }
+
+    } catch (PDOException $error) {
+        echo "PDO Error: " . $error->getMessage();
+        exit();
+    }
+}
+
+function eliminar_coche($carId) {
+    $conn = connectDB();
+    $sql = "DELETE FROM coches WHERE CarID = :carId";
+
+    try {
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':carId', $carId);
+        $stmt->execute();
+
+        echo 'Coche eliminado con éxito';
+    } catch(PDOException $e) {
+        echo 'Error al eliminar coche: ' . $e->getMessage();
+    }
+}
 
 
 

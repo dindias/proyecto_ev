@@ -34,30 +34,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         case 'filtro_coches':
         {
-            $filters = $_POST['filters'];
+            $filters = json_decode(urldecode($_POST['filters']), true);
             $cars = filterCars($filters);
 
-            // Asegúrate de procesar la respuesta de los coches con HTML adecuado aquí antes de enviarla de vuelta al cliente
+            // Comienza el buffer de salida
             ob_start();
-            $counter = 0;
+
+            echo '<div class="container"><div class="grid">';
+
             foreach ($cars as $car) {
-                if ($counter != 0 && $counter%4 == 0) {
-                    echo '</div><div class="row">';
-                }
-
-                echo '<div class="col-sm-3">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">'. $car["Marca"] .' '. $car["Modelo"] .'</div>
-                    <div class="panel-body"><img src="https://placehold.it/150x80?text='. $car["Matricula"] .'" class="img-responsive" style="width:100%" alt="Image"></div>
-                    <div class="panel-footer">'. $car["Descripcion"] .'</div>
+                echo '
+            <div class="card m-3" style="width: 18rem;" id="card'.$car["CarID"].'">
+                <img class="card-img-top" src="'.$car["imagenes"].'" alt="Card image cap" width="200px">
+                <div class="card-body">
+                    <h5 class="card-title">'.$car["Marca"].' '.$car["Modelo"].'</h5>
+                    <p class="card-text">
+                        Año: '.$car["Año"].'<br>
+                        Kilometraje: '.$car["Kilometraje"].'<br>
+                        Descripción: '.$car["Descripcion"].'<br>
+                        Precio: '.$car["Precio"].'
+                    </p>
                 </div>
-              </div>';
+            </div>';
+            }
 
-                $counter++;
-            }
-            if ($counter != 0) {
-                echo '</div>';
-            }
+            echo '</div></div><br><br>';
 
             $response = ob_get_clean();
 
@@ -70,6 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             break;
         }
         case 'modificar_perfil':
+        {
             $userID = $_SESSION['user_id'];
             $valuesToUpdate = array();
 
@@ -95,7 +97,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $valuesToUpdate['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
             }
             updateUser($userID, $valuesToUpdate);
+            header('Location: control_panel.php');
             break;
+        }
+        case 'añadir_coche':
+        {
+            $userID = $_SESSION['user_id'];
+            $marca = $_POST['Marca'];
+            $modelo = $_POST['Modelo'];
+            $ano = $_POST['Ano'];
+            $matricula = $_POST['Matricula'];
+            $kilometraje = $_POST['Kilometraje'];
+            $descripcion = $_POST['Descripcion'];
+            $precio = $_POST['Precio'];
 
+            if(isset($_FILES["imagen"])) {
+                $targetDir = "img/";
+                $fileName = basename($_FILES["imagen"]["name"]);
+                $targetFilePath = $targetDir . $fileName;
+
+                if (move_uploaded_file($_FILES["imagen"]["tmp_name"], $targetFilePath)) {
+                    $imageLocation = $targetFilePath;
+                }
+
+                insertCar($userID, $marca, $modelo, $ano, $matricula, $kilometraje, $descripcion, $precio, $imageLocation);
+            } else {
+                echo "No se ha subido ninguna imagen.";
+            }
+            header('Location: control_panel.php');
+            break;
+        }
+        case 'eliminar_coche':
+        {
+            $carId = $_POST['carID'];
+            eliminar_coche($carId);
+            header('Location: control_panel.php');
+            break;
+        }
     }
 }
