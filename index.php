@@ -247,21 +247,23 @@ include ("register.php");
 
     // Esta función se llamará al hacer clic en las opciones de filtro
     function onFilterItemSelected(event) {
+        event.preventDefault(); // Esto previene el comportamiento por defecto del enlace, que es navegar hacia el "#".
+
         const filtroElem = event.target.closest('.filtro');
-        const filtroValue = event.target.textContent; // o event.target.getAttribute('data-value') si planeas almacenar el valor real del filtro en un atributo de datos.
+        const filtroValue = event.target.textContent; // Asumiendo que el valor del filtro está en el contenido del texto del enlace.
         const filtroKey = filtroElem.getAttribute('data-filtro');
 
-        // Restablecer todos los filtros si se selecciona 'Sin filtro'
+        // Restablecer todos los filtros si se selecciona 'Sin filtro' o aplicar el filtro seleccionado
         if (filtroValue === 'Sin filtro') {
             filtroElem.removeAttribute('data-value');
         } else {
             filtroElem.setAttribute('data-value', filtroValue);
         }
 
-        loadCars(1);
+        loadCars(1); // Cargar los coches aplicando los filtros actuales
     }
 
-    // Agregar listeners a los items de dropdown
+    // Asegúrate de que cada elemento que actúa como un filtro llame a esta función en su evento de clic
     document.querySelectorAll('.dropdown-item').forEach(function(item) {
         item.addEventListener('click', onFilterItemSelected);
     });
