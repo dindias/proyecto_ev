@@ -1,8 +1,6 @@
 <?php
 error_reporting(E_ALL ^ E_NOTICE);
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+session_start();
 ?>
 <nav class="navbar navbar-expand bg-body-tertiary">
     <div class="container-fluid">

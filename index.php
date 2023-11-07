@@ -191,10 +191,12 @@ include ("register.php");
         formData.append('page', page);
         formData.append('action', 'paginate_cars');
 
-        // Buscar y adjuntar filtros al formData antes de enviar
+        // Recoger los valores de los filtros actuales
         document.querySelectorAll('.filtro').forEach(filtro => {
-            let value = filtro.getAttribute('data-value'); // Suponemos que seleccionas un filtro con un atributo 'data-value'.
-            if (value) {
+            const value = filtro.dataset.value; // Trabajar con dataset para leer los atributos de datos
+
+            // Agregar sólo si value no es null
+            if (value !== undefined && value !== null) {
                 formData.append(filtro.getAttribute('data-filtro'), value);
             }
         });
@@ -240,35 +242,40 @@ include ("register.php");
         document.getElementById('pagination').innerHTML = paginationHTML;
     }
 
-    function onFilterSelected(filtro, value) {
-        filtro.setAttribute('data-value', value); // Guardamos el valor seleccionado en el elemento del filtro
-        loadCars(1); // Cargamos la primera página de coches con los nuevos filtros
-    }
-
-    // Esta función se llamará al hacer clic en las opciones de filtro
     function onFilterItemSelected(event) {
         event.preventDefault(); // Esto previene el comportamiento por defecto del enlace, que es navegar hacia el "#".
 
-        const filtroElem = event.target.closest('.filtro');
-        const filtroValue = event.target.textContent; // Asumiendo que el valor del filtro está en el contenido del texto del enlace.
-        const filtroKey = filtroElem.getAttribute('data-filtro');
-
-        // Restablecer todos los filtros si se selecciona 'Sin filtro' o aplicar el filtro seleccionado
-        if (filtroValue === 'Sin filtro') {
-            filtroElem.removeAttribute('data-value');
-        } else {
-            filtroElem.setAttribute('data-value', filtroValue);
+        // Asegúrate de que el evento sea manejado solo si se desencadena en elementos esperados
+        if (!event.target.matches('.dropdown-item')) {
+            return;
         }
 
-        loadCars(1); // Cargar los coches aplicando los filtros actuales
+        const filtroElem = event.target.closest('.filtro');
+        const filtroValue = event.target.textContent.trim(); // Usar trim() para eliminar espacios en blanco
+
+        // Procede solo si filtroElem no es null.
+        if (filtroElem) {
+            // Restablecer todos los filtros si se selecciona 'Sin filtro' o aplicar el filtro seleccionado
+            if (filtroValue === 'Sin filtro') {
+                filtroElem.removeAttribute('data-value');
+                // Pasar null como valor de filtro para que la función loadCars entienda que no debe aplicar ningún filtro
+                filtroElem.dataset.value = null;
+            } else {
+                filtroElem.setAttribute('data-value', filtroValue);
+                filtroElem.dataset.value = filtroValue;
+            }
+
+            loadCars(1); // Cargar los coches aplicando los filtros actuales
+        } else {
+            // Manejo de errores o registro opcional para situaciones inesperadas
+            console.error('onFilterItemSelected: filtroElem is null');
+        }
     }
 
     // Asegúrate de que cada elemento que actúa como un filtro llame a esta función en su evento de clic
-    document.querySelectorAll('.dropdown-item').forEach(function(item) {
+    document.querySelectorAll('.filtro .dropdown-item').forEach(function(item) {
         item.addEventListener('click', onFilterItemSelected);
     });
-
-
 
     //Botón de logout
     document.addEventListener('DOMContentLoaded', (event) => {
