@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 function connectDB()
 {
     $servername = "localhost";
@@ -83,6 +85,87 @@ function getCars()
 
         // Retornar todos los coches
         return $stmt->fetchAll();
+
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return [];
+    }
+}
+
+function getTotalCars($filters = []) {
+    $conn = connectDB();
+    $whereParts = [];
+    $params = [];
+
+    foreach ($filters as $key => $value) {
+        if (!empty($value)) {
+            // Limpieza básica de identificadores para evitar caracteres no permitidos
+            $cleanKey = preg_replace('/[^a-zA-Z0-9_]/', '', $key);
+            $whereParts[] = "$cleanKey = :$cleanKey";
+            $params[":$cleanKey"] = $value; // Almacenar valores en un array asociativo
+        }
+    }
+
+    $whereClause = ''; // Iniciar la cláusula WHERE vacía
+    if (!empty($whereParts)) {
+        $whereClause = ' WHERE ' . implode(' AND ', $whereParts);
+    }
+
+    try {
+        // Asegúrese de incluir la cláusula WHERE si hay filtros aplicados
+        $sql = "SELECT COUNT(*) FROM coches" . $whereClause;
+        $stmt = $conn->prepare($sql);
+
+        // Vincular parámetros de filtro
+        foreach ($params as $param => $value) {
+            $stmt->bindValue($param, $value);
+        }
+
+        $stmt->execute();
+        $count = $stmt->fetchColumn();
+        return $count;
+
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return 0;
+    }
+}
+function getCarsByPage($page = 1, $limit = 12, $filters = []) {
+    $conn = connectDB();
+    $offset = ($page - 1) * $limit;
+    $whereParts = [];
+    $params = [];
+
+    foreach ($filters as $key => $value) {
+        if (!empty($value)) {
+            // Limpieza básica de identificadores para evitar caracteres ilegales
+            $cleanKey = preg_replace('/[^a-zA-Z0-9_]/', '', $key);
+            $whereParts[] = "$cleanKey = :$cleanKey";
+            $params[":$cleanKey"] = $value; // Almacenar valores en un array asociativo
+        }
+    }
+
+    $whereClause = ''; // Iniciar cláusula WHERE vacía
+    if (!empty($whereParts)) {
+        $whereClause = ' WHERE ' . implode(' AND ', $whereParts);
+    }
+
+    try {
+        $sql = "SELECT * FROM coches {$whereClause} LIMIT :limit OFFSET :offset";
+        $stmt = $conn->prepare($sql);
+
+        // Vincular parámetros de filtro
+        foreach ($params as $param => $value) {
+            $stmt->bindValue($param, $value);
+        }
+
+        // Vincular parámetros de paginación
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();

@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 include("funciones_BD.php");
 ?>
 <!DOCTYPE html>
@@ -13,10 +15,6 @@ include("funciones_BD.php");
         /* Remove the navbar's default rounded borders and increase the bottom margin */
         .navbar {
             border-radius: 0;
-        }
-        .filtro-coches{
-            position: sticky;
-            top: 0;
         }
 
         /* Add a gray background color and some padding to the footer */
@@ -34,12 +32,6 @@ include("funciones_BD.php");
             display: flex;
             flex-wrap: wrap;
         }
-
-        .cell {
-            flex: 0 0 calc(33.333% - 10px);
-            margin: 5px;
-        }
-
 
     </style>
 </head>
@@ -170,29 +162,17 @@ include ("register.php");
 
 
 <div class="container">
-    <div class="grid">
-        <?php
-        $cars = getCars();
-        foreach($cars as $car) {
-            ?>
-            <div class="card m-3" style="width: 18rem;" id="card<?php echo $car['CarID']; ?>">
-                <img class="card-img-top" src="<?php echo $car['imagenes']; ?>" alt="Card image cap" width="200px">
-                <div class="card-body">
-                    <h5 class="card-title"><?php echo $car['Marca'] . " " . $car['Modelo']; ?></h5>
-                    <p class="card-text">
-                        Año: <?php echo $car['Año']; ?><br>
-                        Kilometraje: <?php echo $car['Kilometraje']; ?><br>
-                        Descripción: <?php echo $car['Descripcion']; ?><br>
-                        Precio: <?php echo $car['Precio']; ?>
-                    </p>
-                </div>
-            </div>
-            <?php
-        }
-        ?>
+    <div id="cars-container" class="row">
+        <!-- Los coches se cargarán aquí mediante JavaScript -->
     </div>
-</div><br><br>
 
+    <!-- Paginación -->
+    <nav aria-label="Page navigation">
+        <ul id="pagination" class="pagination justify-content-center">
+            <!-- Los enlaces de paginación se generarán aquí mediante JavaScript -->
+        </ul>
+    </nav>
+</div><br><br>
 
 
 <footer class="container-fluid text-center">
@@ -201,32 +181,89 @@ include ("register.php");
     ?>
 </footer>
 <script>
+
     document.addEventListener('DOMContentLoaded', function() {
-        var filtros_activos = {};   // Objeto para almacenar los filtros activos
+        loadCars(1); // Carga inicial de coches
+    });
 
-        document.querySelectorAll('.filtro .dropdown-menu li a').forEach(function(element) {
-            element.addEventListener('click', function(e) {
-                e.preventDefault();
+    function loadCars(page) {
+        let formData = new FormData();
+        formData.append('page', page);
+        formData.append('action', 'paginate_cars');
 
-                var filtro = this.closest('.filtro').getAttribute('data-filtro');
-                var valor = this.textContent;
-
-                filtros_activos[filtro] = valor; // Actualizar el objeto de filtros activos
-
-                fetch('backend.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-                    },
-                    body: `action=filtro_coches&filters=${encodeURIComponent(JSON.stringify(filtros_activos))}`  // Enviar todos los filtros activos
-                })
-                    .then(response => response.text())
-                    .then(response => {
-                        document.querySelector('.container').innerHTML = response;
-                    })
-                    .catch(error => console.error('Error:', error));
-            });
+        // Buscar y adjuntar filtros al formData antes de enviar
+        document.querySelectorAll('.filtro').forEach(filtro => {
+            let value = filtro.getAttribute('data-value'); // Suponemos que seleccionas un filtro con un atributo 'data-value'.
+            if (value) {
+                formData.append(filtro.getAttribute('data-filtro'), value);
+            }
         });
+
+        fetch('backend.php', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('cars-container').innerHTML = generateCarsHTML(data.cars);
+                updatePagination(data.totalPages, page);
+            })
+            .catch(error => console.error('Hubo un error al cargar los coches:', error));
+    }
+
+    function generateCarsHTML(cars) {
+        return cars.map(car => `
+        <div class="col-md-3 col-sm-6 col-xs-12 mb-4">
+            <div class="card" id="card${car.CarID}">
+                <img class="card-img-top" src="${car.imagenes}" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">${car.Marca} ${car.Modelo}</h5>
+                    <p class="card-text">
+                        Año: ${car.Año}<br>
+                        Kilometraje: ${car.Kilometraje}<br>
+                        Descripción: ${car.Descripcion}<br>
+                        Precio: ${car.Precio}
+                    </p>
+                </div>
+            </div>
+        </div>
+    `).join('');
+    }
+
+    function updatePagination(totalPages, currentPage) {
+        let paginationHTML = '';
+        for (let i = 1; i <= totalPages; i++) {
+            paginationHTML += `<li class="page-item ${currentPage == i ? 'active' : ''}">
+        <a class="page-link" href="#" onclick="loadCars(${i}); return false;">${i}</a>
+    </li>`;
+        }
+        document.getElementById('pagination').innerHTML = paginationHTML;
+    }
+
+    function onFilterSelected(filtro, value) {
+        filtro.setAttribute('data-value', value); // Guardamos el valor seleccionado en el elemento del filtro
+        loadCars(1); // Cargamos la primera página de coches con los nuevos filtros
+    }
+
+    // Esta función se llamará al hacer clic en las opciones de filtro
+    function onFilterItemSelected(event) {
+        const filtroElem = event.target.closest('.filtro');
+        const filtroValue = event.target.textContent; // o event.target.getAttribute('data-value') si planeas almacenar el valor real del filtro en un atributo de datos.
+        const filtroKey = filtroElem.getAttribute('data-filtro');
+
+        // Restablecer todos los filtros si se selecciona 'Sin filtro'
+        if (filtroValue === 'Sin filtro') {
+            filtroElem.removeAttribute('data-value');
+        } else {
+            filtroElem.setAttribute('data-value', filtroValue);
+        }
+
+        loadCars(1);
+    }
+
+    // Agregar listeners a los items de dropdown
+    document.querySelectorAll('.dropdown-item').forEach(function(item) {
+        item.addEventListener('click', onFilterItemSelected);
     });
 
 
