@@ -98,11 +98,10 @@ function getTotalCars($filters = []) {
     $params = [];
 
     foreach ($filters as $key => $value) {
-        if (!empty($value)) {
-            // Limpieza básica de identificadores para evitar caracteres no permitidos
-            $cleanKey = preg_replace('/[^a-zA-Z0-9_]/', '', $key);
+        if ($value !== null && $value !== '') {
+            $cleanKey = preg_replace('/[^a-zA-Z0-9_ñÑ]/u', '', $key);
             $whereParts[] = "$cleanKey = :$cleanKey";
-            $params[":$cleanKey"] = $value; // Almacenar valores en un array asociativo
+            $params[":$cleanKey"] = $value;
         }
     }
 
@@ -137,11 +136,10 @@ function getCarsByPage($page = 1, $limit = 12, $filters = []) {
     $params = [];
 
     foreach ($filters as $key => $value) {
-        if (!empty($value)) {
-            // Limpieza básica de identificadores para evitar caracteres ilegales
-            $cleanKey = preg_replace('/[^a-zA-Z0-9_]/', '', $key);
+        if ($value !== null && $value !== '') {
+            $cleanKey = preg_replace('/[^a-zA-Z0-9_ñÑ]/u', '', $key);
             $whereParts[] = "$cleanKey = :$cleanKey";
-            $params[":$cleanKey"] = $value; // Almacenar valores en un array asociativo
+            $params[":$cleanKey"] = $value;
         }
     }
 
@@ -189,51 +187,6 @@ function get_unique_values($column, $table) {
     return $values;
 }
 
-
-function filterCars($filters) {
-    // Si $filters no es un array, lo convertimos en uno vacío.
-    if (!is_array($filters)) {
-        $filters = [];
-    }
-    if (empty($filters)) {
-        return getCars();
-    }
-
-    $conn = connectDB();
-
-    $query = "SELECT * FROM coches";
-    $params = [];
-
-    $conditions = [];
-    foreach ($filters as $column => $value) {
-
-        // Asegurémonos de que sólo añadimos condiciones para columnas válidas.
-        if (in_array($column, ['marca', 'modelo', 'ano', 'Matricula', 'Kilometraje', 'precio'])) {
-
-            // Aquí estamos usando signos de interrogación como placeholders para evitar inyecciones de SQL.
-            // Pero si el valor es 'Sin filtro' entonces no añadimos esta condición a la consulta SQL
-            if ($value != 'Sin filtro') {
-                $conditions[] = "$column = ?";
-                $params[] = $value;
-            }
-        }
-    }
-
-    if ($conditions) {
-        $query .= " WHERE " . implode(' AND ', $conditions);
-    }
-
-    try {
-        $stmt = $conn->prepare($query);
-        // Ejecutamos la declaración preparada pasando los valores del filtro.
-        $stmt->execute($params);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
-        return [];
-    }
-}
-
 // La función updateUser podría ser algo así:
 function updateUser($userID, $valuesToUpdate) {
     $conn = connectDB();
@@ -272,7 +225,7 @@ function insertCar($userID, $marca, $modelo, $ano, $matricula, $kilometraje, $de
     try {
         $conn = connectDB();
 
-        $query = 'INSERT INTO `coches` (`UserID`, `Marca`, `Modelo`, `Año`, `Matricula`, `Kilometraje`, `Descripcion`, `Precio`, `imagenes`) 
+        $query = 'INSERT INTO `coches` (`UserID`, `Marca`, `Modelo`, `Ano`, `Matricula`, `Kilometraje`, `Descripcion`, `Precio`, `imagenes`) 
                   VALUES (:userID, :marca, :modelo, :ano, :matricula, :kilometraje, :descripcion, :precio, :imagen)';
         $params = [
             ':userID' => $userID,

@@ -111,16 +111,16 @@ include ("register.php");
                 </li>
 
                 <!-- Año -->
-                <li class="nav-item dropdown filtro" data-filtro="Año">
+                <li class="nav-item dropdown filtro" data-filtro="Ano">
                     <a class="nav-link dropdown-toggle" href="#" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">Año</a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Sin filtro</a></li>
                         <?php
-                        $años = get_unique_values('Año', 'coches');
-                        foreach($años as $año):
+                        $anos = get_unique_values('Ano', 'coches');
+                        foreach($anos as $ano):
                             ?>
-                            <li><a class="dropdown-item" href="#"><?php echo $año; ?></a></li>
+                            <li><a class="dropdown-item" href="#"><?php echo $ano; ?></a></li>
                         <?php endforeach; ?>
                     </ul>
                 </li>
@@ -222,7 +222,7 @@ include ("register.php");
                 <div class="card-body">
                     <h5 class="card-title">${car.Marca} ${car.Modelo}</h5>
                     <p class="card-text">
-                        Año: ${car.Año}<br>
+                        Año: ${car.Ano}<br>
                         Kilometraje: ${car.Kilometraje}<br>
                         Descripción: ${car.Descripcion}<br>
                         Precio: ${car.Precio}

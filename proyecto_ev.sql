@@ -32,7 +32,7 @@ CREATE TABLE `coches` (
   `UserID` bigint(20) UNSIGNED NOT NULL,
   `Marca` varchar(50) NOT NULL,
   `Modelo` varchar(50) NOT NULL,
-  `Año` year(4) NOT NULL,
+  `Ano` year(4) NOT NULL,
   `Matricula` char(7) NOT NULL,
   `Kilometraje` int(11) NOT NULL,
   `Descripcion` varchar(255) DEFAULT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE `coches` (
 -- Volcado de datos para la tabla `coches`
 --
 
-INSERT INTO `coches` (`CarID`, `UserID`, `Marca`, `Modelo`, `Año`, `Matricula`, `Kilometraje`, `Descripcion`, `Precio`, `imagenes`) VALUES
+INSERT INTO `coches` (`CarID`, `UserID`, `Marca`, `Modelo`, `Ano`, `Matricula`, `Kilometraje`, `Descripcion`, `Precio`, `imagenes`) VALUES
 (47, 1, 'Ford', 'Focus', '2010', 'BCD2345', 200000, 'Necesita reparaciones menores', 4000, 'img/generic.jpg'),
 (48, 1, 'Chevrolet', 'Cruze', '2011', 'CDE3456', 130000, 'Excelente estado, un solo dueño', 6000, 'img/generic.jpg'),
 (49, 1, 'Honda', 'Accord', '2015', 'DEF4567', 120000, 'Pocos detalles de uso', 10000, 'img/generic.jpg'),

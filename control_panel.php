@@ -117,7 +117,7 @@ include ("register.php");
                         <p class="card-text">
                             ID: <?php echo $car['CarID']; ?><br>
                             Matricula: <?php echo $car['Matricula']; ?><br>
-                            Año: <?php echo $car['Año']; ?><br>
+                            Año: <?php echo $car['Ano']; ?><br>
                             Kilometraje: <?php echo $car['Kilometraje']; ?><br>
                             Descripción: <?php echo $car['Descripcion']; ?><br>
                             Precio: <?php echo $car['Precio']; ?>
@@ -197,7 +197,7 @@ include ("register.php");
                         <input type="text" id="modelo" name="Modelo" class="form-control" placeholder="Modelo" required/>
                     </div>
                     <div class="mb-3">
-                        <label for="ano" class="form-label">Año:</label>
+                        <label for="ano" class="form-label">Ano:</label>
                         <input type="number" id="ano" name="Ano" class="form-control" placeholder="Año" required min="1900" max="2099" step="1"/>
                     </div>
                     <div class="mb-3">

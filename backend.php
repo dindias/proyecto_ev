@@ -110,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Recoger los filtros desde $_POST y limpiarlos
             $filters = [];
-            foreach (['marca', 'modelo', 'ano', 'kilometraje', 'precio'] as $key) {
+            foreach (['marca', 'modelo', 'Ano', 'kilometraje', 'precio'] as $key) {
                 if (!empty($_POST[$key])) {
                     $filters[$key] = $_POST[$key];
                 }
