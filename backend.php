@@ -33,45 +33,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header('Location: index.php');
             exit();
         }
-
-        case 'filtro_coches':
-        {
-            $filters = json_decode(urldecode($_POST['filters']), true);
-            $cars = filterCars($filters);
-
-            // Comienza el buffer de salida
-            ob_start();
-
-            // Genera el contenido de las tarjetas de coches
-            echo '<div class="row">';
-            foreach ($cars as $car) {
-                echo '
-                <div class="col-md-3 col-sm-6 col-xs-12 mb-4">
-                    <div class="card" style="width: 18rem;" id="card'.$car["CarID"].'">
-                        <img class="card-img-top" src="'.($car["imagenes"] ?? 'path/to/default/image.jpg').'" alt="Car image">
-                        <div class="card-body">
-                            <h5 class="card-title">'.$car["Marca"].' '.$car["Modelo"].'</h5>
-                            <p class="card-text">
-                                Año: '.$car["Año"].'<br>
-                                Kilometraje: '.$car["Kilometraje"].'<br>
-                                Descripción: '.$car["Descripcion"].'<br>
-                                Precio: '.$car["Precio"].'
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            ';
-            }
-            echo '</div>'; // Cierra la fila de las tarjetas
-
-            // Obtenemos el contenido del buffer y limpiamos el buffer
-            $response = ob_get_clean();
-
-            // Enviamos la respuesta como JSON
-            header('Content-Type: application/json');
-            echo json_encode(['html' => $response]);
-            break;
-        }
         case 'logout':
         {
             session_destroy();

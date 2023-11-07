@@ -111,7 +111,7 @@ include ("register.php");
                 </li>
 
                 <!-- Año -->
-                <li class="nav-item dropdown filtro" data-filtro="ano">
+                <li class="nav-item dropdown filtro" data-filtro="Año">
                     <a class="nav-link dropdown-toggle" href="#" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">Año</a>
                     <ul class="dropdown-menu">
@@ -193,11 +193,12 @@ include ("register.php");
 
         // Recoger los valores de los filtros actuales
         document.querySelectorAll('.filtro').forEach(filtro => {
-            const value = filtro.dataset.value; // Trabajar con dataset para leer los atributos de datos
+            const key = filtro.getAttribute('data-filtro');
+            const value = filtro.dataset.value;
 
             // Agregar sólo si value no es null
-            if (value !== undefined && value !== null) {
-                formData.append(filtro.getAttribute('data-filtro'), value);
+            if (value && value !== "null") {
+                formData.append(key, value);
             }
         });
 
@@ -256,19 +257,19 @@ include ("register.php");
         // Procede solo si filtroElem no es null.
         if (filtroElem) {
             // Restablecer todos los filtros si se selecciona 'Sin filtro' o aplicar el filtro seleccionado
-            if (filtroValue === 'Sin filtro') {
-                filtroElem.removeAttribute('data-value');
-                // Pasar null como valor de filtro para que la función loadCars entienda que no debe aplicar ningún filtro
-                filtroElem.dataset.value = null;
-            } else {
-                filtroElem.setAttribute('data-value', filtroValue);
-                filtroElem.dataset.value = filtroValue;
-            }
+            if (filtroElem) {
+                // Restablecer todos los filtros si se selecciona 'Sin filtro'
+                if (filtroValue === 'Sin filtro') {
+                    delete filtroElem.dataset.value; // Elimina la propiedad value del dataset, en lugar de asignarle null
+                } else {
+                    filtroElem.dataset.value = filtroValue;
+                }
 
-            loadCars(1); // Cargar los coches aplicando los filtros actuales
-        } else {
-            // Manejo de errores o registro opcional para situaciones inesperadas
-            console.error('onFilterItemSelected: filtroElem is null');
+                loadCars(1); // Cargar los coches aplicando los filtros actuales
+            } else {
+                // Manejo de errores o registro opcional para situaciones inesperadas
+                console.error('onFilterItemSelected: filtroElem is null');
+            }
         }
     }
 
