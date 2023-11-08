@@ -340,7 +340,8 @@ include ("register.php");
                 .then(response => response.text())
                 .then(response => {
                     document.querySelector('.container').innerHTML = response;
-                    $('#addCarModal').modal('hide');
+                    var addCarModal = bootstrap.Modal.getInstance(document.getElementById('addCarModal'));
+                    addCarModal.hide();
                     window.location.hash = "anuncios";
                 });
         });
