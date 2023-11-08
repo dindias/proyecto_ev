@@ -187,31 +187,6 @@ function get_unique_values($column, $table) {
     return $values;
 }
 
-// La función updateUser podría ser algo así:
-function updateUser($userID, $valuesToUpdate) {
-    $conn = connectDB();
-
-    $sql = "UPDATE usuarios SET ";
-    foreach ($valuesToUpdate as $field => $value) {
-        $sql .= "$field=:$field, ";
-    }
-    $sql = rtrim($sql, ', ') . " WHERE UserID=:userId";
-    $stmt = $conn->prepare($sql);
-    foreach ($valuesToUpdate as $field => $value) {
-        $stmt->bindValue(':' . $field, $value);
-    }
-
-    $stmt->bindValue(':userId', $userID, PDO::PARAM_INT);
-    $result = $stmt->execute();
-
-    // Si la actualización fue exitosa, actualiza la variable de sesión del nombre
-    if ($result && array_key_exists('nombre', $valuesToUpdate)) {
-        $_SESSION['nombre'] = $valuesToUpdate['nombre'];
-    }
-
-    return $result;
-}
-
 function getUserCars($userID) {
     $conn = connectDB();
     $query = 'SELECT * FROM `coches` WHERE `UserID` = :userID';
@@ -269,5 +244,49 @@ function eliminar_coche($carId) {
     }
 }
 
+function updateUser($userID, $valuesToUpdate) {
+    $conn = connectDB();
+
+    $sql = "UPDATE usuarios SET ";
+    $result = updateValues($valuesToUpdate, $sql, $conn, $userID);
+
+    // Si la actualización fue exitosa, actualiza la variable de sesión del nombre
+    if ($result && array_key_exists('nombre', $valuesToUpdate)) {
+        $_SESSION['nombre'] = $valuesToUpdate['nombre'];
+    }
+
+    return $result;
+}
+
+/**
+ * @param $valuesToUpdate
+ * @param string $sql
+ * @param PDO|null $conn
+ * @param $userID
+ * @return bool
+ */
+function updateValues($valuesToUpdate, string $sql, ?PDO $conn, $userID): bool
+{
+    foreach ($valuesToUpdate as $field => $value) {
+        $sql .= "$field=:$field, ";
+    }
+    $sql = rtrim($sql, ', ') . " WHERE UserID=:userId";
+    $stmt = $conn->prepare($sql);
+    foreach ($valuesToUpdate as $field => $value) {
+        $stmt->bindValue(':' . $field, $value);
+    }
+
+    $stmt->bindValue(':userId', $userID, PDO::PARAM_INT);
+    $result = $stmt->execute();
+    return $result;
+}
+function updateCar($userID, $valuesToUpdate) {
+    $conn = connectDB();
+
+    $sql = "UPDATE coches SET ";
+    $result = updateValues($valuesToUpdate, $sql, $conn, $userID);
+
+    return $result;
+}
 
 

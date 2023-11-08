@@ -127,5 +127,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ]);
             break;
         }
+        case 'editar_coche':
+        {
+            $userID = $_SESSION['user_id'];
+            $valuesToUpdate = array();
+
+            if (!empty($_POST['carID'])) {
+                $valuesToUpdate['carID'] = $_POST['carID'];
+            }
+            if (!empty($_POST['Marca'])) {
+                $valuesToUpdate['Marca'] = $_POST['Marca'];
+            }
+            if (!empty($_POST['Modelo'])) {
+                $valuesToUpdate['Modelo'] = $_POST['Modelo'];
+            }
+            if (!empty($_POST['Ano'])) {
+                $valuesToUpdate['Ano'] = $_POST['Ano'];
+            }
+            if (!empty($_POST['Matricula'])) {
+                $valuesToUpdate['Matricula'] = $_POST['Matricula'];
+            }
+            if (!empty($_POST['Kilometraje'])) {
+                $valuesToUpdate['Kilometraje'] = $_POST['Kilometraje'];
+            }
+            if (!empty($_POST['Descripcion'])) {
+                $valuesToUpdate['Descripcion'] = $_POST['Descripcion'];
+            }
+            if (!empty($_POST['Precio'])) {
+                $valuesToUpdate['Precio'] = $_POST['Precio'];
+            }
+            if (!empty($_POST['imagen'])) {
+                $valuesToUpdate['imagen'] = $_POST['imagen'];
+            }
+            updateCar($userID, $valuesToUpdate);
+            header('Location: control_panel.php');
+            break;
+        }
     }
 }

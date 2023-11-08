@@ -122,7 +122,7 @@ include ("register.php");
                             Descripción: <?php echo $car['Descripcion']; ?><br>
                             Precio: <?php echo $car['Precio']; ?>
                         </p>
-                        <a href="#" class="btn btn-primary edit-btn" data-bs-toggle="modal" data-bs-target="#editCarModal" data-car-id="<?php echo $car['CarID']; ?>">Editar</a>
+                        <button type="button" class="btn btn-primary editCarBtn" data-bs-toggle="modal" data-bs-target="#editCarModal" data-car-id="<?php echo $car['CarID']; ?>">Editar</button>
                         <button type="button" class="btn btn-primary deleteCarBtn" data-bs-toggle="modal" data-bs-target="#deleteCarModal" data-car-id="<?php echo $car['CarID']; ?>">Eliminar</button>
                     </div>
                 </div>
@@ -137,18 +137,50 @@ include ("register.php");
 <div class="modal fade" id="editCarModal" tabindex="-1" role="dialog" aria-labelledby="editCarModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Editar coche</h5>
-                ...
-            </div>
-            <div class="modal-body">
-                <input type="text" id="editMarca" placeholder="Marca"/>
-                <input type="text" id="editModelo" placeholder="Modelo"/>
-                <!-- Agrega aquí más inputs para las demás propiedades -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary saveChanges">Guardar cambios</button>
-            </div>
+            <form id="editCarForm">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar coche</h5>
+                    <!-- ... resto del contenido del modal-header ... -->
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="editMarca" class="form-label">Marca:</label>
+                        <input type="text" id="editMarca" name="Marca" class="form-control" placeholder="Marca" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editModelo" class="form-label">Modelo:</label>
+                        <input type="text" id="editModelo" name="Modelo" class="form-control" placeholder="Modelo" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editAno" class="form-label">Año:</label>
+                        <input type="number" id="editAno" name="Ano" class="form-control" placeholder="Año" required min="1900" max="2099" step="1"/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editMatricula" class="form-label">Matricula:</label>
+                        <input type="text" id="editMatricula" name="Matricula" class="form-control" placeholder="Matricula" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editKilometraje" class="form-label">Kilometraje:</label>
+                        <input type="number" id="editKilometraje" name="Kilometraje" class="form-control" placeholder="Kilometraje" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editDescripcion" class="form-label">Descripción:</label>
+                        <input type="text" id="editDescripcion" name="Descripcion" class="form-control" placeholder="Descripcion"/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editPrecio" class="form-label">Precio:</label>
+                        <input type="number" id="editPrecio" name="Precio" class="form-control" placeholder="Precio" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editImagen" class="form-label">Imagen:</label>
+                        <input class="form-control" type="file" id="editImagen" name="imagen"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary saveChanges">Guardar cambios</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -258,8 +290,21 @@ include ("register.php");
         // Añade la clase active al tab actual (el que ha sido seleccionado)
         var activeTab = document.querySelector(".nav a[href='#" + tabId + "']");
         activeTab.classList.add("active");
+
+        // Actualiza el hash en la URL sin recargar la página
+        window.location.hash = tabId;
     }
 
+    function showTabFromHash() {
+        var hash = window.location.hash.replace('#', '');
+        if (hash) {
+            showTab(hash);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', showTabFromHash);
+    // Controlador para cambiar de pestaña cuando el hash de la URL cambia
+    window.addEventListener('hashchange', showTabFromHash);
     //Modificación tabla usuarios
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -276,7 +321,7 @@ include ("register.php");
             })
                 .then(response => response.text())
                 .then(response => {
-                    document.querySelector('.container').innerHTML = response;
+                    window.location.reload();
                 });
         });
 
@@ -300,20 +345,65 @@ include ("register.php");
                 });
         });
 
-        // Obtén todos los botones deleteCarBtn y agrega eventos
-        var deleteCarButtons = document.querySelectorAll('.deleteCarBtn');
-        deleteCarButtons.forEach(function(button) {
+        var carButtons = document.querySelectorAll('.editCarBtn, .deleteCarBtn');
+
+        carButtons.forEach(function(button) {
             button.addEventListener('click', function(e) {
                 e.preventDefault();
 
-                // Obtiene el ID del coche usando dataset en lugar de getAttribute
-                var carID = this.dataset.carId; // 'carId' es la versión camelCase de 'car-id'
+                // Obtiene el ID del coche usando dataset.
+                var carID = this.dataset.carId; // 'carId' en camelCase corresponde a 'data-car-id'
                 console.log(carID);
 
-                // Adjunta el ID del coche al botón de confirmación en el modal de eliminación
-                var confirmDeleteButton = document.querySelector('#deleteCarModal .confirmDelete');
-                confirmDeleteButton.dataset.carId = carID; // Asigna el valor usando dataset también
+                if (this.classList.contains('deleteCarBtn')) {
+                    // Caso donde el botón es de eliminación.
+
+                    // Adjunta el ID del coche al botón de confirmación en el modal de eliminación.
+                    var confirmDeleteButton = document.querySelector('#deleteCarModal .confirmDelete');
+                    confirmDeleteButton.dataset.carId = carID; // Asigna el valor usando dataset también.
+
+                } else if (this.classList.contains('editCarBtn')) {
+                    // Caso donde el botón es de edición.
+
+                    // Aquí deberás lógica para manejar la edición,
+                    // por ejemplo, cargar los datos en el modal de edición o
+                    // establecer atributos necesarios para la funcionalidad de edición.
+
+                    // Ejemplo de cómo asignar el ID a un hipotético botón de guardar cambios en el modal de edición:
+                    var saveChangesButton = document.querySelector('#editCarModal .saveChanges');
+                    saveChangesButton.dataset.carId = carID; // Asigna el valor usando dataset también.
+                }
             });
+        });
+
+        document.querySelector("#editCarModal .saveChanges").addEventListener("click", function(e) {
+            e.preventDefault();
+            console.log("estoy aquí");
+
+            // Selecciona el formulario
+            var form = document.querySelector("#editCarForm");
+
+            // Verifica si el formulario existe antes de intentar crear el objeto FormData
+            if(form){
+                // El objeto FormData se construye a partir del formulario en el modal de edición
+                var formData = new FormData(form); // Pasa el formulario en lugar de 'this'
+                formData.append("action", "editar_coche"); // Acción para el backend
+
+                fetch('backend.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        console.log('Coche editado con éxito');
+                        // Agregar código para actualizar la interfaz de usuario después de la edición exitosa.
+                    })
+                    .catch(error => {
+                        console.error('Error al intentar editar el coche', error);
+                    });
+            } else {
+                console.error('No se encontró el formulario para editar el coche');
+            }
         });
 
         // Para el botón de confirmación del borrado
