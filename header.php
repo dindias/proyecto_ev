@@ -43,4 +43,31 @@ if (session_status() === PHP_SESSION_NONE) {
     </div>
 </nav>
 
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        document.getElementById('logoutlink').addEventListener('click', function(e){
+            console.log("hola");
+            e.preventDefault();
+
+            fetch('backend.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'action': 'logout'
+                })
+            })
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data)
+
+                    // Recargar la página
+                    window.location.href="index.php";
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    });
+</script>
+
 
