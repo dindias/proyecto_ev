@@ -396,7 +396,8 @@ include ("register.php");
                     .then(response => response.text())
                     .then(data => {
                         console.log('Coche editado con éxito');
-                        // Agregar código para actualizar la interfaz de usuario después de la edición exitosa.
+                        var editModal = bootstrap.Modal.getInstance(document.getElementById('editCarModal'));
+                        editModal.hide();
                     })
                     .catch(error => {
                         console.error('Error al intentar editar el coche', error);
@@ -420,6 +421,8 @@ include ("register.php");
                 .then(response => response.text())
                 .then(data => {
                     console.log('Coche eliminado con éxito');
+                    var deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteCarModal'));
+                    deleteModal.hide();
                 })
                 .catch(error => {
                     console.error(error);
