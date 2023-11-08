@@ -100,35 +100,50 @@ include ("register.php");
 
 
 <div id="anuncios" class="tabContent" style="display: none;">
-    <div class="container">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCarModal">
+    <div class="container"style="max-height: 100vh;">
+        <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addCarModal">
             Añadir coche
         </button>
-        <div class="row">
-            <?php
-            $cars = getUserCars($_SESSION['user_id']); // Obtiene los coches de la base de datos
-
-            foreach($cars as $car){
-                ?>
-                <div class="card m-3" style="width: 18rem;" id="card<?php echo $car['CarID']; ?>">
-                    <img class="card-img-top" src="<?php echo $car['imagenes']; ?>" alt="Card image cap" width="200px">
-                    <div class="card-body">
-                        <h5 class="card-title"><?php echo $car['Marca'] . " " . $car['Modelo']; ?></h5>
-                        <p class="card-text">
-                            ID: <?php echo $car['CarID']; ?><br>
-                            Matricula: <?php echo $car['Matricula']; ?><br>
-                            Año: <?php echo $car['Ano']; ?><br>
-                            Kilometraje: <?php echo $car['Kilometraje']; ?><br>
-                            Descripción: <?php echo $car['Descripcion']; ?><br>
-                            Precio: <?php echo $car['Precio']; ?>
-                        </p>
-                        <button type="button" class="btn btn-primary editCarBtn" data-bs-toggle="modal" data-bs-target="#editCarModal" data-car-id="<?php echo $car['CarID']; ?>">Editar</button>
-                        <button type="button" class="btn btn-primary deleteCarBtn" data-bs-toggle="modal" data-bs-target="#deleteCarModal" data-car-id="<?php echo $car['CarID']; ?>">Eliminar</button>
-                    </div>
-                </div>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control search-car" id="searchBar" placeholder="Buscar coche..." aria-label="Buscar coche" aria-describedby="button-search">
+            <button class="btn btn-outline-secondary" type="button" id="button-search">Buscar</button>
+        </div>
+        <!-- Contenedor con barra de desplazamiento -->
+        <div class="container-fluid" style="overflow-y: auto; max-height: 75vh;">
+            <div class="d-flex flex-column align-items-stretch"> <!-- Asegurarse de estirar los elementos de la columna -->
                 <?php
-            }
-            ?>
+                $cars = getUserCars($_SESSION['user_id']); // Obtiene los coches de la base de datos
+
+                foreach ($cars as $car) {
+                    ?>
+                    <!-- Tarjeta Horizontal -->
+                    <div class="card mb-3" style="flex: 1;"> <!-- Removido max-width y añadido flex: 1 -->
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="<?php echo $car['imagenes']; ?>" class="img-fluid rounded-start" alt="Imagen del coche">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo $car['Marca'] . " " . $car['Modelo']; ?></h5>
+                                    <p class="card-text">
+                                        ID: <?php echo $car['CarID']; ?><br>
+                                        Matricula: <?php echo $car['Matricula']; ?><br>
+                                        Año: <?php echo $car['Ano']; ?><br>
+                                        Kilometraje: <?php echo $car['Kilometraje']; ?><br>
+                                        Descripción: <?php echo $car['Descripcion']; ?><br>
+                                        Precio: <?php echo $car['Precio']; ?>
+                                    </p>
+                                    <button type="button" class="btn btn-primary editCarBtn" data-bs-toggle="modal" data-bs-target="#editCarModal" data-car-id="<?php echo $car['CarID']; ?>">Editar</button>
+                                    <button type="button" class="btn btn-primary deleteCarBtn" data-bs-toggle="modal" data-bs-target="#deleteCarModal" data-car-id="<?php echo $car['CarID']; ?>">Eliminar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Fin Tarjeta Horizontal -->
+                    <?php
+                }
+                ?>
+            </div>
         </div>
     </div>
 </div>
@@ -428,6 +443,19 @@ include ("register.php");
                 .catch(error => {
                     console.error(error);
                 });
+        });
+
+        const searchBar = document.getElementById('searchBar');
+
+        searchBar.addEventListener('input', () => {
+            console.log("estoy aqui");
+            const searchTerm = searchBar.value.toLowerCase();
+            const cars = document.querySelectorAll('.card');
+
+            cars.forEach(car => {
+                const title = car.querySelector('.card-title').textContent.toLowerCase();
+                car.style.display = title.includes(searchTerm) ? '' : 'none';
+            });
         });
     });
 </script>
