@@ -27,10 +27,18 @@ include("funciones_BD.php");
             overflow-x: auto;
             white-space: nowrap;
         }
+        .card-header {
+            background: linear-gradient(45deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+        }
 
-        .grid {
-            display: flex;
-            flex-wrap: wrap;
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            transition: 0.3s;
+        }
+        .card {
+            border-radius: 15px;
         }
 
     </style>
@@ -54,7 +62,7 @@ include ("register.php");
 ?>
 
 <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
+    <div class="carousel-inner" style="max-height: 90vh">
         <div class="carousel-item active">
             <img src="img/turismo_ID.png" class="d-block w-100" alt="...">
         </div>
@@ -162,7 +170,7 @@ include ("register.php");
 
 
 <div class="container">
-    <div id="cars-container" class="row">
+    <div id="cars-container" class="row" style="margin-top: 1%">
         <!-- Los coches se cargarán aquí mediante JavaScript -->
     </div>
 
@@ -217,15 +225,17 @@ include ("register.php");
     function generateCarsHTML(cars) {
         return cars.map(car => `
         <div class="col-md-3 col-sm-6 col-xs-12 mb-4">
-            <div class="card" id="card${car.CarID}">
-                <img class="card-img-top" src="${car.imagenes}" alt="Card image cap">
+            <div class="card h-100 shadow" id="card${car.CarID}" style="border-radius: 15px;">
+                <div class="card-header" style="background-color: #f7f7f7; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                    <h5 class="card-title text-wrap" style="color: #2575fc;"><b>${car.Marca} ${car.Modelo}</b></h5>
+                </div>
+                <img class="card-img-top" src="${car.imagenes}" alt="Card image cap" style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
                 <div class="card-body">
-                    <h5 class="card-title">${car.Marca} ${car.Modelo}</h5>
-                    <p class="card-text">
-                        Año: ${car.Ano}<br>
-                        Kilometraje: ${car.Kilometraje}<br>
-                        Descripción: ${car.Descripcion}<br>
-                        Precio: ${car.Precio}
+                    <p class="card-text text-wrap">
+                        <strong>Año:</strong> ${car.Ano}<br>
+                        <strong>Kilometraje:</strong> ${car.Kilometraje}<br>
+                        <strong>Descripción:</strong> ${car.Descripcion}<br>
+                        <strong style="color: #28a745;">Precio:</strong> ${car.Precio}
                     </p>
                 </div>
             </div>
