@@ -11,6 +11,8 @@ include("funciones_BD.php");
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
     <style>
         /* Remove the navbar's default rounded borders and increase the bottom margin */
         .navbar {
@@ -186,24 +188,76 @@ include ("register.php");
 <div class="modal fade" id="detalles-coche" tabindex="-1" aria-labelledby="detalles-cocheLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="detalles-cocheLabel">Detalles del Coche</h5>
+            <div class="modal-header" style="background-color: #2575fc;">
+                <h5 class="modal-title" id="carTitle"></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!-- Pon los detalles del coche aquí -->
-                <div class="car-details">
-                    <img src="" alt="Imagen del Coche" id="carImage" class="img-fluid">
-                    <h3 id="carTitle"></h3>
-                    <p id="carYear"></p>
-                    <p id="carMileage"></p>
-                    <p id="carDescription"></p>
-                    <p id="carPrice"></p>
+                <img alt="Imagen del Coche" id="carImage" class="img-fluid">
+                <!-- Aquí va el acordeón -->
+                <div class="accordion" id="accordionCarDetails">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                Datos del coche
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionCarDetails">
+                            <div class="accordion-body">
+                                <h3 id="carTitle"></h3>
+                                <p id="carYear"></p>
+                                <p id="carMileage"></p>
+                                <p id="carDescription"></p>
+                                <p id="carPrice"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseCarTwo">
+                                Ubicación del vehículo
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
+                            <div class="accordion-body">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                Fechas
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
+                            <div class="accordion-body">
+                                <!-- Campo para la selección del rango de fechas -->
+                                <input type="text" id="dateRangePicker" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingFour">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                Condiciones del servicio
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
+                            <div class="accordion-body">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Siguiente</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 <footer class="container-fluid text-center">
     <?php
@@ -346,6 +400,17 @@ include ("register.php");
     // Asegúrate de que cada elemento que actúa como un filtro llame a esta función en su evento de clic
     document.querySelectorAll('.filtro .dropdown-item').forEach(function(item) {
         item.addEventListener('click', onFilterItemSelected);
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var picker = new Litepicker({
+            element: document.getElementById('dateRangePicker'),
+            singleMode: false,
+            allowRepick: true,
+            onSelect: function(start, end) {
+                console.log(start, end);
+            }
+        });
     });
 
 </script>
