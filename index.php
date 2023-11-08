@@ -182,6 +182,28 @@ include ("register.php");
     </nav>
 </div><br><br>
 
+<!-- Modal Detalles Coche -->
+<div class="modal fade" id="detalles-coche" tabindex="-1" aria-labelledby="detalles-cocheLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detalles-cocheLabel">Detalles del Coche</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Pon los detalles del coche aquí -->
+                <div class="car-details">
+                    <img src="" alt="Imagen del Coche" id="carImage" class="img-fluid">
+                    <h3 id="carTitle"></h3>
+                    <p id="carYear"></p>
+                    <p id="carMileage"></p>
+                    <p id="carDescription"></p>
+                    <p id="carPrice"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <footer class="container-fluid text-center">
     <?php
@@ -225,7 +247,7 @@ include ("register.php");
     function generateCarsHTML(cars) {
         return cars.map(car => `
         <div class="col-md-3 col-sm-6 col-xs-12 mb-4">
-            <div class="card h-100 shadow" id="card${car.CarID}" style="border-radius: 15px;">
+            <div class="card h-100 shadow" id="card${car.CarID}" style="border-radius: 15px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#detalles-coche" onclick="loadCarDetails(${JSON.stringify(car).split('"').join("&quot;")})">
                 <div class="card-header" style="background-color: #f7f7f7; border-top-left-radius: 15px; border-top-right-radius: 15px;">
                     <h5 class="card-title text-wrap" style="color: #2575fc;"><b>${car.Marca} ${car.Modelo}</b></h5>
                 </div>
@@ -241,6 +263,44 @@ include ("register.php");
             </div>
         </div>
     `).join('');
+    }
+
+    var modalElement = document.getElementById('detalles-coche');
+
+    if (modalElement) {
+        modalElement.addEventListener('hidden.bs.modal', function () {
+            // Comprueba si el cuerpo tiene la clase 'modal-open' y la elimina
+            document.body.classList.remove('modal-open');
+
+            // Elimina las propiedades 'overflow' y 'padding-right' estilo directamente en el body, si existen
+            document.body.style.overflow = '';
+            document.body.style.paddingRight = '';
+
+            // Elimina el modal backdrop si existe
+            var backdrops = document.querySelectorAll('.modal-backdrop');
+            backdrops.forEach(function(backdrop) {
+                backdrop.remove();
+            });
+        });
+    }
+
+    function loadCarDetails(car) {
+        // Actualizar el contenido del modal con los detalles del coche
+        document.getElementById('carImage').src = car.imagenes;
+        document.getElementById('carTitle').textContent = car.Marca + ' ' + car.Modelo;
+        document.getElementById('carYear').textContent = `Año: ${car.Ano}`;
+        document.getElementById('carMileage').textContent = `Kilometraje: ${car.Kilometraje}`;
+        document.getElementById('carDescription').textContent = `Descripción: ${car.Descripcion}`;
+        document.getElementById('carPrice').textContent = `Precio: ${car.Precio}`;
+
+        // Abrir el modal con Bootstrap JavaScript API (asumiendo que usas Bootstrap 5)
+        const modalElement = document.getElementById('detalles-coche');
+        const modal = new bootstrap.Modal(modalElement);
+
+        // Verificar si el modal se inicializó correctamente antes de abrirlo
+        if(modal) {
+            modal.show();
+        }
     }
 
     function updatePagination(totalPages, currentPage) {
