@@ -172,7 +172,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $endDate = $_POST['endDate'];
                 $observaciones = '';
 
-                insertarReserva($carId, $userID, $startDate, $endDate, $observaciones);
+                insertarReserva($userID, $carId, $startDate, $endDate, $observaciones);
 
                 echo json_encode(array('message' => 'Operación exitosa'));
             } else {

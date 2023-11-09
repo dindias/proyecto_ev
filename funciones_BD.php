@@ -291,7 +291,6 @@ function updateCar($userID, $valuesToUpdate) {
 
 function insertarReserva($userID, $carID, $fechaInicio, $fechaFin, $observaciones)
 {
-    echo $carID . $userID . $fechaInicio . $fechaFin . $observaciones;
     try {
         $conn = connectDB();
 
