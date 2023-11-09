@@ -73,6 +73,9 @@ include ("register.php");
         <div class="carousel-item active">
             <img src="img/turismo_ID.png" class="d-block w-100" alt="...">
         </div>
+        <div class="carousel-item active">
+            <img src="img/bmw-i5.jpg" class="d-block w-100" alt="...">
+        </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
