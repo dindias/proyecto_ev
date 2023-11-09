@@ -18,8 +18,14 @@ include("funciones_BD.php");
             border-radius: 0;
         }
 
+        body{
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
         /* Add a gray background color and some padding to the footer */
         footer {
+            margin-top: auto;
             background-color: #f2f2f2;
             padding: 25px;
         }
@@ -257,12 +263,10 @@ include ("register.php");
     </div>
 </div>
 
+<?php
+include ("footer.php");
+?>
 
-<footer class="container-fluid text-center">
-    <?php
-    include ("footer.php");
-    ?>
-</footer>
 <script>
 
     document.addEventListener('DOMContentLoaded', function() {

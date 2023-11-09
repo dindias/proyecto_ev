@@ -13,7 +13,14 @@ include("funciones_BD.php");
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <style>
         /* Add a gray background color and some padding to the footer */
+        body{
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        /* Add a gray background color and some padding to the footer */
         footer {
+            margin-top: auto;
             background-color: #f2f2f2;
             padding: 25px;
         }
@@ -140,6 +147,42 @@ include ("register.php");
                         </div>
                     </div>
                     <!-- Fin Tarjeta Horizontal -->
+                    <?php
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="historial" class="tabContent" style="display: none;">
+    <div class="container" style="max-height: 100vh;">
+        <!-- Contenedor con barra de desplazamiento -->
+        <div class="container-fluid" style="overflow-y: auto; max-height: 75vh;">
+            <div class="d-flex flex-column align-items-stretch"> <!-- Asegurarse de estirar los elementos de la columna -->
+                <?php
+                $reservas = getReservas($_SESSION['user_id']); // Obtiene las reservas del usuario
+                foreach ($reservas as $reserva) {
+                    ?>
+                    <!-- Acordeón para cada reserva -->
+                    <div class="accordion" id="reserva-<?php echo $reserva['ReservationID']; ?>">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading-<?php echo $reserva['ReservationID']; ?>">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-<?php echo $reserva['ReservationID']; ?>" aria-expanded="true" aria-controls="collapse-<?php echo $reserva['ReservationID']; ?>">
+                                    <?php echo $reserva['Marca'] . " " . $reserva['Modelo']; ?>
+                                </button>
+                            </h2>
+                            <div id="collapse-<?php echo $reserva['ReservationID']; ?>" class="accordion-collapse collapse show" aria-labelledby="heading-<?php echo $reserva['ReservationID']; ?>">
+                                <div class="accordion-body">
+                                    <!-- Mostrar detalles de la reserva, como FechaInicio, FechaFin y Observaciones -->
+                                    Fecha de Inicio: <?php echo $reserva['FechaInicio']; ?><br>
+                                    Fecha de Fin: <?php echo $reserva['FechaFin']; ?><br>
+                                    Observaciones: <?php echo $reserva['Observaciones']; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Fin del acordeón -->
                     <?php
                 }
                 ?>
@@ -278,11 +321,10 @@ include ("register.php");
 </div>
 
 
-<footer class="container-fluid text-center">
-    <?php
-    include ("footer.php");
-    ?>
-</footer>
+<?php
+include ("footer.php");
+?>
+
 <script>
     //Mostrar ventanas panel de control
     function showTab(tabId) {

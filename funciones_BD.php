@@ -71,26 +71,31 @@ function login($email, $password) {
     }
 }
 
-function getCars()
+function getReservas($userID)
 {
     $conn = connectDB();
 
     try {
-        // Consultar todos los coches
-        $stmt = $conn->prepare("SELECT * FROM coches");
+        // Consultar las reservas y sus datos de coche para el usuario
+        $stmt = $conn->prepare("SELECT r.*, c.Marca, c.Modelo, c.Ano, c.Matricula, c.Kilometraje, c.Descripcion, c.Precio, c.imagenes
+                                FROM reservas r
+                                JOIN coches c ON c.CarID = r.CarID
+                                WHERE r.UserID = :userID");
+        $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
         $stmt->execute();
 
         // Set the resulting array to associative
         $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
-        // Retornar todos los coches
+        // Retornar las reservas con los datos del coche
         return $stmt->fetchAll();
-
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
         return [];
     }
 }
+
+
 
 function getTotalCars($filters = []) {
     $conn = connectDB();
