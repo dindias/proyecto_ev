@@ -163,5 +163,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header('Location: control_panel.php');
             break;
         }
+        case 'reservar_coche':
+        {
+            if (isset($_POST['carID']) && isset($_SESSION['user_id']) && isset($_POST['startDate']) && isset($_POST['endDate'])) {
+                $carId = $_POST['carID'];
+                $userID = $_SESSION['user_id'];
+                $startDate = $_POST['startDate'];
+                $endDate = $_POST['endDate'];
+                $observaciones = '';
+
+                insertarReserva($carId, $userID, $startDate, $endDate, $observaciones);
+
+                echo json_encode(array('message' => 'Operación exitosa'));
+            } else {
+                echo json_encode(array('error' => 'Datos faltantes en la solicitud'));
+            }
+            break;
+        }
     }
 }

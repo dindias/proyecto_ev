@@ -11,7 +11,6 @@ include("funciones_BD.php");
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
     <style>
         /* Remove the navbar's default rounded borders and increase the bottom margin */
@@ -233,7 +232,7 @@ include ("register.php");
                         <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
                             <div class="accordion-body">
                                 <!-- Campo para la selección del rango de fechas -->
-                                <input type="text" id="dateRangePicker" class="form-control">
+                                <label for="dateRangePicker"></label><input type="text" id="dateRangePicker" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -243,7 +242,7 @@ include ("register.php");
                                 Condiciones del servicio
                             </button>
                         </h2>
-                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
+                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour">
                             <div class="accordion-body">
 
                             </div>
@@ -251,7 +250,7 @@ include ("register.php");
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Siguiente</button>
+                    <button type="button" class="btn btn-primary" id="btnSiguiente">Siguiente</button>
                 </div>
             </div>
         </div>
@@ -338,6 +337,18 @@ include ("register.php");
         });
     }
 
+    let picker;
+    document.addEventListener('DOMContentLoaded', function () {
+        picker = new Litepicker({
+            element: document.getElementById('dateRangePicker'),
+            singleMode: false,
+            allowRepick: true,
+            onSelect: function(start, end) {
+                console.log(start, end);
+            }
+        });
+    });
+
     function loadCarDetails(car) {
         // Actualizar el contenido del modal con los detalles del coche
         document.getElementById('carImage').src = car.imagenes;
@@ -352,10 +363,41 @@ include ("register.php");
         const modal = new bootstrap.Modal(modalElement);
 
         // Verificar si el modal se inicializó correctamente antes de abrirlo
-        if(modal) {
+        if (modal) {
             modal.show();
+
+            // Agregar un evento de clic al botón "Siguiente" dentro del modal
+            const btnSiguiente = modalElement.querySelector('#btnSiguiente');
+            btnSiguiente.addEventListener('click', function () {
+                console.log("estoy aquí");
+                let carID = car.CarID;
+                let startDate = picker.getStartDate().format('YYYY-MM-DD');
+                let endDate = picker.getEndDate().format('YYYY-MM-DD');
+
+                let formData = new FormData();
+                formData.append('action', 'reservar_coche');
+                formData.append('carID', carID);
+                formData.append('startDate', startDate);
+                formData.append('endDate', endDate);
+
+                // Enviar los datos de carID, userID, startDate y endDate al servidor
+                fetch('backend.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        // Manejar la respuesta del servidor si es necesario
+                        console.log(data);
+                    })
+                    .catch(error => {
+                        // Manejar errores si es necesario
+                        console.error(error);
+                    });
+            });
         }
     }
+
 
     function updatePagination(totalPages, currentPage) {
         let paginationHTML = '';
@@ -400,17 +442,6 @@ include ("register.php");
     // Asegúrate de que cada elemento que actúa como un filtro llame a esta función en su evento de clic
     document.querySelectorAll('.filtro .dropdown-item').forEach(function(item) {
         item.addEventListener('click', onFilterItemSelected);
-    });
-
-    document.addEventListener('DOMContentLoaded', function () {
-        var picker = new Litepicker({
-            element: document.getElementById('dateRangePicker'),
-            singleMode: false,
-            allowRepick: true,
-            onSelect: function(start, end) {
-                console.log(start, end);
-            }
-        });
     });
 
 </script>

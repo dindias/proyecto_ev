@@ -289,4 +289,30 @@ function updateCar($userID, $valuesToUpdate) {
     return $result;
 }
 
+function insertarReserva($userID, $carID, $fechaInicio, $fechaFin, $observaciones)
+{
+    echo $carID . $userID . $fechaInicio . $fechaFin . $observaciones;
+    try {
+        $conn = connectDB();
+
+        if ($conn !== null) {
+            $sql = "INSERT INTO reservas (UserID, CarID, FechaInicio, FechaFin, Observaciones) VALUES (:userID, :carID, :fechaInicio, :fechaFin, :observaciones)";
+            $stmt = $conn->prepare($sql);
+
+            $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $stmt->bindParam(':carID', $carID, PDO::PARAM_INT);
+            $stmt->bindParam(':fechaInicio', $fechaInicio, PDO::PARAM_STR);
+            $stmt->bindParam(':fechaFin', $fechaFin, PDO::PARAM_STR);
+            $stmt->bindParam(':observaciones', $observaciones, PDO::PARAM_STR);
+
+            $stmt->execute();
+            return true;
+        } else {
+            return false; // La conexión a la base de datos falló
+        }
+    } catch (PDOException $e) {
+        echo "Error al insertar reserva: " . $e->getMessage();
+        return false; // Ocurrió un error durante la inserción
+    }
+}
 
