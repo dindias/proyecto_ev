@@ -172,13 +172,14 @@ include ("register.php");
                                     <?php echo $reserva['Marca'] . " " . $reserva['Modelo']; ?>
                                 </button>
                             </h2>
-                            <div id="collapse-<?php echo $reserva['ReservationID']; ?>" class="accordion-collapse collapse show" aria-labelledby="heading-<?php echo $reserva['ReservationID']; ?>">
+                            <div id="collapse-<?php echo $reserva['ReservationID']; ?>" class="accordion-collapse collapse" aria-labelledby="heading-<?php echo $reserva['ReservationID']; ?>">
                                 <div class="accordion-body">
                                     <!-- Mostrar detalles de la reserva, como FechaInicio, FechaFin y Observaciones -->
                                     Fecha de Inicio: <?php echo $reserva['FechaInicio']; ?><br>
                                     Fecha de Fin: <?php echo $reserva['FechaFin']; ?><br>
                                     Observaciones: <?php echo $reserva['Observaciones']; ?>
                                 </div>
+                                <button onclick="eliminarReserva(<?php echo $reserva['ReservationID']; ?>, <?php echo $reserva['UserID']; ?>)" class="btn btn-danger">Eliminar</button>
                             </div>
                         </div>
                     </div>
@@ -500,6 +501,35 @@ include ("footer.php");
             });
         });
     });
+
+    function eliminarReserva(reservationID, UserID) {
+        // Confirmar que el usuario realmente quiere eliminar la reserva
+        if (!confirm("¿Estás seguro que deseas eliminar esta reserva?")) {
+            return;
+        }
+
+        var formData = new FormData();
+        formData.append('action', 'eliminar_reserva');
+        formData.append('reservationID', reservationID);
+        formData.append('UserID', UserID);
+
+        fetch('backend.php', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    // Eliminamos el div que contiene la reserva
+                    document.getElementById(`reserva-${reservationID}`).remove();
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>

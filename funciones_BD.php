@@ -320,3 +320,26 @@ function insertarReserva($userID, $carID, $fechaInicio, $fechaFin, $observacione
     }
 }
 
+function eliminarReserva($reservationID) {
+    $conn = connectDB();
+
+    if ($conn) {
+        try {
+            // Preparamos la sentencia SQL
+            $stmt = $conn->prepare("DELETE FROM reservas WHERE ReservationID = :reservationID");
+            $stmt->bindParam(':reservationID', $reservationID, PDO::PARAM_INT);
+
+            // Ejecutamos la sentencia
+            $stmt->execute();
+
+            // Respondemos al cliente
+            echo json_encode(['success' => true, 'message' => 'Reserva eliminada correctamente']);
+        } catch (PDOException $e) {
+            // En caso de error
+            echo json_encode(['success' => false, 'message' => 'Error al eliminar reserva: ' . $e->getMessage()]);
+        }
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error al conectar con la base de datos']);
+    }
+}
+

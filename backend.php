@@ -180,5 +180,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             break;
         }
+        case 'eliminar_reserva':
+        {
+            $reservationID = $_POST['reservationID'];
+            $UserID = $_POST['UserID'];
+
+            if ($_SESSION['user_id'] == $UserID) {
+                // Los IDs de usuario coinciden, procedemos a eliminar la reserva
+                eliminarReserva($reservationID);
+            } else {
+                // Los IDs de usuario no coinciden, retornamos un error
+                echo json_encode(['success' => false, 'message' => 'No tienes permiso para eliminar esta reserva']);
+            }
+            break;
+        }
     }
 }
