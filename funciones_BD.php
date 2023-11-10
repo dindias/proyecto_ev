@@ -102,11 +102,18 @@ function getTotalCars($filters = []) {
     $whereParts = [];
     $params = [];
 
-    foreach ($filters as $key => $value) {
-        if ($value !== null && $value !== '') {
+    foreach ($filters as $key => $values) {
+        // Asegurarse de que $values sea un array
+        $values = (array)$values;
+        if(!empty($values)){
             $cleanKey = preg_replace('/[^a-zA-Z0-9_ñÑ]/u', '', $key);
-            $whereParts[] = "$cleanKey = :$cleanKey";
-            $params[":$cleanKey"] = $value;
+            $placeholders = [];
+            foreach($values as $ix => $value){
+                $placeholder = ":{$cleanKey}_{$ix}";
+                $placeholders[] = $placeholder;
+                $params[$placeholder] = $value;
+            }
+            $whereParts[] = "{$cleanKey} IN (" . implode(', ', $placeholders) . ")";
         }
     }
 
@@ -140,11 +147,18 @@ function getCarsByPage($page = 1, $limit = 12, $filters = []) {
     $whereParts = [];
     $params = [];
 
-    foreach ($filters as $key => $value) {
-        if ($value !== null && $value !== '') {
+    foreach ($filters as $key => $values) {
+        // Asegurarse de que $values sea un array
+        $values = (array)$values;
+        if(!empty($values)){
             $cleanKey = preg_replace('/[^a-zA-Z0-9_ñÑ]/u', '', $key);
-            $whereParts[] = "$cleanKey = :$cleanKey";
-            $params[":$cleanKey"] = $value;
+            $placeholders = [];
+            foreach($values as $ix => $value){
+                $placeholder = ":{$cleanKey}_{$ix}";
+                $placeholders[] = $placeholder;
+                $params[$placeholder] = $value;
+            }
+            $whereParts[] = "{$cleanKey} IN (" . implode(', ', $placeholders) . ")";
         }
     }
 

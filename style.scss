@@ -1,0 +1,132 @@
+
+/*index.php*/
+.navbar {
+  border-radius: 0;
+}
+
+body{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+/* Add a gray background color and some padding to the footer */
+footer {
+  margin-top: auto;
+  background-color: #f2f2f2;
+  padding: 25px;
+}
+
+.container {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.card-header {
+  background: linear-gradient(45deg, #6a11cb 0%, #2575fc 100%);
+  color: white;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+}
+.card {
+  border-radius: 15px;
+}
+
+.card-img-top {
+  display: block;
+  width: auto;
+  height: 16vh;
+  object-fit: cover;
+}
+
+/*flecha para mas contenido*/
+
+$back: #333;
+$color: #FFFFFF;
+$speed:1s;
+
+
+
+@import url(https://fonts.googleapis.com/css?family=Lato:700);
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -30px;
+  margin-left: -60px;
+  display: inline-block;
+  font-size: 26px;
+  color: $color;
+  text-align: center;
+  width: 120px;
+  height: 60px;
+  line-height: 60px;
+  border: 5px solid $color;
+  overflow: hidden;
+  cursor: pointer;
+  transition: width $speed*.5 ease-in-out,
+  margin $speed*.5 ease-in-out,
+  border-radius $speed*.25 ease-in-out,
+  color $speed*.25 ease-in-out;
+  &:hover, &.auto {
+    width: 60px;
+    margin-left: -30px;
+    border-radius: 40px;
+    color: rgba($color, 0);
+    transition: width $speed*.5 ease-in-out,
+    margin $speed*.5 ease-in-out,
+    border-radius $speed.25 ease-in-out,
+    color $speed*.25 ease-in-out $speed*.25;
+    &:before {
+      animation: lineUp $speed cubic-bezier(0.0, 0.6, 1.0, 0.4) infinite .5s;
+    }
+    &:after {
+      animation: tipUp $speed cubic-bezier(0.0, 0.6, 1.0, 0.4) infinite .5s;
+    }
+  }
+  &:before {
+    position: absolute;
+    display: inline-block;
+    content: "";
+    background: $color;
+    width: 40px;
+    height: 5px;
+    top: 50%;
+    left: 50%;
+    margin-top:-1px;
+    margin-left: -50px;
+    transform: translateX(-60px);
+  }
+  &:after {
+    position: absolute;
+    display: inline-block;
+    content: "";
+    width: 20px;
+    height: 20px;
+    color: $color;
+    border-top: 5px solid;
+    border-left: 5px solid;
+    transform: rotateZ(135deg);
+    top: 50%;
+    left: 50%;
+    margin-top: -9px;
+    margin-left: -30px;
+    transform: translateX(-50px) rotateZ(135deg);
+  }
+}
+
+@keyframes tipUp {
+  0%   { transform: translateX(-30px) rotateZ(135deg); }
+  100%   { transform: translateX(80px) rotateZ(135deg); }
+}
+
+@keyframes lineUp {
+  0%   { transform: translateX(-30px); }
+  100%   { transform: translateX(80px); }
+}
+
+
+
