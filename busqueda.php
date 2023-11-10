@@ -157,6 +157,29 @@ include ("register.php");
                         </div>
                     </div>
                 </div>
+
+                <div class="accordion-item filtro" data-filtro="tipo">
+                    <h2 class="accordion-header" id="headingTipo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTipo" aria-expanded="false" aria-controls="collapseTipo">
+                            Tipo
+                        </button>
+                    </h2>
+                    <div id="collapseTipo" class="accordion-collapse collapse" aria-labelledby="headingTipo" data-bs-parent="#accordionFilters">
+                        <div class="accordion-body">
+                            <?php
+                            $tipos = get_unique_values('Tipo', 'coches');
+                            foreach($tipos as $tipo):
+                                ?>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="<?php echo $tipo; ?>" id="ano<?php echo $tipo; ?>">
+                                    <label class="form-check-label" for="ano<?php echo $tipo; ?>">
+                                        <?php echo $tipo; ?>
+                                    </label>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

@@ -108,10 +108,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         {
             $page = isset($_POST['page']) ? (int)$_POST['page'] : 1;
 
-            // Recoger los filtros desde $_POST y asumir que ya están limpios
+            // Recoger los filtros desde $_POST y limpiarlos
             $filters = [];
-            foreach (['marca', 'modelo', 'Ano', 'kilometraje', 'precio'] as $key) {
-                if (isset($_POST[$key]) && is_array($_POST[$key])) {
+            foreach (['marca', 'modelo', 'Ano', 'kilometraje', 'precio', 'tipo'] as $key) {
+                if (!empty($_POST[$key])) {
                     $filters[$key] = $_POST[$key];
                 }
             }
