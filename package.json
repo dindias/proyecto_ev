@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "compass": "^0.1.1",
+    "compass-mixins": "^0.12.12"
+  }
+}
