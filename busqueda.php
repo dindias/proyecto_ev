@@ -15,7 +15,18 @@ include("funciones_BD.php");
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['tipo'])) {
+        $tipo = $_POST['tipo'];
+        // Aquí agregarías la lógica para filtrar los coches por el tipo que recibiste y mostrarlos.
+        // Esta función supuestamente recargaría los coches con el filtro aplicado.
+        loadCarsWithFilter($tipo);
+    }
+    // Aquí iría el resto del código que genera la página 'busqueda.php'.
+}
 
+?>
 <header>
     <?php
     require ("header.php");
@@ -167,12 +178,14 @@ include ("register.php");
                     <div id="collapseTipo" class="accordion-collapse collapse" aria-labelledby="headingTipo" data-bs-parent="#accordionFilters">
                         <div class="accordion-body">
                             <?php
-                            $tipos = get_unique_values('Tipo', 'coches');
+                            // Definimos la lista de tipos de coche directamente
+                            $tipos = array('Berlina', 'Cabrio', 'Compacto', 'Coupe', 'Familiar', 'Híbrido', 'Industrial', 'Suv');
+
                             foreach($tipos as $tipo):
                                 ?>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="<?php echo $tipo; ?>" id="ano<?php echo $tipo; ?>">
-                                    <label class="form-check-label" for="ano<?php echo $tipo; ?>">
+                                    <input class="form-check-input" type="checkbox" value="<?php echo $tipo; ?>" id="tipo<?php echo $tipo; ?>">
+                                    <label class="form-check-label" for="tipo<?php echo $tipo; ?>">
                                         <?php echo $tipo; ?>
                                     </label>
                                 </div>

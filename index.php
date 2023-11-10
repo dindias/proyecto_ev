@@ -54,7 +54,7 @@ include ("register.php");
     <div class="row mt-4">
         <!-- Tipo de coche: Compacto -->
         <div class="col-md-3 mb-4">
-            <div class="card">
+            <div class="card filtro-tipo" data-tipo="Compacto">
                 <img src="img/tipos_coche/compacto.jpg" class="card-img-top" alt="Imagen del coche">
                 <div class="card-body text-wrap">
                     <h5 class="card-title">Compacto</h5>
@@ -65,7 +65,7 @@ include ("register.php");
 
         <!-- Tipo de coche: Berlina -->
         <div class="col-md-3 mb-4">
-            <div class="card">
+            <div class="card filtro-tipo" data-tipo="Berlina">
                 <img src="img/tipos_coche/berlina.jpg" class="card-img-top" alt="Imagen del coche">
                 <div class="card-body text-wrap">
                     <h5 class="card-title">Berlina</h5>
@@ -76,7 +76,7 @@ include ("register.php");
 
         <!-- Tipo de coche: Suv -->
         <div class="col-md-3 mb-4">
-            <div class="card">
+            <div class="card filtro-tipo" data-tipo="Suv">
                 <img src="img/tipos_coche/suv.jpg" class="card-img-top" alt="Imagen del coche">
                 <div class="card-body text-wrap">
                     <h5 class="card-title">Suv</h5>
@@ -87,7 +87,7 @@ include ("register.php");
 
         <!-- Tipo de coche: Coupé -->
         <div class="col-md-3 mb-4">
-            <div class="card">
+            <div class="card filtro-tipo" data-tipo="Coupe">
                 <img src="img/tipos_coche/coupe.jpg" class="card-img-top" alt="Imagen del coche">
                 <div class="card-body text-wrap">
                     <h5 class="card-title">Coupé</h5>
@@ -100,7 +100,7 @@ include ("register.php");
     <div class="row">
         <!-- Tipo de coche: Familiar -->
         <div class="col-md-3 mb-4">
-            <div class="card">
+            <div class="card filtro-tipo" data-tipo="Familiar">
                 <img src="img/tipos_coche/familiar.jpg" class="card-img-top" alt="Imagen del coche">
                 <div class="card-body text-wrap">
                     <h5 class="card-title">Familiar</h5>
@@ -111,7 +111,7 @@ include ("register.php");
 
         <!-- Tipo de coche: Cabrio -->
         <div class="col-md-3 mb-4">
-            <div class="card">
+            <div class="card filtro-tipo" data-tipo="Cabrio">
                 <img src="img/tipos_coche/cabrio.jpg" class="card-img-top" alt="Imagen del coche">
                 <div class="card-body text-wrap">
                     <h5 class="card-title">Cabrio</h5>
@@ -122,7 +122,7 @@ include ("register.php");
 
         <!-- Tipo de coche: Industrial -->
         <div class="col-md-3 mb-4">
-            <div class="card">
+            <div class="card filtro-tipo" data-tipo="Industrial">
                 <img src="img/tipos_coche/industrial.jpg" class="card-img-top" alt="Imagen del coche">
                 <div class="card-body text-wrap">
                     <h5 class="card-title">Industrial</h5>
@@ -133,7 +133,7 @@ include ("register.php");
 
         <!-- Otro tipo de coche -->
         <div class="col-md-3 mb-4">
-            <div class="card more">
+            <div class="card filtro-tipo">
                 <img src="img/tipos_coche/hibrido.jpg" class="card-img-top" alt="Imagen del coche">
                 <div class="card-body text-wrap">
                     <h5 class="card-title">Otro</h5>

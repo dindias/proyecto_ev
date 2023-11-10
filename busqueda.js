@@ -1,4 +1,35 @@
 
+function applyInitialFilters() {
+    // Suponiendo que la información del filtro viene en el cuerpo de la
+    // solicitud POST, por ejemplo, como FormData que se envió desde index.php
+    // Esta función puede ser llamada en el evento 'DOMContentLoaded'
+
+    // Verifica si se han pasado los datos del filtro a través de la sesión o algún otro medio
+    if (sessionStorage.getItem('tipo') !== null) {
+        // Suponemos que el filtro de tipo se almacena en sessionStorage
+        const tipo = sessionStorage.getItem('tipo');
+        sessionStorage.removeItem('tipo'); // Limpia el valor para futuras cargas
+
+        // Si es necesario aplicar más filtros, puedes extender este código para manejar esos casos
+
+        // Activa los checkboxes según el filtro inicial
+        document.querySelectorAll('.filtro .form-check-input').forEach(checkBox => {
+            if (checkBox.value === tipo) {
+                checkBox.checked = true;
+            }
+        });
+
+        // Podemos llamar directamente a loadCars o establecer un breve retraso si es necesario
+        setTimeout(() => loadCars(1), 100); // Ejecuta con un pequeño retraso para dar tiempo a actualizaciones visuales
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    applyInitialFilters(); // Aplica los filtros iniciales si es que los hay
+    loadCars(1); // Luego ejecuta la carga inicial de coches
+});
+
+
 document.querySelectorAll('.filtro .form-check-input').forEach(function(checkbox) {
     checkbox.addEventListener('change', onFilterChanged);
 });
