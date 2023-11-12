@@ -3,9 +3,10 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-11-2023 a las 09:13:49
+-- Tiempo de generación: 12-11-2023 a las 13:03:58
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
+DROP DATABASE proyecto_ev;
 CREATE DATABASE proyecto_ev;
 USE proyecto_ev;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -65,7 +66,7 @@ INSERT INTO `coches` (`CarID`, `UserID`, `Marca`, `Modelo`, `Ano`, `Matricula`, 
 (68, 1, 'Lamborghini', 'Diablo', '2011', 'KYS6969', 2, 'Precioso', 150000, 'img/lamborghini_diablo_gt_1-1-1.jpeg', ''),
 (70, 1, 'BMW', 'M3', '2011', 'LLL9999', 2, 'Nuevo', 70000, 'img/1366_2000.jpeg', ''),
 (71, 1, 'Volkswagen', 'Polo', '2011', 'MMM2222', 2, 'Viejo', 5000, 'img/generic.jpg', ''),
-(75, 2, 'Citroen', 'Sara', '2000', 'XXX2222', 200000, 'Muy viejo', 2000, 'img/Citroën_Xsara_(Facelift)_–_Frontansicht,_17._März_2011,_Wülfrath.jpg', '');
+(75, 2, 'Citroen', 'Sara', '2000', 'XXX2222', 200000, 'Muy viejo', 2000, 'img/Citroën_Xsara_(Facelift)_–_Frontansicht,_17._März_2011,_Wülfrath.jpg', 'Compacto');
 
 -- --------------------------------------------------------
 
@@ -135,7 +136,8 @@ ALTER TABLE `coches`
 --
 ALTER TABLE `reservas`
   ADD PRIMARY KEY (`ReservationID`),
-  ADD KEY `fk_coches_reservas` (`CarID`);
+  ADD KEY `fk_coches_reservas` (`CarID`),
+  ADD KEY `fk_usuarios_reservas` (`UserID`);
 
 --
 -- Indices de la tabla `usuarios`
