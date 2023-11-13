@@ -49,7 +49,7 @@ if (session_status() === PHP_SESSION_NONE) {
             console.log("hola");
             e.preventDefault();
 
-            fetch('backend.php', {
+            fetch('/proyecto_ev/backend.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -63,7 +63,7 @@ if (session_status() === PHP_SESSION_NONE) {
                     console.log(data)
 
                     // Recargar la página
-                    window.location.href="index.php";
+                    window.location.href="/proyecto_ev/index.php";
                 })
                 .catch(error => console.error('Error:', error));
         });
