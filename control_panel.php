@@ -438,7 +438,6 @@ include ("footer.php");
                 });
         });
 
-        // Reemplaza $("#addCarModal form").on("submit", ...) con JS puro
         document.querySelector("#addCarModal form").addEventListener("submit", function(e) {
             e.preventDefault();
 
@@ -452,10 +451,9 @@ include ("footer.php");
             })
                 .then(response => response.text())
                 .then(response => {
-                    document.querySelector('.container').innerHTML = response;
-                    var addCarModal = bootstrap.Modal.getInstance(document.getElementById('addCarModal'));
-                    addCarModal.hide();
-                    window.location.hash = "anuncios";
+                    console.log('Coche añadido con éxito');
+                    var addCar = bootstrap.Modal.getInstance(document.getElementById('addCarModal'));
+                    addCar.hide();
                 });
         });
 
