@@ -347,18 +347,35 @@ function insertImages($userID, $carID, $images) {
 
 function eliminar_coche($carId) {
     $conn = connectDB();
-    $sql = "DELETE FROM coches WHERE CarID = :carId";
 
     try {
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':carId', $carId);
-        $stmt->execute();
 
-        echo 'Coche eliminado con éxito';
+        // Elimina las imágenes asociadas al coche
+        $sqlDeleteImages = "DELETE FROM imagenes WHERE CarID = :carId";
+        $stmtDeleteImages = $conn->prepare($sqlDeleteImages);
+        $stmtDeleteImages->bindParam(':carId', $carId);
+        $stmtDeleteImages->execute();
+
+        // Elimina el coche de la tabla coches
+        $sqlDeleteCar = "DELETE FROM coches WHERE CarID = :carId";
+        $stmtDeleteCar = $conn->prepare($sqlDeleteCar);
+        $stmtDeleteCar->bindParam(':carId', $carId);
+        $stmtDeleteCar->execute();
+
+        // Elimina físicamente los archivos de imágenes
+        /*foreach ($images as $image) {
+            $path = 'ruta/del/archivo/' . $image; // Reemplaza con la ruta correcta
+            unlink($path);
+        }*/
+
+        echo 'Coche y sus imágenes asociadas eliminados con éxito';
     } catch(PDOException $e) {
         echo 'Error al eliminar coche: ' . $e->getMessage();
     }
 }
+
+eliminar_coche(80);
+
 
 function updateUser($userID, $valuesToUpdate) {
     $conn = connectDB();

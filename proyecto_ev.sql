@@ -187,6 +187,27 @@ ALTER TABLE `reservas`
   ADD CONSTRAINT `fk_usuarios_reservas` FOREIGN KEY (`UserID`) REFERENCES `usuarios` (`UserID`);
 COMMIT;
 
+-- Crear la tabla "imagenes"
+CREATE TABLE `imagenes` (
+                            `ImagenID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+                            `CarID` bigint(20) UNSIGNED NOT NULL,
+                            `UserID` bigint(20) UNSIGNED NOT NULL,
+                            `Imagen` varchar(255) NOT NULL,
+                            PRIMARY KEY (`ImagenID`),
+                            FOREIGN KEY (`CarID`) REFERENCES `coches` (`CarID`),
+                            FOREIGN KEY (`UserID`) REFERENCES `usuarios` (`UserID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Crear la tabla "favoritos"
+CREATE TABLE `favoritos` (
+                             `FavoritoID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+                             `CarID` bigint(20) UNSIGNED NOT NULL,
+                             `UserID` bigint(20) UNSIGNED NOT NULL,
+                             PRIMARY KEY (`FavoritoID`),
+                             FOREIGN KEY (`CarID`) REFERENCES `coches` (`CarID`),
+                             FOREIGN KEY (`UserID`) REFERENCES `usuarios` (`UserID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
