@@ -165,7 +165,8 @@ include ("register.php");
                                         ID: <?php echo $car['CarID']; ?><br>
                                         Matricula: <?php echo $car['Matricula']; ?><br>
                                         Año: <?php echo $car['Ano']; ?><br>
-                                        Kilometraje: <?php echo $car['Kilometraje']; ?><br>
+                                        Potencia: <?php echo $car['Potencia']; ?><br>
+                                        Autonomia: <?php echo $car['Autonomia']; ?><br>
                                         Descripción: <?php echo $car['Descripcion']; ?><br>
                                         Precio: <?php echo $car['Precio']; ?>
                                     </p>
@@ -248,8 +249,12 @@ include ("register.php");
                         <input type="text" id="editMatricula" name="Matricula" class="form-control" placeholder="Matricula" required/>
                     </div>
                     <div class="mb-3">
-                        <label for="editKilometraje" class="form-label">Kilometraje:</label>
-                        <input type="number" id="editKilometraje" name="Kilometraje" class="form-control" placeholder="Kilometraje" required/>
+                        <label for="editPotencia" class="form-label">Potencia:</label>
+                        <input type="number" id="editPotencia" name="Potencia" class="form-control" placeholder="Potencia" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editAutonomia" class="form-label">Autonomia:</label>
+                        <input type="number" id="editAutonomia" name="Autonomia" class="form-control" placeholder="Autonomia" required/>
                     </div>
                     <div class="mb-3">
                         <label for="editDescripcion" class="form-label">Descripción:</label>
@@ -338,8 +343,12 @@ include ("register.php");
                         <input type="text" id="matricula" name="Matricula" class="form-control" placeholder="Matricula" required/>
                     </div>
                     <div class="mb-3">
-                        <label for="kilometraje" class="form-label">Kilometraje:</label>
-                        <input type="number" id="kilometraje" name="Kilometraje" class="form-control" placeholder="Kilometraje" required/>
+                        <label for="potencia" class="form-label">Potencia:</label>
+                        <input type="number" id="potencia" name="Potencia" class="form-control" placeholder="Potencia" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="autonomia" class="form-label">Autonomia:</label>
+                        <input type="number" id="autonomia" name="Autonomia" class="form-control" placeholder="Autonomia" required/>
                     </div>
                     <div class="mb-3">
                         <label for="descripcion" class="form-label">Descripcion:</label>

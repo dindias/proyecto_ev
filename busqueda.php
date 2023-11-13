@@ -121,23 +121,46 @@ include ("register.php");
                     </div>
                 </div>
 
-                <!-- Filtro Kilometraje -->
-                <div class="accordion-item filtro" data-filtro="kilometraje">
-                    <h2 class="accordion-header" id="headingKilometraje">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseKilometraje" aria-expanded="false" aria-controls="collapseKilometraje">
-                            Kilometraje
+                <!-- Filtro Potencia -->
+                <div class="accordion-item filtro" data-filtro="potencia">
+                    <h2 class="accordion-header" id="headingPotencia">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePotencia" aria-expanded="false" aria-controls="collapsePotencia">
+                            Potencia
                         </button>
                     </h2>
-                    <div id="collapseKilometraje" class="accordion-collapse collapse" aria-labelledby="headingKilometraje" data-bs-parent="#accordionFilters">
+                    <div id="collapsePotencia" class="accordion-collapse collapse" aria-labelledby="headingPotencia" data-bs-parent="#accordionFilters">
                         <div class="accordion-body">
                             <?php
-                            $kilometrajes = get_unique_values('Kilometraje', 'coches');
-                            foreach($kilometrajes as $kilometraje):
+                            $potencia = get_unique_values('Potencia', 'coches');
+                            foreach($potencia as $hp):
                                 ?>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="<?php echo $kilometraje; ?>" id="kilometraje<?php echo $kilometraje; ?>">
-                                    <label class="form-check-label" for="kilometraje<?php echo $kilometraje; ?>">
-                                        <?php echo $kilometraje; ?>
+                                    <input class="form-check-input" type="checkbox" value="<?php echo $hp; ?>" id="Potencia<?php echo $hp; ?>">
+                                    <label class="form-check-label" for="Potencia<?php echo $hp; ?>">
+                                        <?php echo $hp; ?>
+                                    </label>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+                <!-- Filtro Autonomia -->
+                <div class="accordion-item filtro" data-filtro="autonomia">
+                    <h2 class="accordion-header" id="headingAutonomia">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAutonomia" aria-expanded="false" aria-controls="collapseAutonomia">
+                            Autonomia
+                        </button>
+                    </h2>
+                    <div id="collapseAutonomia" class="accordion-collapse collapse" aria-labelledby="headingAutonomia" data-bs-parent="#accordionFilters">
+                        <div class="accordion-body">
+                            <?php
+                            $autonomia = get_unique_values('Autonomia', 'coches');
+                            foreach($autonomia as $distancia):
+                                ?>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="<?php echo $distancia; ?>" id="distancia<?php echo $distancia; ?>">
+                                    <label class="form-check-label" for="distancia<?php echo $distancia; ?>">
+                                        <?php echo $distancia; ?>
                                     </label>
                                 </div>
                             <?php endforeach; ?>

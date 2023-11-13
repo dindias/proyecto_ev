@@ -75,12 +75,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $modelo = $_POST['Modelo'];
                 $ano = $_POST['Ano'];
                 $matricula = $_POST['Matricula'];
-                $kilometraje = $_POST['Kilometraje'];
+                $potencia = $_POST['Potencia'];
+                $autonomia = $_POST['Autonomia'];
                 $descripcion = $_POST['Descripcion'];
                 $precio = $_POST['Precio'];
                 $tipo = $_POST['Tipo'];
 
-                $carID = insertCar($userID, $marca, $modelo, $ano, $matricula, $kilometraje, $descripcion, $precio, $tipo);
+                $carID = insertCar($userID, $marca, $modelo, $ano, $matricula, $potencia, $autonomia, $descripcion, $precio, $tipo);
 
                 if ($carID) {
                     if(isset($_FILES["imagenes"])) {
@@ -109,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Recoger los filtros desde $_POST y limpiarlos
             $filters = [];
-            foreach (['marca', 'modelo', 'Ano', 'kilometraje', 'precio', 'tipo'] as $key) {
+            foreach (['marca', 'modelo', 'ano', 'potencia', 'autonomia', 'precio', 'tipo'] as $key) {
                 if (!empty($_POST[$key])) {
                     $filters[$key] = $_POST[$key];
                 }
@@ -153,8 +154,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!empty($_POST['Matricula'])) {
                 $valuesToUpdate['Matricula'] = $_POST['Matricula'];
             }
-            if (!empty($_POST['Kilometraje'])) {
-                $valuesToUpdate['Kilometraje'] = $_POST['Kilometraje'];
+            if (!empty($_POST['Potencia'])) {
+                $valuesToUpdate['Potencia'] = $_POST['Potencia'];
+            }
+            if (!empty($_POST['Autonomia'])) {
+                $valuesToUpdate['Autonomia'] = $_POST['Autonomia'];
             }
             if (!empty($_POST['Descripcion'])) {
                 $valuesToUpdate['Descripcion'] = $_POST['Descripcion'];

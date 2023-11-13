@@ -77,7 +77,7 @@ function getReservas($userID)
 
     try {
         // Consultar las reservas y sus datos de coche para el usuario
-        $stmt = $conn->prepare("SELECT r.*, c.Marca, c.Modelo, c.Ano, c.Matricula, c.Kilometraje, c.Descripcion, c.Precio, c.imagenes
+        $stmt = $conn->prepare("SELECT r.*, c.Marca, c.Modelo, c.Ano, c.Matricula, c.Potencia , c.Autonomia, c.Descripcion, c.Precio, c.Tipo
                                 FROM reservas r
                                 JOIN coches c ON c.CarID = r.CarID
                                 WHERE r.UserID = :userID");
@@ -279,19 +279,20 @@ function getCar($CarID) {
     return $cars;
 }
 
-function insertCar($userID, $marca, $modelo, $ano, $matricula, $kilometraje, $descripcion, $precio, $tipo) {
+function insertCar($userID, $marca, $modelo, $ano, $matricula, $potencia, $autonomia, $descripcion, $precio, $tipo) {
     try {
         $conn = connectDB();
 
-        $query = 'INSERT INTO `coches` (`UserID`, `Marca`, `Modelo`, `Ano`, `Matricula`, `Kilometraje`, `Descripcion`, `Precio`, `Tipo`) 
-                  VALUES (:userID, :marca, :modelo, :ano, :matricula, :kilometraje, :descripcion, :precio, :tipo)';
+        $query = 'INSERT INTO `coches` (`UserID`, `Marca`, `Modelo`, `Ano`, `Matricula` , `Potencia` , `Autonomia`, `Descripcion`, `Precio`, `Tipo`) 
+                  VALUES (:userID, :marca, :modelo, :ano, :matricula, :potencia, :autonomia, :descripcion, :precio, :tipo)';
         $params = [
             ':userID' => $userID,
             ':marca' => $marca,
             ':modelo' => $modelo,
             ':ano' => $ano,
             ':matricula' => $matricula,
-            ':kilometraje' => $kilometraje,
+            ':potencia' => $potencia,
+            ':autonomia' => $autonomia,
             ':descripcion' => $descripcion,
             ':precio' => $precio,
             ':tipo' => $tipo
@@ -368,7 +369,6 @@ function eliminar_coche($carId) {
             unlink($path);
         }*/
 
-        echo 'Coche y sus imágenes asociadas eliminados con éxito';
     } catch(PDOException $e) {
         echo 'Error al eliminar coche: ' . $e->getMessage();
     }

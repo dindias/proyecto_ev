@@ -90,7 +90,8 @@ function generateCarsHTML(cars) {
                     <div class="card-body" onclick="window.location.href='coche/${carSlug}'"> <!-- Usamos carSlug aquí -->
                         <p class="card-text text-wrap">
                             <strong>Año:</strong> ${car.Ano}<br>
-                            <strong>Kilometraje:</strong> ${car.Kilometraje}<br>
+                            <strong>Potencia:</strong> ${car.Potencia}<br>
+                            <strong>Autonomia:</strong> ${car.Autonomia}<br>
                             <strong>Descripción:</strong> ${car.Descripcion}<br>
                             <strong style="color: #28a745;">Precio:</strong> ${car.Precio}
                         </p>

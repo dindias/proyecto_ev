@@ -36,10 +36,10 @@ CREATE TABLE `coches` (
   `Modelo` varchar(50) NOT NULL,
   `Ano` year(4) NOT NULL,
   `Matricula` char(7) NOT NULL,
-  `Kilometraje` int(11) NOT NULL,
+  `Potencia` int(11) NOT NULL,
+  `Autonomia` int(11) NOT NULL,
   `Descripcion` varchar(255) DEFAULT NULL,
   `Precio` int(11) NOT NULL,
-  `imagenes` varchar(255) DEFAULT NULL,
   `Tipo` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -47,7 +47,7 @@ CREATE TABLE `coches` (
 -- Volcado de datos para la tabla `coches`
 --
 
-INSERT INTO `coches` (`CarID`, `UserID`, `Marca`, `Modelo`, `Ano`, `Matricula`, `Kilometraje`, `Descripcion`, `Precio`, `imagenes`, `Tipo`) VALUES
+INSERT INTO `coches` (`CarID`, `UserID`, `Marca`, `Modelo`, `Ano`, `Matricula`, `Potencia`, `Autonomia`, `Descripcion`, `Precio`, `Tipo`) VALUES
 (47, 1, 'Ford', 'Focus', '2011', 'BCD2345', 200000, 'Necesita reparaciones menores', 4000, 'img/generic.jpg', ''),
 (49, 1, 'Honda', 'Accord', '2011', 'DEF4567', 120000, 'Pocos detalles de uso', 10000, 'img/generic.jpg', ''),
 (50, 1, 'Toyota', 'Corolla', '2011', 'EFG5678', 80000, 'Como nuevo, poco kilometraje', 15000, 'img/generic.jpg', ''),
