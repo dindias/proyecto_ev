@@ -251,6 +251,34 @@ function getUserCars($userID) {
     return $cars;
 }
 
+function getCar($CarID) {
+    $conn = connectDB();
+    // Modificamos la consulta SQL para hacer un LEFT JOIN con la tabla `imagenes`
+    // y usar GROUP_CONCAT para obtener todas las imágenes asociadas con un coche.
+    $query = 'SELECT coches.*, GROUP_CONCAT(imagenes.Imagen SEPARATOR ",") AS Imagenes 
+              FROM coches
+              LEFT JOIN imagenes ON coches.CarID = imagenes.CarID 
+              WHERE coches.CarID = :CarID 
+              GROUP BY coches.CarID';
+
+    $statement = $conn->prepare($query);
+    $statement->execute([':CarID' => $CarID]);
+
+    $cars = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+    // Procesamos el resultado para convertir la cadena Imagenes en un array.
+    foreach ($cars as $key => $car) {
+        if ($car['Imagenes'] !== null) {
+            $cars[$key]['Imagenes'] = explode(',', $car['Imagenes']);
+        } else {
+            // Si no hay imágenes, asignamos un array vacío.
+            $cars[$key]['Imagenes'] = [];
+        }
+    }
+
+    return $cars;
+}
+
 function insertCar($userID, $marca, $modelo, $ano, $matricula, $kilometraje, $descripcion, $precio, $tipo) {
     try {
         $conn = connectDB();

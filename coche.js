@@ -1,4 +1,6 @@
-let picker;
+console.log("script cargado");
+
+/*let picker;
 document.addEventListener('DOMContentLoaded', function () {
     picker = new Litepicker({
         element: document.getElementById('dateRangePicker'),
@@ -87,4 +89,4 @@ function loadCarDetails(car) {
                 });
         });
     }
-}
+}*/
