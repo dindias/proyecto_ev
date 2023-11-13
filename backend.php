@@ -68,35 +68,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header('Location: control_panel.php');
             break;
         }
-        case 'añadir_coche':
-        {
-            $userID = $_SESSION['user_id'];
-            $marca = $_POST['Marca'];
-            $modelo = $_POST['Modelo'];
-            $ano = $_POST['Ano'];
-            $matricula = $_POST['Matricula'];
-            $kilometraje = $_POST['Kilometraje'];
-            $descripcion = $_POST['Descripcion'];
-            $precio = $_POST['Precio'];
-            $imageLocation = "img/generic.jpg"; // Establecer la imagen predeterminada
+            case 'añadir_coche':
+            {
+                $userID = $_SESSION['user_id'];
+                $marca = $_POST['Marca'];
+                $modelo = $_POST['Modelo'];
+                $ano = $_POST['Ano'];
+                $matricula = $_POST['Matricula'];
+                $kilometraje = $_POST['Kilometraje'];
+                $descripcion = $_POST['Descripcion'];
+                $precio = $_POST['Precio'];
+                $tipo = $_POST['Tipo'];
 
-            if(isset($_FILES["imagen"]) && $_FILES["imagen"]["error"] == 0) {
-                $targetDir = "img/";
-                $fileName = basename($_FILES["imagen"]["name"]);
-                $targetFilePath = $targetDir . $fileName;
+                $carID = insertCar($userID, $marca, $modelo, $ano, $matricula, $kilometraje, $descripcion, $precio, $tipo);
 
-                if (move_uploaded_file($_FILES["imagen"]["tmp_name"], $targetFilePath)) {
-                    $imageLocation = $targetFilePath; // Actualizar con la ubicación de la imagen subida
+                if ($carID) {
+                    if(isset($_FILES["imagenes"])) {
+                        $uploadedImages = insertImages($userID, $carID, $_FILES["imagenes"]);
+
+                        if (!$uploadedImages) {
+                            echo "Error al guardar las imágenes.";
+                        }
+                    }
+                } else {
+                    echo "Error al guardar los datos del coche.";
                 }
-            } else {
-                // Si no se ha subido una imagen, se mantendrá la imagen predeterminada.
-                echo "No se ha subido ninguna imagen o hay un error en la carga. Se utilizará la imagen genérica.";
+                header('Location: control_panel.php');
+                break;
             }
-
-            insertCar($userID, $marca, $modelo, $ano, $matricula, $kilometraje, $descripcion, $precio, $imageLocation);
-            header('Location: control_panel.php');
-            break;
-        }
         case 'eliminar_coche':
         {
             $carId = $_POST['carID'];
@@ -134,6 +133,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if (!empty($_POST['carID'])) {
                 $valuesToUpdate['carID'] = $_POST['carID'];
+                if (isset($_FILES["imagenes"])) {
+                    $uploadedImages = insertImages($userID, $valuesToUpdate['carID'], $_FILES["imagenes"]);
+
+                    if (!$uploadedImages) {
+                        echo "Error al guardar las imágenes.";
+                    }
+                }
             }
             if (!empty($_POST['Marca'])) {
                 $valuesToUpdate['Marca'] = $_POST['Marca'];
@@ -156,8 +162,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!empty($_POST['Precio'])) {
                 $valuesToUpdate['Precio'] = $_POST['Precio'];
             }
-            if (!empty($_POST['imagen'])) {
-                $valuesToUpdate['imagen'] = $_POST['imagen'];
+            if (!empty($_POST['Tipo'])) {
+                $valuesToUpdate['Tipo'] = $_POST['Tipo'];
             }
             updateCar($userID, $valuesToUpdate);
             header('Location: control_panel.php');

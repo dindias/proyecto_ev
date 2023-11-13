@@ -49,7 +49,7 @@ include ("register.php");
 </div>
 
 <div class="container mt-4">
-    <h3>Y tú, ¿cual es tu estilo?</h3>
+    <h3>Y tú, ¿Condúces?</h3>
 
     <div class="row mt-4">
         <!-- Tipo de coche: Compacto -->

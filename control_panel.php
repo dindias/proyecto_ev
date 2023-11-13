@@ -25,6 +25,13 @@ include("funciones_BD.php");
             padding: 25px;
         }
 
+        .card-img {
+            display: block;
+            width: auto;
+            height: 30vh;
+            object-fit: cover;
+        }
+
     </style>
 </head>
 <body>
@@ -120,14 +127,36 @@ include ("register.php");
             <div class="d-flex flex-column align-items-stretch"> <!-- Asegurarse de estirar los elementos de la columna -->
                 <?php
                 $cars = getUserCars($_SESSION['user_id']); // Obtiene los coches de la base de datos
-
                 foreach ($cars as $car) {
+                    $carID = $car['CarID'];
+                    $imagenes = $car['Imagenes']; // Este debe ser un array de imágenes
+                    $numImages = count($imagenes);
                     ?>
                     <!-- Tarjeta Horizontal -->
                     <div class="card mb-3" style="flex: 1;"> <!-- Removido max-width y añadido flex: 1 -->
                         <div class="row g-0">
                             <div class="col-md-4">
-                                <img src="<?php echo $car['imagenes']; ?>" class="img-fluid rounded-start" alt="Imagen del coche">
+                                <!-- Inicio del Carrusel -->
+                                <div id="carousel<?php echo $carID; ?>" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">
+                                        <?php foreach ($imagenes as $index => $imagen) { ?>
+                                            <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
+                                                <img src="<?php echo $imagen; ?>" class="d-block w-100 card-img" alt="...">
+                                            </div>
+                                        <?php } ?>
+                                    </div>
+                                    <?php if ($numImages > 1) { ?>
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel<?php echo $carID; ?>" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Previous</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carousel<?php echo $carID; ?>" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Next</span>
+                                        </button>
+                                    <?php } ?>
+                                </div>
+                                <!-- Fin del Carrusel -->
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body">
@@ -231,8 +260,21 @@ include ("register.php");
                         <input type="number" id="editPrecio" name="Precio" class="form-control" placeholder="Precio" required/>
                     </div>
                     <div class="mb-3">
-                        <label for="editImagen" class="form-label">Imagen:</label>
-                        <input class="form-control" type="file" id="editImagen" name="imagen"/>
+                        <label for="editTipo" class="form-label">Tipo:</label>
+                        <select class="form-select" id="tipo" name="Tipo" required>
+                            <option value="Berlina">Berlina</option>
+                            <option value="Cabrio">Cabrio</option>
+                            <option value="Compacto">Compacto</option>
+                            <option value="Coupe">Coupé</option>
+                            <option value="Familiar">Familiar</option>
+                            <option value="Hibrido">Híbrido</option>
+                            <option value="Industrial">Industrial</option>
+                            <option value="Suv">Suv</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editImagenes" class="form-label">Imágenes:</label>
+                        <input class="form-control" type="file" id="editImagenes" name="imagenes[]" multiple/>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -308,8 +350,21 @@ include ("register.php");
                         <input type="number" id="precio" name="Precio" class="form-control" placeholder="Precio" required/>
                     </div>
                     <div class="mb-3">
-                        <label for="imagen" class="form-label">Imagen:</label>
-                        <input class="form-control" type="file" id="imagen" name="imagen"/>
+                        <label for="tipo" class="form-label">Tipo:</label>
+                        <select class="form-select" id="tipo" name="Tipo" required>
+                            <option value="Berlina">Berlina</option>
+                            <option value="Cabrio">Cabrio</option>
+                            <option value="Compacto">Compacto</option>
+                            <option value="Coupe">Coupé</option>
+                            <option value="Familiar">Familiar</option>
+                            <option value="Hibrido">Híbrido</option>
+                            <option value="Industrial">Industrial</option>
+                            <option value="Suv">Suv</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="imagenes" class="form-label">Imágenes:</label>
+                        <input class="form-control" type="file" id="imagenes" name="imagenes[]" multiple/>
                     </div>
                 </div>
                 <div class="modal-footer">

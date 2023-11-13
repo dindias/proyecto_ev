@@ -1,4 +1,4 @@
-
+console.log("estoy aquí");
 function applyInitialFilters() {
     // Suponiendo que la información del filtro viene en el cuerpo de la
     // solicitud POST, por ejemplo, como FormData que se envió desde index.php
@@ -65,24 +65,49 @@ function loadCars(page) {
 }
 
 function generateCarsHTML(cars) {
-    return cars.map(car => `
-        <div class="col-md-3 col-sm-6 col-xs-12 mb-4">
-            <div class="card h-100 shadow" id="card${car.CarID}" style="border-radius: 15px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#detalles-coche" onclick="loadCarDetails(${JSON.stringify(car).split('"').join("&quot;")})">
-                <div class="card-header" style="background-color: #f7f7f7; border-top-left-radius: 15px; border-top-right-radius: 15px;">
-                    <h5 class="card-title text-wrap" style="color: #2575fc;"><b>${car.Marca} ${car.Modelo}</b></h5>
-                </div>
-                <img class="card-img-top" src="${car.imagenes}" alt="Card image cap" style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
-                <div class="card-body">
-                    <p class="card-text text-wrap">
-                        <strong>Año:</strong> ${car.Ano}<br>
-                        <strong>Kilometraje:</strong> ${car.Kilometraje}<br>
-                        <strong>Descripción:</strong> ${car.Descripcion}<br>
-                        <strong style="color: #28a745;">Precio:</strong> ${car.Precio}
-                    </p>
+    return cars.map(car => { // Añadimos llaves aquí para empezar el bloque de la función
+        const carSlug = slugify(car.Marca) + '-' + slugify(car.Modelo) + '-' + car.CarID;
+        return `
+            <div class="col-md-3 col-sm-6 col-xs-12 mb-4">
+                <div class="card h-100 shadow" id="card${car.CarID}" style="border-radius: 15px; cursor: pointer;">
+                    <div id="carCarousel${car.CarID}" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            ${car.Imagenes.map((image, index) => `
+                                <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                                    <img src="${image}" class="d-block w-100 card-img-top" alt="Imagen del coche" style="height: 16vh; object-fit: cover;">
+                                </div>
+                            `).join('')}
+                        </div>
+                        ${car.Imagenes.length > 1 ? `
+                        <a class="carousel-control-prev" href="#carCarousel${car.CarID}" role="button" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        </a>
+                        <a class="carousel-control-next" href="#carCarousel${car.CarID}" role="button" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        </a>
+                        ` : ''}
+                    </div>
+                    <div class="card-body" onclick="window.location.href='coche/${carSlug}'"> <!-- Usamos carSlug aquí -->
+                        <p class="card-text text-wrap">
+                            <strong>Año:</strong> ${car.Ano}<br>
+                            <strong>Kilometraje:</strong> ${car.Kilometraje}<br>
+                            <strong>Descripción:</strong> ${car.Descripcion}<br>
+                            <strong style="color: #28a745;">Precio:</strong> ${car.Precio}
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
-    `).join('');
+        `;
+    }).join(''); // Añadimos un join al final para convertir el arreglo en un único string
+}
+
+function slugify(text) {
+    return text.toString().toLowerCase()
+        .replace(/\s+/g, '-')           // Replace spaces with -
+        .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+        .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+        .replace(/^-+/, '')             // Trim - from start of text
+        .replace(/-+$/, '');            // Trim - from end of text
 }
 
 var modalElement = document.getElementById('detalles-coche');
@@ -102,67 +127,6 @@ if (modalElement) {
             backdrop.remove();
         });
     });
-}
-
-let picker;
-document.addEventListener('DOMContentLoaded', function () {
-    picker = new Litepicker({
-        element: document.getElementById('dateRangePicker'),
-        singleMode: false,
-        allowRepick: true,
-        onSelect: function(start, end) {
-            console.log(start, end);
-        }
-    });
-});
-
-function loadCarDetails(car) {
-    // Actualizar el contenido del modal con los detalles del coche
-    document.getElementById('carImage').src = car.imagenes;
-    document.getElementById('carTitle').textContent = car.Marca + ' ' + car.Modelo;
-    document.getElementById('carYear').textContent = `Año: ${car.Ano}`;
-    document.getElementById('carMileage').textContent = `Kilometraje: ${car.Kilometraje}`;
-    document.getElementById('carDescription').textContent = `Descripción: ${car.Descripcion}`;
-    document.getElementById('carPrice').textContent = `Precio: ${car.Precio}`;
-
-    // Abrir el modal con Bootstrap JavaScript API (asumiendo que usas Bootstrap 5)
-    const modalElement = document.getElementById('detalles-coche');
-    const modal = new bootstrap.Modal(modalElement);
-
-    // Verificar si el modal se inicializó correctamente antes de abrirlo
-    if (modal) {
-        modal.show();
-
-        // Agregar un evento de clic al botón "Siguiente" dentro del modal
-        const btnSiguiente = modalElement.querySelector('#btnSiguiente');
-        btnSiguiente.addEventListener('click', function () {
-            console.log("estoy aquí");
-            let carID = car.CarID;
-            let startDate = picker.getStartDate().format('YYYY-MM-DD');
-            let endDate = picker.getEndDate().format('YYYY-MM-DD');
-
-            let formData = new FormData();
-            formData.append('action', 'reservar_coche');
-            formData.append('carID', carID);
-            formData.append('startDate', startDate);
-            formData.append('endDate', endDate);
-
-            // Enviar los datos de carID, userID, startDate y endDate al servidor
-            fetch('backend.php', {
-                method: 'POST',
-                body: formData
-            })
-                .then(response => response.text())
-                .then(data => {
-                    // Manejar la respuesta del servidor si es necesario
-                    console.log(data);
-                })
-                .catch(error => {
-                    // Manejar errores si es necesario
-                    console.error(error);
-                });
-        });
-    }
 }
 
 

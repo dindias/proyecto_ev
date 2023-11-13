@@ -153,7 +153,7 @@ function getCarsByPage($page = 1, $limit = 12, $filters = []) {
         if(!empty($values)){
             $cleanKey = preg_replace('/[^a-zA-Z0-9_ñÑ]/u', '', $key);
             $placeholders = [];
-            foreach($values as $ix => $value){
+            foreach ($values as $ix => $value) {
                 $placeholder = ":{$cleanKey}_{$ix}";
                 $placeholders[] = $placeholder;
                 $params[$placeholder] = $value;
@@ -162,13 +162,20 @@ function getCarsByPage($page = 1, $limit = 12, $filters = []) {
         }
     }
 
-    $whereClause = ''; // Iniciar cláusula WHERE vacía
+    $whereClause = '';
     if (!empty($whereParts)) {
         $whereClause = ' WHERE ' . implode(' AND ', $whereParts);
     }
 
     try {
-        $sql = "SELECT * FROM coches {$whereClause} LIMIT :limit OFFSET :offset";
+        // Incorporamos un LEFT JOIN para obtener las imágenes y utilizamos GROUP BY para agrupar por CarID.
+        $sql = "SELECT coches.*, GROUP_CONCAT(imagenes.Imagen SEPARATOR ',') AS Imagenes 
+                FROM coches 
+                LEFT JOIN imagenes ON coches.CarID = imagenes.CarID 
+                {$whereClause} 
+                GROUP BY coches.CarID 
+                LIMIT :limit OFFSET :offset";
+
         $stmt = $conn->prepare($sql);
 
         // Vincular parámetros de filtro
@@ -181,8 +188,18 @@ function getCarsByPage($page = 1, $limit = 12, $filters = []) {
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 
         $stmt->execute();
+        $cars = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // Convertimos la cadena de imágenes en arrays para cada coche
+        foreach ($cars as $key => $car) {
+            if ($car['Imagenes'] !== null) {
+                $cars[$key]['Imagenes'] = explode(',', $car['Imagenes']);
+            } else {
+                $cars[$key]['Imagenes'] = [];
+            }
+        }
+
+        return $cars;
 
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
@@ -208,19 +225,38 @@ function get_unique_values($column, $table) {
 
 function getUserCars($userID) {
     $conn = connectDB();
-    $query = 'SELECT * FROM `coches` WHERE `UserID` = :userID';
+    // Modificamos la consulta SQL para hacer un LEFT JOIN con la tabla `imagenes`
+    // y usar GROUP_CONCAT para obtener todas las imágenes asociadas con un coche.
+    $query = 'SELECT coches.*, GROUP_CONCAT(imagenes.Imagen SEPARATOR ",") AS Imagenes 
+              FROM coches
+              LEFT JOIN imagenes ON coches.CarID = imagenes.CarID 
+              WHERE coches.UserID = :userID 
+              GROUP BY coches.CarID';
+
     $statement = $conn->prepare($query);
     $statement->execute([':userID' => $userID]);
 
-    return $statement->fetchAll(PDO::FETCH_ASSOC);
+    $cars = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+    // Procesamos el resultado para convertir la cadena Imagenes en un array.
+    foreach ($cars as $key => $car) {
+        if ($car['Imagenes'] !== null) {
+            $cars[$key]['Imagenes'] = explode(',', $car['Imagenes']);
+        } else {
+            // Si no hay imágenes, asignamos un array vacío.
+            $cars[$key]['Imagenes'] = [];
+        }
+    }
+
+    return $cars;
 }
 
-function insertCar($userID, $marca, $modelo, $ano, $matricula, $kilometraje, $descripcion, $precio, $imagen) {
+function insertCar($userID, $marca, $modelo, $ano, $matricula, $kilometraje, $descripcion, $precio, $tipo) {
     try {
         $conn = connectDB();
 
-        $query = 'INSERT INTO `coches` (`UserID`, `Marca`, `Modelo`, `Ano`, `Matricula`, `Kilometraje`, `Descripcion`, `Precio`, `imagenes`) 
-                  VALUES (:userID, :marca, :modelo, :ano, :matricula, :kilometraje, :descripcion, :precio, :imagen)';
+        $query = 'INSERT INTO `coches` (`UserID`, `Marca`, `Modelo`, `Ano`, `Matricula`, `Kilometraje`, `Descripcion`, `Precio`, `Tipo`) 
+                  VALUES (:userID, :marca, :modelo, :ano, :matricula, :kilometraje, :descripcion, :precio, :tipo)';
         $params = [
             ':userID' => $userID,
             ':marca' => $marca,
@@ -230,13 +266,13 @@ function insertCar($userID, $marca, $modelo, $ano, $matricula, $kilometraje, $de
             ':kilometraje' => $kilometraje,
             ':descripcion' => $descripcion,
             ':precio' => $precio,
-            ':imagen' => $imagen
+            ':tipo' => $tipo
         ];
 
         $statement = $conn->prepare($query);
 
         if($statement->execute($params)) {
-            return true;
+            return $conn->lastInsertId();
         } else {
             var_dump($statement->errorInfo());
             return false;
@@ -245,6 +281,39 @@ function insertCar($userID, $marca, $modelo, $ano, $matricula, $kilometraje, $de
     } catch (PDOException $error) {
         echo "PDO Error: " . $error->getMessage();
         exit();
+    }
+}
+
+function insertImages($userID, $carID, $images) {
+    try {
+        $conn = connectDB();
+        $insertedImages = 0;
+
+        foreach ($images['name'] as $key => $name) {
+            $fileName = basename($name);
+            $targetDir = "img/";
+            $targetFilePath = $targetDir . $fileName;
+
+            if (move_uploaded_file($images["tmp_name"][$key], $targetFilePath)) {
+                $query = 'INSERT INTO `imagenes` (`UserID`, `CarID`, `Imagen`) VALUES (:userID, :carID, :imagen)';
+                $params = [
+                    ':userID' => $userID,
+                    ':carID' => $carID,
+                    ':imagen' => $targetFilePath
+                ];
+
+                $statement = $conn->prepare($query);
+                if ($statement->execute($params)) {
+                    $insertedImages++;
+                }
+            }
+        }
+
+        return $insertedImages === count($images['name']);
+
+    } catch (PDOException $error) {
+        echo "PDO Error: " . $error->getMessage();
+        return false;
     }
 }
 

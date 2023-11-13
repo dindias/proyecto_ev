@@ -1,0 +1,3 @@
+RewriteEngine On
+
+RewriteRule ^coche/([a-z0-9-]+)-([a-z0-9-]+)-(\d+)$ coche.php?CarID=$3 [L,NC,QSA]
