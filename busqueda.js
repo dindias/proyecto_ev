@@ -65,8 +65,8 @@ function loadCars(page) {
 }
 
 function generateCarsHTML(cars) {
-    return cars.map(car => { // Añadimos llaves aquí para empezar el bloque de la función
-        const carSlug = slugify(car.Marca) + '-' + slugify(car.Modelo) + '-' + car.CarID;
+    return cars.map(car => {
+        const carParams = encodeURIComponent(JSON.stringify({ CarID: car.CarID, Marca: car.Marca, Modelo: car.Modelo }));
         return `
             <div class="col-md-3 col-sm-6 col-xs-12 mb-4">
                 <div class="card h-100 shadow" id="card${car.CarID}" style="border-radius: 15px; cursor: pointer;">
@@ -87,7 +87,7 @@ function generateCarsHTML(cars) {
                         </a>
                         ` : ''}
                     </div>
-                    <div class="card-body" onclick="window.location.href='coche/${carSlug}'"> <!-- Usamos carSlug aquí -->
+                    <div class="card-body" onclick="redirectToCarDetails('${carParams}')">
                         <p class="card-text text-wrap">
                             <strong>Año:</strong> ${car.Ano}<br>
                             <strong>Potencia:</strong> ${car.Potencia}<br>
@@ -99,16 +99,15 @@ function generateCarsHTML(cars) {
                 </div>
             </div>
         `;
-    }).join(''); // Añadimos un join al final para convertir el arreglo en un único string
+    }).join('');
 }
 
-function slugify(text) {
-    return text.toString().toLowerCase()
-        .replace(/\s+/g, '-')           // Replace spaces with -
-        .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-        .replace(/\-\-+/g, '-')         // Replace multiple - with single -
-        .replace(/^-+/, '')             // Trim - from start of text
-        .replace(/-+$/, '');            // Trim - from end of text
+function redirectToCarDetails(carParams) {
+    const decodedParams = JSON.parse(decodeURIComponent(carParams));
+    const carID = decodedParams.CarID;
+    const marca = decodedParams.Marca;
+    const modelo = decodedParams.Modelo;
+    window.location.href = `coche.php?CarID=${carID}&Marca=${marca}&Modelo=${modelo}`;
 }
 
 var modalElement = document.getElementById('detalles-coche');

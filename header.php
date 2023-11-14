@@ -6,15 +6,17 @@ if (session_status() === PHP_SESSION_NONE) {
 ?>
 <nav class="navbar navbar-expand bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/proyecto_ev/index.php">Logo</a>
+        <a class="navbar-brand">Logo</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#myNavbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="/proyecto_ev/index.php">Inicio</a></li>
                 <li class="nav-item"><a class="nav-link" href="/proyecto_ev/busqueda.php">Alquilar</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Modelos</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Precios</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Sobre nosotros</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
             </ul>
             <!-- Dropdown -->
             <!-- Dropdown -->

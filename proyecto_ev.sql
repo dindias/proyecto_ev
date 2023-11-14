@@ -38,6 +38,13 @@ CREATE TABLE `coches` (
   `Matricula` char(7) NOT NULL,
   `Potencia` int(11) NOT NULL,
   `Autonomia` int(11) NOT NULL,
+  `Kilometraje` int(11) NOT NULL,
+  `Motorizacion` varchar(255) DEFAULT NULL,
+  `Contaminacion` varchar(255) DEFAULT NULL,
+  `Exterior` varchar(255) DEFAULT NULL,
+  `Interior` varchar(255) DEFAULT NULL,
+  `Seguridad` varchar(255) DEFAULT NULL,
+  `Tecnologia` varchar(255) DEFAULT NULL,
   `Descripcion` varchar(255) DEFAULT NULL,
   `Precio` int(11) NOT NULL,
   `Tipo` varchar(50) DEFAULT NULL
