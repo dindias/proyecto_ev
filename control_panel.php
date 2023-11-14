@@ -5,7 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 include("funciones_BD.php");
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <title>Panel de control</title>
     <meta charset="utf-8">
@@ -30,6 +30,11 @@ include("funciones_BD.php");
             width: auto;
             height: 30vh;
             object-fit: cover;
+        }
+        .image-preview-thumbnail {
+            max-width: 100px; /* O el tamaño que prefieras */
+            max-height: 100px;
+            object-fit: cover; /* Esto asegura que la imagen se recorte si no encaja, en lugar de deformarse */
         }
 
     </style>
@@ -227,59 +232,147 @@ include ("register.php");
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form id="editCarForm">
-                <div class="modal-header">
-                    <h5 class="modal-title">Editar coche</h5>
-                    <!-- ... resto del contenido del modal-header ... -->
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="editMarca" class="form-label">Marca:</label>
-                        <input type="text" id="editMarca" name="Marca" class="form-control" placeholder="Marca" required/>
+                <input type="hidden" name="action" value="editar_coche">
+                <input type="hidden" name="carID" id="editCarID" value="">
+                <div class="modal-body py-3 mb-3">
+                    <h2 class="h4 mb-4">Especificaciones</h2>
+                    <div class="row">
+                        <div>
+                            <label for="imagenes" class="form-label">Imágenes:</label>
+                            <input class="form-control" type="file" id="imagenes" name="imagenes[]" multiple/>
+                        </div>
+                        <div class="mb-2">
+                            <label for="imagenPreview" class="form-label">Vista previa de imágenes:</label>
+                            <div id="imagenPreview" class="mb-3"></div>
+                        </div>
+                        <div class="col-sm-6 col-md-12 col-lg-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <label for="marca" class="form-label">Marca:</label>
+                                    <input type="text" id="marca" name="Marca" class="form-control" placeholder="Marca" required/>
+                                </li>
+                                <li class="mb-2">
+                                    <label for="modelo" class="form-label">Modelo:</label>
+                                    <input type="text" id="modelo" name="Modelo" class="form-control" placeholder="Modelo" required/>
+                                </li>
+                                <li class="mb-2">
+                                    <label for="ano" class="form-label">Año:</label>
+                                    <input type="number" id="ano" name="Ano" class="form-control" placeholder="Año" required min="1900" max="2099" step="1"/>
+                                </li>
+                                <li>
+                                    <label for="matricula" class="form-label">Matricula:</label>
+                                    <input type="text" id="matricula" name="Matricula" class="form-control" placeholder="Matricula" required/>
+                                </li>
+                                <li class="mb-2">
+                                    <label for="potencia" class="form-label">Potencia:</label>
+                                    <input type="number" id="potencia" name="Potencia" class="form-control" placeholder="Potencia" required/>
+                                </li>
+                                <li class="mb-2">
+                                    <label for="autonomia" class="form-label">Autonomía:</label>
+                                    <input type="number" id="autonomia" name="Autonomia" class="form-control" placeholder="Autonomía" required/>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-6 col-md-12 col-lg-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <label for="kilometraje" class="form-label">Kilometraje:</label>
+                                    <input type="number" id="kilometraje" name="Kilometraje" class="form-control" placeholder="Kilometraje" required/>
+                                </li>
+                                <li class="mb-2">
+                                    <label for="motorizacion" class="form-label">Motorización:</label>
+                                    <input type="text" id="motorizacion" name="Motorizacion" class="form-control" placeholder="Motorización" required/>
+                                </li>
+                                <li class="mb-2">
+                                    <label for="contaminacion" class="form-label">Contaminación:</label>
+                                    <input type="number" id="contaminacion" name="Contaminacion" class="form-control" placeholder="Contaminación" required/>
+                                </li>
+                                <li class="mb-2">
+                                    <label for="precio" class="form-label">Precio:</label>
+                                    <input type="number" id="precio" name="Precio" class="form-control" placeholder="Precio" required/>
+                                </li>
+                                <li class="mb-2">
+                                    <label for="ubicacion" class="form-label">Ubicación:</label>
+                                    <input type="text" id="ubicacion" name="Ubicacion" class="form-control" placeholder="Ubicación" required/>
+                                </li>
+                                <li class="mb-2">
+                                    <label for="tipo" class="form-label">Tipo:</label>
+                                    <select class="form-select" id="tipo" name="Tipo" required>
+                                        <option value="Berlina">Berlina</option>
+                                        <option value="Cabrio">Cabrio</option>
+                                        <option value="Compacto">Compacto</option>
+                                        <option value="Coupe">Coupé</option>
+                                        <option value="Familiar">Familiar</option>
+                                        <option value="Hibrido">Híbrido</option>
+                                        <option value="Industrial">Industrial</option>
+                                        <option value="Suv">Suv</option>
+                                    </select>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="editModelo" class="form-label">Modelo:</label>
-                        <input type="text" id="editModelo" name="Modelo" class="form-control" placeholder="Modelo" required/>
+                    <div class="row">
+                        <div class="mb-2">
+                            <label for="descripcion" class="form-label">Descripción:</label>
+                            <textarea id="descripcion" name="Descripcion" class="form-control"></textarea>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="editAno" class="form-label">Año:</label>
-                        <input type="number" id="editAno" name="Ano" class="form-control" placeholder="Año" required min="1900" max="2099" step="1"/>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editMatricula" class="form-label">Matricula:</label>
-                        <input type="text" id="editMatricula" name="Matricula" class="form-control" placeholder="Matricula" required/>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editPotencia" class="form-label">Potencia:</label>
-                        <input type="number" id="editPotencia" name="Potencia" class="form-control" placeholder="Potencia" required/>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editAutonomia" class="form-label">Autonomia:</label>
-                        <input type="number" id="editAutonomia" name="Autonomia" class="form-control" placeholder="Autonomia" required/>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editDescripcion" class="form-label">Descripción:</label>
-                        <input type="text" id="editDescripcion" name="Descripcion" class="form-control" placeholder="Descripcion"/>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editPrecio" class="form-label">Precio:</label>
-                        <input type="number" id="editPrecio" name="Precio" class="form-control" placeholder="Precio" required/>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editTipo" class="form-label">Tipo:</label>
-                        <select class="form-select" id="tipo" name="Tipo" required>
-                            <option value="Berlina">Berlina</option>
-                            <option value="Cabrio">Cabrio</option>
-                            <option value="Compacto">Compacto</option>
-                            <option value="Coupe">Coupé</option>
-                            <option value="Familiar">Familiar</option>
-                            <option value="Hibrido">Híbrido</option>
-                            <option value="Industrial">Industrial</option>
-                            <option value="Suv">Suv</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editImagenes" class="form-label">Imágenes:</label>
-                        <input class="form-control" type="file" id="editImagenes" name="imagenes[]" multiple/>
+                    <div class="row">
+                        <h2 class="h4 mb-4">Adiciones</h2>
+                        <div class="accordion" id="accordionExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingOne">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        Exterior
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <label for="exterior" class="form-label">Exterior:</label>
+                                        <textarea id="exterior" name="Exterior" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                        Interior
+                                    </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <label for="interior" class="form-label">Interior:</label>
+                                        <textarea id="interior" name="Interior" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingThree">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                        Seguridad
+                                    </button>
+                                </h2>
+                                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <label for="seguridad" class="form-label">Seguridad:</label>
+                                        <textarea id="seguridad" name="Seguridad" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingFour">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                        Tecnología
+                                    </button>
+                                </h2>
+                                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <label for="tecnologia" class="form-label">Tecnología:</label>
+                                        <textarea id="tecnologia" name="Tecnologia" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -322,58 +415,141 @@ include ("register.php");
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-
             <form action="backend.php" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="añadir_coche">
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="marca" class="form-label">Marca:</label>
-                        <input type="text" id="marca" name="Marca" class="form-control" placeholder="Marca" required/>
+                <div class="modal-body py-3 mb-3">
+                    <h2 class="h4 mb-4">Especificaciones</h2>
+                    <div class="row">
+                        <div>
+                            <label for="imagenes" class="form-label">Imágenes:</label>
+                            <input class="form-control" type="file" id="imagenes" name="imagenes[]" multiple/>
+                        </div>
+                        <div class="col-sm-6 col-md-12 col-lg-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <label for="marca" class="form-label">Marca:</label>
+                                    <input type="text" id="marca" name="Marca" class="form-control" placeholder="Marca" required/>
+                                </li>
+                                <li class="mb-2">
+                                    <label for="modelo" class="form-label">Modelo:</label>
+                                    <input type="text" id="modelo" name="Modelo" class="form-control" placeholder="Modelo" required/>
+                                </li>
+                                <li class="mb-2">
+                                    <label for="ano" class="form-label">Ano:</label>
+                                    <input type="number" id="ano" name="Ano" class="form-control" placeholder="Año" required min="1900" max="2099" step="1"/>
+                                </li>
+                                <li>
+                                    <label for="matricula" class="form-label">Matricula:</label>
+                                    <input type="text" id="matricula" name="Matricula" class="form-control" placeholder="Matricula" required/>
+                                </li>
+                                <li class="mb-2">
+                                    <label for="potencia" class="form-label">Potencia:</label>
+                                    <input type="number" id="potencia" name="Potencia" class="form-control" placeholder="Potencia" required/>
+                                </li>
+                                <li class="mb-2">
+                                    <label for="autonomia" class="form-label">Autonomia:</label>
+                                    <input type="number" id="autonomia" name="Autonomia" class="form-control" placeholder="Autonomia" required/>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-6 col-md-12 col-lg-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <label for="kilometraje" class="form-label">Kilometraje:</label>
+                                    <input type="number" id="kilometraje" name="Kilometraje" class="form-control" placeholder="Kilometraje" required/>
+                                </li>
+                                <li class="mb-2">
+                                    <label for="motorizacion" class="form-label">Motorizacion:</label>
+                                    <input type="text" id="motorizacion" name="Motorizacion" class="form-control" placeholder="Motorizacion" required/>
+                                </li>
+                                <li class="mb-2">
+                                    <label for="contaminacion" class="form-label">Contaminacion:</label>
+                                    <input type="number" id="contaminacion" name="Contaminacion" class="form-control" placeholder="Contaminacion" required/>
+                                </li>
+                                <li class="mb-2">
+                                    <label for="precio" class="form-label">Precio:</label>
+                                    <input type="number" id="precio" name="Precio" class="form-control" placeholder="Precio" required/>
+                                </li>
+                                <li class="mb-2">
+                                    <label for="ubicacion" class="form-label">Ubicacion:</label>
+                                    <input type="text" id="ubicacion" name="Ubicacion" class="form-control" placeholder="Ubicacion" required/>
+                                </li>
+                                <li class="mb-2">
+                                    <label for="tipo" class="form-label">Tipo:</label>
+                                    <select class="form-select" id="tipo" name="Tipo" required>
+                                        <option value="Berlina">Berlina</option>
+                                        <option value="Cabrio">Cabrio</option>
+                                        <option value="Compacto">Compacto</option>
+                                        <option value="Coupe">Coupé</option>
+                                        <option value="Familiar">Familiar</option>
+                                        <option value="Hibrido">Híbrido</option>
+                                        <option value="Industrial">Industrial</option>
+                                        <option value="Suv">Suv</option>
+                                    </select>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="modelo" class="form-label">Modelo:</label>
-                        <input type="text" id="modelo" name="Modelo" class="form-control" placeholder="Modelo" required/>
-                    </div>
-                    <div class="mb-3">
-                        <label for="ano" class="form-label">Ano:</label>
-                        <input type="number" id="ano" name="Ano" class="form-control" placeholder="Año" required min="1900" max="2099" step="1"/>
-                    </div>
-                    <div class="mb-3">
-                        <label for="matricula" class="form-label">Matricula:</label>
-                        <input type="text" id="matricula" name="Matricula" class="form-control" placeholder="Matricula" required/>
-                    </div>
-                    <div class="mb-3">
-                        <label for="potencia" class="form-label">Potencia:</label>
-                        <input type="number" id="potencia" name="Potencia" class="form-control" placeholder="Potencia" required/>
-                    </div>
-                    <div class="mb-3">
-                        <label for="autonomia" class="form-label">Autonomia:</label>
-                        <input type="number" id="autonomia" name="Autonomia" class="form-control" placeholder="Autonomia" required/>
-                    </div>
-                    <div class="mb-3">
-                        <label for="descripcion" class="form-label">Descripcion:</label>
-                        <input type="text" id="descripcion" name="Descripcion" class="form-control" placeholder="Descripcion"/>
-                    </div>
-                    <div class="mb-3">
-                        <label for="precio" class="form-label">Precio:</label>
-                        <input type="number" id="precio" name="Precio" class="form-control" placeholder="Precio" required/>
-                    </div>
-                    <div class="mb-3">
-                        <label for="tipo" class="form-label">Tipo:</label>
-                        <select class="form-select" id="tipo" name="Tipo" required>
-                            <option value="Berlina">Berlina</option>
-                            <option value="Cabrio">Cabrio</option>
-                            <option value="Compacto">Compacto</option>
-                            <option value="Coupe">Coupé</option>
-                            <option value="Familiar">Familiar</option>
-                            <option value="Hibrido">Híbrido</option>
-                            <option value="Industrial">Industrial</option>
-                            <option value="Suv">Suv</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="imagenes" class="form-label">Imágenes:</label>
-                        <input class="form-control" type="file" id="imagenes" name="imagenes[]" multiple/>
+                    <div class="row">
+                        <label for="descripcion" class="col-form-label">Descripcion:</label>
+                        <textarea id="descripcion" name="Descripcion" class="form-control"></textarea>
+                    </div><br>
+                    <div class="row">
+                        <h2 class="h4 mb-4">Adiciones</h2>
+                        <div class="accordion" id="accordionExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingOne">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        Exterior
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <label for="exterior" class="form-label">Exterior:</label>
+                                        <textarea id="exterior" name="Exterior" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                        Interior
+                                    </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <label for="interior" class="form-label">Interior:</label>
+                                        <textarea id="interior" name="Interior" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingThree">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                        Seguridad
+                                    </button>
+                                </h2>
+                                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <label for="seguridad" class="form-label">Seguridad:</label>
+                                        <textarea id="seguridad" name="Seguridad" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingFour">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                        Tecnologia
+                                    </button>
+                                </h2>
+                                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <label for="tecnologia" class="form-label">Tecnologia:</label>
+                                        <textarea id="tecnologia" name="Tecnologia" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -384,7 +560,6 @@ include ("register.php");
         </div>
     </div>
 </div>
-
 
 <?php
 include ("footer.php");
@@ -484,16 +659,66 @@ include ("footer.php");
                     confirmDeleteButton.dataset.carId = carID; // Asigna el valor usando dataset también.
 
                 } else if (this.classList.contains('editCarBtn')) {
-                    // Caso donde el botón es de edición.
+                    var carID = this.dataset.carId;
 
-                    // Aquí deberás lógica para manejar la edición,
-                    // por ejemplo, cargar los datos en el modal de edición o
-                    // establecer atributos necesarios para la funcionalidad de edición.
+                    var formData = new FormData();
+                    formData.append("carID", carID);
+                    formData.append("action", "recoger_coche");
 
-                    // Ejemplo de cómo asignar el ID a un hipotético botón de guardar cambios en el modal de edición:
-                    var saveChangesButton = document.querySelector('#editCarModal .saveChanges');
-                    saveChangesButton.dataset.carId = carID; // Asigna el valor usando dataset también.
+                    var request = new XMLHttpRequest();
+                    request.open('POST', 'backend.php', true);
+                    request.responseType = 'json';
+
+                    request.onload = function() {
+                        if (this.status >= 200 && this.status < 400) {
+                            // Exito!
+                            var carDetails = this.response;
+
+                            document.getElementById('marca').value = carDetails[0].Marca;
+                            document.getElementById('modelo').value = carDetails[0].Modelo;
+                            document.getElementById('ano').value = carDetails[0].Ano;
+                            document.getElementById('matricula').value = carDetails[0].Matricula;
+                            document.getElementById('potencia').value = carDetails[0].Potencia;
+                            document.getElementById('autonomia').value = carDetails[0].Autonomia;
+                            document.getElementById('kilometraje').value = carDetails[0].Kilometraje;
+                            document.getElementById('motorizacion').value = carDetails[0].Motorizacion;
+                            document.getElementById('contaminacion').value = carDetails[0].Contaminacion;
+                            document.getElementById('precio').value = carDetails[0].Precio;
+                            document.getElementById('tipo').value = carDetails[0].Tipo;
+                            document.getElementById('descripcion').value = carDetails[0].Descripcion;
+                            document.getElementById('exterior').value = carDetails[0].Exterior;
+                            document.getElementById('interior').value = carDetails[0].Interior;
+                            document.getElementById('seguridad').value = carDetails[0].Seguridad;
+                            document.getElementById('tecnologia').value = carDetails[0].Tecnologia;
+
+                            // Muestra las imágenes en el modal.
+                            var imagenPreview = document.getElementById('imagenPreview');
+                            imagenPreview.innerHTML = ""; // Limpiamos el contenido previo
+
+                            carDetails[0].Imagenes.forEach(function(imagen) {
+                                var imgElement = document.createElement('img');
+                                imgElement.src = imagen;  // Asegúrate de que el src es correcto. Puede que necesites ajustar la ruta
+                                imgElement.classList.add('image-preview-thumbnail', 'img-thumbnail', 'm-1');
+                                imagenPreview.appendChild(imgElement);
+                            });
+
+                            // Asigna el ID del coche al botón de guardar cambios.
+                            var saveChangesButton = document.querySelector('#editCarModal .saveChanges');
+                            saveChangesButton.dataset.carId = carID;
+                        } else {
+                            // Alcanzamos nuestro servidor objetivo, pero devolvió un error
+                            console.error('Error del servidor: ', this.status);
+                        }
+                    };
+
+                    request.onerror = function() {
+                        // Hubo un error de conexión de algún tipo
+                        console.error('Error de conexión');
+                    };
+
+                    request.send(formData);
                 }
+
             });
         });
 

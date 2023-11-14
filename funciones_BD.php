@@ -279,12 +279,12 @@ function getCar($CarID) {
     return $cars;
 }
 
-function insertCar($userID, $marca, $modelo, $ano, $matricula, $potencia, $autonomia, $descripcion, $precio, $tipo) {
+function insertCar($userID, $marca, $modelo, $ano, $matricula, $potencia, $autonomia, $kilometraje, $motorizacion, $contaminacion, $precio, $tipo, $ubicacion, $descripcion, $exterior, $interior, $seguridad, $tecnologia) {
     try {
         $conn = connectDB();
 
-        $query = 'INSERT INTO `coches` (`UserID`, `Marca`, `Modelo`, `Ano`, `Matricula` , `Potencia` , `Autonomia`, `Descripcion`, `Precio`, `Tipo`) 
-                  VALUES (:userID, :marca, :modelo, :ano, :matricula, :potencia, :autonomia, :descripcion, :precio, :tipo)';
+        $query = 'INSERT INTO `coches` (`UserID`, `Marca`, `Modelo`, `Ano`, `Matricula` , `Potencia` , `Autonomia`, `Kilometraje`, `Motorizacion`, `Contaminacion`, `Precio`, `Tipo`, `Ubicacion`, `Descripcion`, `Exterior`, `Interior`, `Seguridad`, `Tecnologia`) 
+                  VALUES (:userID, :marca, :modelo, :ano, :matricula, :potencia, :autonomia, :kilometraje, :motorizacion, :contaminacion, :precio, :tipo, :ubicacion, :descripcion, :exterior, :interior, :seguridad, :tecnologia)';
         $params = [
             ':userID' => $userID,
             ':marca' => $marca,
@@ -293,9 +293,17 @@ function insertCar($userID, $marca, $modelo, $ano, $matricula, $potencia, $auton
             ':matricula' => $matricula,
             ':potencia' => $potencia,
             ':autonomia' => $autonomia,
-            ':descripcion' => $descripcion,
+            ':kilometraje' => $kilometraje,
+            ':motorizacion' => $motorizacion,
+            ':contaminacion' => $contaminacion,
             ':precio' => $precio,
-            ':tipo' => $tipo
+            ':tipo' => $tipo,
+            ':ubicacion' => $ubicacion,
+            ':descripcion' => $descripcion,
+            ':exterior' => $exterior,
+            ':interior' => $interior,
+            ':seguridad' => $seguridad,
+            ':tecnologia' => $tecnologia,
         ];
 
         $statement = $conn->prepare($query);

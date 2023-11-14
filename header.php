@@ -26,7 +26,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         <?php echo $_SESSION['nombre']; ?>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="control_panel.php">Panel de control</a></li>
+                        <li><a class="dropdown-item" href="/proyecto_ev/control_panel.php">Panel de control</a></li>
                         <li><a class="dropdown-item" id="logoutlink" href="#">Cerrar sesión</a></li>
                     </ul>
                 </li>

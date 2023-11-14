@@ -77,11 +77,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $matricula = $_POST['Matricula'];
                 $potencia = $_POST['Potencia'];
                 $autonomia = $_POST['Autonomia'];
-                $descripcion = $_POST['Descripcion'];
+                $kilometraje = $_POST['Kilometraje'];
+                $motorizacion = $_POST['Motorizacion'];
+                $contaminacion = $_POST['Contaminacion'];
                 $precio = $_POST['Precio'];
                 $tipo = $_POST['Tipo'];
+                $ubicacion = $_POST['Ubicacion'];
+                $descripcion = $_POST['Descripcion'];
+                $exterior = $_POST['Exterior'];
+                $interior = $_POST['Interior'];
+                $seguridad = $_POST['Seguridad'];
+                $tecnologia = $_POST['Tecnologia'];
 
-                $carID = insertCar($userID, $marca, $modelo, $ano, $matricula, $potencia, $autonomia, $descripcion, $precio, $tipo);
+                $carID = insertCar($userID, $marca, $modelo, $ano, $matricula, $potencia, $autonomia, $kilometraje, $motorizacion, $contaminacion, $precio, $tipo, $ubicacion, $descripcion, $exterior, $interior, $seguridad, $tecnologia);
 
                 if ($carID) {
                     if(isset($_FILES["imagenes"])) {
@@ -103,6 +111,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             eliminar_coche($carId);
             header('Location: control_panel.php');
             break;
+        }
+        case 'recoger_coche':
+        {
+            $carId = $_POST['carID'];
+            $car = getCar($carId);
+
+            echo json_encode($car);
+            exit;
         }
         case 'paginate_cars':
         {
@@ -160,8 +176,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!empty($_POST['Autonomia'])) {
                 $valuesToUpdate['Autonomia'] = $_POST['Autonomia'];
             }
-            if (!empty($_POST['Descripcion'])) {
-                $valuesToUpdate['Descripcion'] = $_POST['Descripcion'];
+            if (!empty($_POST['Kilometraje'])) {
+                $valuesToUpdate['Kilometraje'] = $_POST['Kilometraje'];
+            }
+            if (!empty($_POST['Motorizacion'])) {
+                $valuesToUpdate['Motorizacion'] = $_POST['Motorizacion'];
+            }
+            if (!empty($_POST['Contaminacion'])) {
+                $valuesToUpdate['Contaminacion'] = $_POST['Contaminacion'];
             }
             if (!empty($_POST['Precio'])) {
                 $valuesToUpdate['Precio'] = $_POST['Precio'];
@@ -169,10 +191,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!empty($_POST['Tipo'])) {
                 $valuesToUpdate['Tipo'] = $_POST['Tipo'];
             }
+            if (!empty($_POST['Ubicacion'])) {
+                $valuesToUpdate['Ubicacion'] = $_POST['Ubicacion'];
+            }
+            if (!empty($_POST['Descripcion'])) {
+                $valuesToUpdate['Descripcion'] = $_POST['Descripcion'];
+            }
+            if (!empty($_POST['Exterior'])) {
+                $valuesToUpdate['Exterior'] = $_POST['Exterior'];
+            }
+            if (!empty($_POST['Interior'])) {
+                $valuesToUpdate['Interior'] = $_POST['Interior'];
+            }
+            if (!empty($_POST['Seguridad'])) {
+                $valuesToUpdate['Seguridad'] = $_POST['Seguridad'];
+            }
+            if (!empty($_POST['Tecnologia'])) {
+                $valuesToUpdate['Tecnologia'] = $_POST['Tecnologia'];
+            }
+
             updateCar($userID, $valuesToUpdate);
             header('Location: control_panel.php');
             break;
         }
+
         case 'reservar_coche':
         {
             if (isset($_POST['carID']) && isset($_SESSION['user_id']) && isset($_POST['startDate']) && isset($_POST['endDate'])) {
