@@ -68,6 +68,9 @@ include ("register.php");
     <li class="nav-item">
         <a class="nav-link" id="historialTab" href="#historial" onclick="showTab('historial'); return false;">Mis Reservas</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" id="favoritosTab" href="#favoritos" onclick="showTab('favoritos'); return false;">Mis Favoritos</a>
+    </li>
 </ul>
 
 <div id="perfil" class="tabContent">
@@ -225,6 +228,9 @@ include ("register.php");
             </div>
         </div>
     </div>
+</div>
+
+<div id="favoritos" class="tabContent" style="display: none;">
 </div>
 
 <!-- Modal Editar -->
