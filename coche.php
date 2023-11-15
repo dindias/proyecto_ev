@@ -6,7 +6,6 @@ if (session_status() === PHP_SESSION_NONE) {
 include("funciones_BD.php");
 $carID = $_GET['CarID'];
 $car = getCar($carID);
-print_r($car);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -144,7 +143,7 @@ print_r($car);
                                 <ul class="list-unstyled">
                                     <li class="mb-2"><strong>Motorizacion:</strong><span class="opacity-70 ms-1"><?php echo $car[0]['Motorizacion']; ?></span></li>
                                     <li class="mb-2"><strong>Contaminación:</strong><span class="opacity-70 ms-1"><?php echo $car[0]['Contaminacion']; ?> G/Km</span></li>
-                                    <li class="mb-2"><strong>Precio:</strong><span class="opacity-70 ms-1"><?php echo number_format($car[0]['Precio'], 2); ?></span></li>
+                                    <li class="mb-2"><strong>Precio:</strong><span class="opacity-70 ms-1"><?php echo number_format($car[0]['Precio'], 2); ?>€/día</span></li>
                                     <li class="mb-2"><strong>Tipo:</strong><span class="opacity-70 ms-1"><?php echo $car[0]['Tipo']; ?></span></li>
                                     <li class="mb-2"><strong>Ubicacion:</strong><span class="opacity-70 ms-1"><?php echo $car[0]['ubicacion']; ?></span></li>
                                 </ul>

@@ -1,5 +1,3 @@
-console.log("script cargado");
-
 let picker;
 document.addEventListener('DOMContentLoaded', function () {
     picker = new Litepicker({
