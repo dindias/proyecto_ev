@@ -6,7 +6,9 @@
 -- Tiempo de generación: 15-11-2023 a las 16:39:14
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
-
+DROP DATABASE proyecto_ev;
+CREATE DATABASE proyecto_ev;
+USE proyecto_ev;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";

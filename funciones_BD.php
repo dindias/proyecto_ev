@@ -562,4 +562,32 @@ function checkFavorito($carID, $userID) {
     }
 }
 
+function getUserFavoriteCars($userID) {
+    $conn = connectDB();
+    // Modificamos la consulta SQL para hacer un LEFT JOIN con las tablas `favoritos`, `coches`, y `imagenes`
+    // y usar GROUP_CONCAT para obtener todas las imágenes asociadas con un coche.
+    $query = 'SELECT coches.*, GROUP_CONCAT(imagenes.Imagen SEPARATOR ",") AS Imagenes 
+              FROM favoritos
+              JOIN coches ON favoritos.CarID = coches.CarID
+              LEFT JOIN imagenes ON coches.CarID = imagenes.CarID 
+              WHERE favoritos.UserID = :userID 
+              GROUP BY coches.CarID';
+
+    $statement = $conn->prepare($query);
+    $statement->execute([':userID' => $userID]);
+
+    $cars = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+    // Procesamos el resultado para convertir la cadena Imagenes en un array.
+    foreach ($cars as $key => $car) {
+        if ($car['Imagenes'] !== null) {
+            $cars[$key]['Imagenes'] = explode(',', $car['Imagenes']);
+        } else {
+            // Si no hay imágenes, asignamos un array vacío.
+            $cars[$key]['Imagenes'] = [];
+        }
+    }
+
+    return $cars;
+}
 

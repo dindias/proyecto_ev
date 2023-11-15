@@ -11,6 +11,7 @@ include("funciones_BD.php");
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/305aef3688.js" crossorigin="anonymous"></script>
     <style>
         /* Add a gray background color and some padding to the footer */
         body{
@@ -28,13 +29,29 @@ include("funciones_BD.php");
         .card-img {
             display: block;
             width: auto;
-            height: 30vh;
+            height: 10vh;
             object-fit: cover;
         }
         .image-preview-thumbnail {
             max-width: 100px; /* O el tamaño que prefieras */
             max-height: 100px;
             object-fit: cover; /* Esto asegura que la imagen se recorte si no encaja, en lugar de deformarse */
+        }
+
+        .btn-toggle-favorito {
+            color: #ffc107; /* Utilizamos un color amarillo similar al de una estrella */
+            border-color: #ffc107;
+        }
+        .btn-toggle-favorito .fa {
+            margin-right: 5px;
+        }
+        /* Cuando el coche es favorito, queremos un relleno sólido y un fondo amarillo */
+        .btn-toggle-favorito[data-favorited="true"] {
+            background-color: #ffc107;
+            color: white; /* Cambiamos el texto a blanco para que resalte en fondo amarillo */
+        }
+        .btn-toggle-favorito[data-favorited="true"] .fa {
+            color: white;
         }
 
     </style>
@@ -169,15 +186,8 @@ include ("register.php");
                             <div class="col-md-8">
                                 <div class="card-body">
                                     <h5 class="card-title"><?php echo $car['Marca'] . " " . $car['Modelo']; ?></h5>
-                                    <p class="card-text">
-                                        ID: <?php echo $car['CarID']; ?><br>
-                                        Matricula: <?php echo $car['Matricula']; ?><br>
-                                        Año: <?php echo $car['Ano']; ?><br>
-                                        Potencia: <?php echo $car['Potencia']; ?><br>
-                                        Autonomia: <?php echo $car['Autonomia']; ?><br>
-                                        Descripción: <?php echo $car['Descripcion']; ?><br>
-                                        Precio: <?php echo $car['Precio']; ?>
-                                    </p>
+                                    <?php $encodedParams = json_encode(["CarID" => $carID, "Marca" => $car['Marca'], "Modelo" => $car['Modelo']]); ?>
+                                    <button type="button" class="btn btn-primary viewCarBtn" onclick="redirectToCarDetails('<?php echo urlencode($encodedParams); ?>')">Ver anuncio</button>
                                     <button type="button" class="btn btn-primary editCarBtn" data-bs-toggle="modal" data-bs-target="#editCarModal" data-car-id="<?php echo $car['CarID']; ?>">Editar</button>
                                     <button type="button" class="btn btn-primary deleteCarBtn" data-bs-toggle="modal" data-bs-target="#deleteCarModal" data-car-id="<?php echo $car['CarID']; ?>">Eliminar</button>
                                 </div>
@@ -231,6 +241,76 @@ include ("register.php");
 </div>
 
 <div id="favoritos" class="tabContent" style="display: none;">
+    <div class="container"style="max-height: 100vh;">
+        <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addCarModal">
+            Añadir coche
+        </button>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control search-car" id="searchBar" placeholder="Buscar coche..." aria-label="Buscar coche" aria-describedby="button-search">
+            <button class="btn btn-outline-secondary" type="button" id="button-search">Buscar</button>
+        </div>
+        <!-- Contenedor con barra de desplazamiento -->
+        <div class="container-fluid" style="overflow-y: auto; max-height: 75vh;">
+            <div class="d-flex flex-column align-items-stretch"> <!-- Asegurarse de estirar los elementos de la columna -->
+                <?php
+                $cars = getUserFavoriteCars($_SESSION['user_id']); // Obtiene los coches de la base de datos
+                foreach ($cars as $car) {
+                    $carID = $car['CarID'];
+                    $imagenes = $car['Imagenes']; // Este debe ser un array de imágenes
+                    $numImages = count($imagenes);
+                    ?>
+                    <!-- Tarjeta Horizontal -->
+                    <div class="card mb-3" style="flex: 1;">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <!-- Inicio del Carrusel -->
+                                <div id="carousel<?php echo $carID; ?>" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">
+                                        <?php foreach ($imagenes as $index => $imagen) { ?>
+                                            <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
+                                                <img src="<?php echo $imagen; ?>" class="d-block w-100 card-img" alt="...">
+                                            </div>
+                                        <?php } ?>
+                                    </div>
+                                    <?php if ($numImages > 1) { ?>
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel<?php echo $carID; ?>" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Previous</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carousel<?php echo $carID; ?>" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Next</span>
+                                        </button>
+                                    <?php } ?>
+                                </div>
+                                <!-- Fin del Carrusel -->
+                            </div>
+                            <div class="col-md-5">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo $car['Marca'] . " " . $car['Modelo']; ?></h5>
+                                    <p class="card-text">
+                                        Año: <?php echo $car['Ano']; ?><br>
+                                        Potencia: <?php echo $car['Potencia']; ?><br>
+                                        Autonomia: <?php echo $car['Autonomia']; ?><br>
+                                        Precio: <?php echo $car['Precio']; ?>€/día
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-toggle-favorito" onclick="toggleFavorito(this)" data-car-id="<?php echo $carID?>" data-favorited="false">
+                                    <i class="fa fa-star-o"></i> Añadir a Favoritos
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fin Tarjeta Horizontal -->
+                    <?php
+                }
+                ?>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Modal Editar -->
@@ -408,10 +488,6 @@ include ("register.php");
     </div>
 </div>
 
-<div id="historial" class="tabContent" style="display: none;">
-    <!-- Aquí va el código para historial -->
-</div>
-
 <div class="modal fade" id="addCarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -572,6 +648,94 @@ include ("footer.php");
 ?>
 
 <script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const button = document.querySelector('.btn-toggle-favorito'); // El selector debe apuntar al botón correcto
+        if (button) {
+            checkIfFavorited(button);
+        }
+    });
+
+    async function checkIfFavorited(button) {
+        const carID = button.getAttribute('data-car-id');
+        let formData = new FormData();
+        formData.append('action', 'esFavorito');
+        formData.append('carID', carID);
+
+        try {
+            const response = await fetch('backend.php', {
+                method: 'POST',
+                body: formData
+            });
+            if (!response.ok) {
+                throw new Error('No se pudo obtener una respuesta válida del servidor.');
+            }
+            const data = await response.json();
+            if (data.success) {
+                updateFavoriteButton(button, data.isFavorito);
+            } else {
+                throw new Error(data.message || 'Error desconocido al verificar favorito.');
+            }
+        } catch (error) {
+            console.error('Error al verificar si es favorito:', error);
+        }
+    }
+
+    async function toggleFavorito(button) {
+        const carID = button.getAttribute('data-car-id');
+        const isFavorited = button.getAttribute('data-favorited') === 'true';
+        let formData = new FormData();
+        formData.append('carID', carID);
+
+        // Decidir qué acción tomar, agregar o eliminar favorito
+        const action = isFavorited ? 'eliminarFavorito' : 'agregarFavorito';
+        formData.append('action', action);
+
+        try {
+            const response = await fetch('backend.php', {
+                method: 'POST',
+                body: formData
+            });
+            if (!response.ok) {
+                throw new Error('Respuesta de red no fue ok.');
+            }
+            const data = await response.json(); // Asume que el servidor devuelve una respuesta JSON
+            console.log(data);
+
+            // Manejar la respuesta del servidor
+            if (data.success) {
+                const newFavoritedState = !isFavorited;
+                button.setAttribute('data-favorited', newFavoritedState);
+
+                const iconClass = newFavoritedState ? 'fa fa-star' : 'fa fa-star-o';
+                const actionText = newFavoritedState ? 'Eliminar de Favoritos' : 'Añadir a Favoritos';
+                button.innerHTML = `<i class="${iconClass}"></i> ${actionText}`;
+                button.classList.toggle('btn-primary', newFavoritedState);
+                button.classList.toggle('btn-outline-primary', !newFavoritedState);
+            } else {
+                throw new Error(data.message);
+            }
+        } catch (error) {
+            alert(error.message);
+            console.error('Error al togglear favorito:', error);
+        }
+    }
+
+    function updateFavoriteButton(button, isFavorited) {
+        button.setAttribute('data-favorited', isFavorited);
+        const action = isFavorited ? 'Eliminar de Favoritos' : 'Añadir a Favoritos';
+
+        button.innerHTML = `<i class="fa ${isFavorited ? 'fa-star' : 'fa-star-o'}"></i> ${action}`;
+    }
+
+    function redirectToCarDetails(carParams) {
+        const decodedParams = JSON.parse(decodeURIComponent(carParams));
+        const carID = decodedParams.CarID;
+        const marca = decodedParams.Marca;
+        const modelo = decodedParams.Modelo;
+        window.location.href = `coche.php?CarID=${carID}&Marca=${marca}&Modelo=${modelo}`;
+    }
+
     //Mostrar ventanas panel de control
     function showTab(tabId) {
         // Oculta todas las pestañas primero

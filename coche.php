@@ -62,6 +62,10 @@ $car = getCar($carID);
             border: 2px solid #0dcaf0; /* Establece el color del borde */
         }
 
+        .specs-data {
+            padding: 10px;
+        }
+
         .btn-toggle-favorito {
             color: #ffc107; /* Utilizamos un color amarillo similar al de una estrella */
             border-color: #ffc107;
@@ -128,8 +132,8 @@ $car = getCar($carID);
             <div class="car-description">
                 <div class="py-3 mb-3">
                     <div class="especificaciones">
-                        <h2 class="h4 mb-4">Especificaciones</h2>
-                        <div class="row">
+                        <h2 class="h4 mb-4 specs-data">Especificaciones</h2>
+                        <div class="row specs-data">
                             <div class="col-sm-6 col-md-12 col-lg-6">
                                 <ul class="list-unstyled">
                                     <li class="mb-2"><strong>Año:</strong><span class="opacity-70 ms-1"><?php echo $car[0]['Ano']; ?></span></li>
@@ -149,7 +153,7 @@ $car = getCar($carID);
                                 </ul>
                             </div>
                         </div>
-                        <div class="row col-sm-6 col-md-12 col-lg-6">
+                        <div class="row col-sm-6 col-md-12 col-lg-6 specs-data">
                             <ul class="list-unstyled">
                                 <p><strong>Descripción:</strong></p>
                                 <?php echo $car[0]['Descripcion']; ?>
@@ -336,6 +340,7 @@ $car = getCar($carID);
 
                                 </div>
                                 <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                                     <button type="button" class="btn btn-primary btn-siguiente">Siguiente</button>
                                 </div>
                             </div>
