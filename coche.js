@@ -1,12 +1,52 @@
-let picker;
+var picker;
 document.addEventListener('DOMContentLoaded', function () {
-    picker = new Litepicker({
-        element: document.getElementById('dateRangePicker'),
-        singleMode: false,
-        allowRepick: true,
-        onSelect: function(start, end) {
-            console.log(start, end);
-        }
+
+    function fetchReservedDates(callback) {
+        let formData = new FormData();
+        formData.append('action', 'checkFecha');
+        fetch('backend.php', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                callback(data);
+            })
+            .catch(error => console.error('Error al obtener las fechas reservadas:', error));
+    }
+
+    function initializeLitepicker(datesToLock) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Establece la hora a medianoche para asegurarse de que hoy no esté bloqueado.
+
+        picker = new Litepicker({
+            element: document.getElementById('dateRangePicker'),
+            minDate: today, // Deshabilita los días anteriores a hoy
+            singleMode: false,
+            allowRepick: true,
+            onSelect: function(start, end) {
+                console.log(start, end);
+            },
+            lockDays: datesToLock,
+            disallowLockDaysInRange: true,
+            lockDaysFormat: 'YYYY-MM-DD'
+        });
+    }
+
+    fetchReservedDates(function(reservedDates) {
+        const datesToLock = reservedDates.map(date => {
+            if (date.FechaInicio === date.FechaFin) {
+                return date.FechaInicio;
+            }
+            return [ date.FechaInicio, date.FechaFin ];
+        });
+
+        initializeLitepicker(datesToLock);
     });
 });
 

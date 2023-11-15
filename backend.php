@@ -272,5 +272,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             checkFavorito($car, $userID);
             break;
         }
+        case 'checkFecha':
+        {
+            $userID = $_SESSION['user_id'];
+            $fechas = getReservedDates();
+            break;
+        }
     }
 }

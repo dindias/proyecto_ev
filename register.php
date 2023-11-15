@@ -40,7 +40,6 @@ if (session_status() === PHP_SESSION_NONE) {
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     <button type="submit" class="btn btn-primary">Registrarse</button>
                 </form>
-
             </div>
             <div class="modal-footer"></div>
         </div>

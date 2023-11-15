@@ -591,3 +591,32 @@ function getUserFavoriteCars($userID) {
     return $cars;
 }
 
+function getReservedDates()
+{
+    // Asegurate de que este header sea lo primero antes de cualquier salida.
+    header('Content-Type: application/json');
+
+    $conn = connectDB();
+
+    if ($conn === null) {
+        // Devuelve un mensaje de error como JSON y detén la ejecución.
+        echo json_encode(['error' => 'No se pudo conectar a la base de datos.']);
+        exit; // Importante para detener la ejecución del script
+    }
+
+    try {
+        $stmt = $conn->prepare("SELECT FechaInicio, FechaFin FROM reservas");
+        $stmt->execute();
+
+        // fetchAll te dará un array, incluso si está vacío.
+        $reservedDates = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Devuelve el array como un JSON.
+        echo json_encode($reservedDates);
+        exit; // Detiene la ejecución del script después de imprimir el JSON.
+    } catch (PDOException $e) {
+        // Si hay un error en la consulta, devuelve ese error como JSON.
+        echo json_encode(['error' => $e->getMessage()]);
+        exit; // Importante para detener la ejecución del script.
+    }
+}

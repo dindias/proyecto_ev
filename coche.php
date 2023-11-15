@@ -81,6 +81,11 @@ $car = getCar($carID);
         .btn-toggle-favorito[data-favorited="true"] .fa {
             color: white;
         }
+
+         :root {
+             --litepicker-is-locked-color: red; !important;
+         }
+
     </style>
 </head>
 <body>
@@ -340,7 +345,7 @@ $car = getCar($carID);
 
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="button" class="btn btn-secondary btn-cancelar" data-bs-dismiss="modal">Cancelar</button>
                                     <button type="button" class="btn btn-primary btn-siguiente">Siguiente</button>
                                 </div>
                             </div>
