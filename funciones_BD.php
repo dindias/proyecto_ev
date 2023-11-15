@@ -479,3 +479,87 @@ function eliminarReserva($reservationID) {
     }
 }
 
+function insertarFavorito($carID, $userID) {
+    $conn = connectDB();
+
+    if ($conn) {
+        try {
+            // Preparamos la sentencia SQL
+            $sql = "INSERT INTO favoritos (CarID, UserID) VALUES (:carID, :userID)";
+            $stmt = $conn->prepare($sql);
+
+            $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $stmt->bindParam(':carID', $carID, PDO::PARAM_INT);
+
+            // Ejecutamos la sentencia
+            $stmt->execute();
+
+            // Respondemos al cliente
+            echo json_encode(['success' => true, 'message' => 'Insertado en favoritos']);
+        } catch (PDOException $e) {
+            // En caso de error
+            echo json_encode(['success' => false, 'message' => 'Error al insertar favorito: ' . $e->getMessage()]);
+        }
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error al conectar con la base de datos']);
+    }
+}
+
+function eliminarFavorito($carID, $userID): void
+{
+    $conn = connectDB();
+
+    if ($conn) {
+        try {
+            // Preparamos la sentencia SQL
+            $sql = "DELETE FROM favoritos WHERE CarID = :carID AND UserID = :userID";
+            $stmt = $conn->prepare($sql);
+
+            $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $stmt->bindParam(':carID', $carID, PDO::PARAM_INT);
+
+            // Ejecutamos la sentencia
+            $stmt->execute();
+
+            // Respondemos al cliente
+            echo json_encode(['success' => true, 'message' => 'Eliminado de favoritos']);
+        } catch (PDOException $e) {
+            // En caso de error
+            echo json_encode(['success' => false, 'message' => 'Error al eliminar favorito: ' . $e->getMessage()]);
+        }
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error al conectar con la base de datos']);
+    }
+}
+
+function checkFavorito($carID, $userID) {
+    $conn = connectDB();
+
+    if ($conn) {
+        try {
+            // Preparamos la sentencia SQL
+            $sql = "SELECT * FROM favoritos WHERE CarID = :carID AND UserID = :userID";
+            $stmt = $conn->prepare($sql);
+
+            $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $stmt->bindParam(':carID', $carID, PDO::PARAM_INT);
+
+            // Ejecutamos la sentencia
+            $stmt->execute();
+
+            // Contamos el número de filas devueltas
+            $rowCount = $stmt->rowCount();
+
+            // Devolvemos la respuesta al cliente
+            echo json_encode(['success' => true, 'isFavorito' => $rowCount > 0]);
+        } catch (PDOException $e) {
+            // En caso de error, devolvemos un mensaje al cliente
+            echo json_encode(['success' => false, 'message' => 'Error al verificar favorito: ' . $e->getMessage()]);
+        }
+    } else {
+        // En caso de error al conectar con la base de datos
+        echo json_encode(['success' => false, 'message' => 'Error al conectar con la base de datos']);
+    }
+}
+
+

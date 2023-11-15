@@ -1,4 +1,3 @@
-console.log("estoy aquí");
 function applyInitialFilters() {
     // Suponiendo que la información del filtro viene en el cuerpo de la
     // solicitud POST, por ejemplo, como FormData que se envió desde index.php

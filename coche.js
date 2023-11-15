@@ -1,6 +1,6 @@
 console.log("script cargado");
 
-/*let picker;
+let picker;
 document.addEventListener('DOMContentLoaded', function () {
     picker = new Litepicker({
         element: document.getElementById('dateRangePicker'),
@@ -13,46 +13,9 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function loadCarDetails(car) {
-    // Actualizar el contenido del modal con los detalles del coche
-    let carouselIndicators = document.getElementById('carousel-indicators');
-    let carouselInner = document.getElementById('carousel-inner');
-
-    // Vaciamos los contenedores actuales
-    carouselIndicators.innerHTML = '';
-    carouselInner.innerHTML = '';
-
-    // Generamos los nuevos elementos para los indicadores e imágenes del carrusel
-    car.Imagenes.forEach((imagen, index) => {
-        let indicator = document.createElement('button');
-        indicator.setAttribute('type', 'button');
-        indicator.setAttribute('data-bs-target', `#carCarousel${car.CarID}`);
-        indicator.setAttribute('data-bs-slide-to', index);
-        indicator.className = index === 0 ? 'active' : '';
-        indicator.setAttribute('aria-current', index === 0 ? 'true' : '');
-        indicator.setAttribute('aria-label', `Slide ${index + 1}`);
-        carouselIndicators.appendChild(indicator);
-
-        let carouselItem = document.createElement('div');
-        carouselItem.className = `carousel-item ${index === 0 ? 'active' : ''}`;
-        let img = document.createElement('img');
-        img.className = 'd-block w-100 card-img-top';
-        img.setAttribute('src', imagen);
-        img.setAttribute('alt', `Imagen del coche ${index + 1}`);
-        img.style.height = '16vh';
-        img.style.objectFit = 'cover';
-        carouselItem.appendChild(img);
-        carouselInner.appendChild(carouselItem);
-    });
-
-    // Actualizaciones del resto de la información del coche
-    document.getElementById('carTitle').textContent = car.Marca + ' ' + car.Modelo;
-    document.getElementById('carYear').textContent = `Año: ${car.Ano}`;
-    document.getElementById('carMileage').textContent = `Kilometraje: ${car.Kilometraje}`;
-    document.getElementById('carDescription').textContent = `Descripción: ${car.Descripcion}`;
-    document.getElementById('carPrice').textContent = `Precio: ${car.Precio}`;
 
     // Abrir el modal con Bootstrap JavaScript API (asumiendo que usas Bootstrap 5)
-    const modalElement = document.getElementById('detalles-coche');
+    const modalElement = document.getElementById('comprarModal');
     const modal = new bootstrap.Modal(modalElement);
 
     // Verificar si el modal se inicializó correctamente antes de abrirlo
@@ -60,10 +23,9 @@ function loadCarDetails(car) {
         modal.show();
 
         // Agregar un evento de clic al botón "Siguiente" dentro del modal
-        const btnSiguiente = modalElement.querySelector('#btnSiguiente');
+        const btnSiguiente = modalElement.querySelector('.btn-siguiente');
         btnSiguiente.addEventListener('click', function () {
-            console.log("estoy aquí");
-            let carID = car.CarID;
+            let carID = car;
             let startDate = picker.getStartDate().format('YYYY-MM-DD');
             let endDate = picker.getEndDate().format('YYYY-MM-DD');
 
@@ -82,6 +44,7 @@ function loadCarDetails(car) {
                 .then(data => {
                     // Manejar la respuesta del servidor si es necesario
                     console.log(data);
+                    window.location.href = 'control_panel.php#historial';
                 })
                 .catch(error => {
                     // Manejar errores si es necesario
@@ -89,4 +52,82 @@ function loadCarDetails(car) {
                 });
         });
     }
-}*/
+}
+document.addEventListener('DOMContentLoaded', function() {
+    const button = document.querySelector('.btn-toggle-favorito'); // El selector debe apuntar al botón correcto
+    if (button) {
+        checkIfFavorited(button);
+    }
+});
+
+async function checkIfFavorited(button) {
+    const carID = button.getAttribute('data-car-id');
+    let formData = new FormData();
+    formData.append('action', 'esFavorito');
+    formData.append('carID', carID);
+
+    try {
+        const response = await fetch('backend.php', {
+            method: 'POST',
+            body: formData
+        });
+        if (!response.ok) {
+            throw new Error('No se pudo obtener una respuesta válida del servidor.');
+        }
+        const data = await response.json();
+        if (data.success) {
+            updateFavoriteButton(button, data.isFavorito);
+        } else {
+            throw new Error(data.message || 'Error desconocido al verificar favorito.');
+        }
+    } catch (error) {
+        console.error('Error al verificar si es favorito:', error);
+    }
+}
+
+async function toggleFavorito(button) {
+    const carID = button.getAttribute('data-car-id');
+    const isFavorited = button.getAttribute('data-favorited') === 'true';
+    let formData = new FormData();
+    formData.append('carID', carID);
+
+    // Decidir qué acción tomar, agregar o eliminar favorito
+    const action = isFavorited ? 'eliminarFavorito' : 'agregarFavorito';
+    formData.append('action', action);
+
+    try {
+        const response = await fetch('backend.php', {
+            method: 'POST',
+            body: formData
+        });
+        if (!response.ok) {
+            throw new Error('Respuesta de red no fue ok.');
+        }
+        const data = await response.json(); // Asume que el servidor devuelve una respuesta JSON
+        console.log(data);
+
+        // Manejar la respuesta del servidor
+        if (data.success) {
+            const newFavoritedState = !isFavorited;
+            button.setAttribute('data-favorited', newFavoritedState);
+
+            const iconClass = newFavoritedState ? 'fa fa-star' : 'fa fa-star-o';
+            const actionText = newFavoritedState ? 'Eliminar de Favoritos' : 'Añadir a Favoritos';
+            button.innerHTML = `<i class="${iconClass}"></i> ${actionText}`;
+            button.classList.toggle('btn-primary', newFavoritedState);
+            button.classList.toggle('btn-outline-primary', !newFavoritedState);
+        } else {
+            throw new Error(data.message);
+        }
+    } catch (error) {
+        alert(error.message);
+        console.error('Error al togglear favorito:', error);
+    }
+}
+
+function updateFavoriteButton(button, isFavorited) {
+    button.setAttribute('data-favorited', isFavorited);
+    const action = isFavorited ? 'Eliminar de Favoritos' : 'Añadir a Favoritos';
+
+    button.innerHTML = `<i class="fa ${isFavorited ? 'fa-star' : 'fa-star-o'}"></i> ${action}`;
+}

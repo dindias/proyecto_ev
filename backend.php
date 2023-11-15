@@ -224,6 +224,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $endDate = $_POST['endDate'];
                 $observaciones = '';
 
+                echo $userID, $carId, $startDate, $endDate, $observaciones;
+
                 insertarReserva($userID, $carId, $startDate, $endDate, $observaciones);
 
                 echo json_encode(array('message' => 'Operación exitosa'));
@@ -244,6 +246,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Los IDs de usuario no coinciden, retornamos un error
                 echo json_encode(['success' => false, 'message' => 'No tienes permiso para eliminar esta reserva']);
             }
+            break;
+        }
+        case 'agregarFavorito':
+        {
+            $car = $_POST['carID'];
+            $userID = $_SESSION['user_id'];
+
+            insertarFavorito($car, $userID);
+            break;
+        }
+        case 'eliminarFavorito':
+        {
+            $car = $_POST['carID'];
+            $userID = $_SESSION['user_id'];
+
+            eliminarFavorito($car, $userID);
+            break;
+        }
+        case 'esFavorito':
+        {
+            $car = $_POST['carID'];
+            $userID = $_SESSION['user_id'];
+
+            checkFavorito($car, $userID);
             break;
         }
     }

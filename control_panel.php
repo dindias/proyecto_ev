@@ -724,7 +724,6 @@ include ("footer.php");
 
         document.querySelector("#editCarModal .saveChanges").addEventListener("click", function(e) {
             e.preventDefault();
-            console.log("estoy aquí");
 
             // Selecciona el formulario
             var form = document.querySelector("#editCarForm");
@@ -778,7 +777,6 @@ include ("footer.php");
         const searchBar = document.getElementById('searchBar');
 
         searchBar.addEventListener('input', () => {
-            console.log("estoy aqui");
             const searchTerm = searchBar.value.toLowerCase();
             const cars = document.querySelectorAll('.card');
 
