@@ -3,12 +3,10 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-11-2023 a las 16:39:14
+-- Tiempo de generación: 16-11-2023 a las 00:28:25
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
-DROP DATABASE proyecto_ev;
-CREATE DATABASE proyecto_ev;
-USE proyecto_ev;
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -48,15 +46,18 @@ CREATE TABLE `coches` (
   `Exterior` text NOT NULL,
   `Interior` text NOT NULL,
   `Seguridad` text NOT NULL,
-  `Tecnologia` text NOT NULL
+  `Tecnologia` text NOT NULL,
+  `fecha_adicion` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `coches`
 --
 
-INSERT INTO `coches` (`CarID`, `UserID`, `Marca`, `Modelo`, `Ano`, `Matricula`, `Potencia`, `Autonomia`, `Kilometraje`, `Motorizacion`, `Contaminacion`, `Precio`, `Tipo`, `ubicacion`, `Descripcion`, `Exterior`, `Interior`, `Seguridad`, `Tecnologia`) VALUES
-(82, 1, 'BMW', 'X3', '2023', 'AAA1111', 500, 800, 25000, 'Hibrida', 100, 600, 'Suv', 'Mérida', 'Nuevo', 'Negro', 'Beige', 'Es de hierro coño', 'ABS');
+INSERT INTO `coches` (`CarID`, `UserID`, `Marca`, `Modelo`, `Ano`, `Matricula`, `Potencia`, `Autonomia`, `Kilometraje`, `Motorizacion`, `Contaminacion`, `Precio`, `Tipo`, `ubicacion`, `Descripcion`, `Exterior`, `Interior`, `Seguridad`, `Tecnologia`, `fecha_adicion`) VALUES
+(82, 1, 'BMW', 'X3', '2023', 'AAA1111', 500, 800, 25000, 'Hibrida', 100, 600, 'Suv', 'Mérida', 'Nuevo', 'Negro', 'Beige', 'Es de hierro coño', 'ABS', '2023-11-15'),
+(83, 1, 'Ford', 'Focus', '2022', 'ZZZ5555', 100, 500, 10000, 'Hibrida', 80, 100, 'Compacto', 'Badajoz', 'Coche pequeño como nuevo pese a tener algo de uso', 'Azul\r\nLlantas negras', 'Negro', 'Poquita, es basico', 'ABS', '2023-11-15'),
+(84, 1, 'Tesla', 'Model S', '2020', 'OOO1111', 300, 500, 5000, 'Electrico', 0, 200, 'Berlina', 'Mérida', 'Electrico nuevo', 'Rojo', 'Beige', 'Reglamentaria', 'ABS', '2023-11-15');
 
 -- --------------------------------------------------------
 
@@ -75,7 +76,7 @@ CREATE TABLE `favoritos` (
 --
 
 INSERT INTO `favoritos` (`FavoritoID`, `CarID`, `UserID`) VALUES
-(10, 82, 1);
+(15, 82, 1);
 
 -- --------------------------------------------------------
 
@@ -96,7 +97,11 @@ CREATE TABLE `imagenes` (
 
 INSERT INTO `imagenes` (`ImagenID`, `CarID`, `UserID`, `Imagen`) VALUES
 (10, 82, 1, 'img/bmw-x3.jpg'),
-(11, 82, 1, 'img/bmw-x32.jpg');
+(11, 82, 1, 'img/bmw-x32.jpg'),
+(12, 83, 1, 'img/ford-focus.jpg'),
+(13, 83, 1, 'img/for-focus2.jpg'),
+(14, 84, 1, 'img/tesla-s.jpg'),
+(15, 84, 1, 'img/tesla-s2.jpg');
 
 -- --------------------------------------------------------
 
@@ -112,6 +117,14 @@ CREATE TABLE `reservas` (
   `FechaFin` date NOT NULL,
   `Observaciones` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `reservas`
+--
+
+INSERT INTO `reservas` (`ReservationID`, `UserID`, `CarID`, `FechaInicio`, `FechaFin`, `Observaciones`) VALUES
+(28, 1, 82, '2023-11-16', '2023-11-17', ''),
+(29, 1, 82, '2023-11-18', '2023-11-19', '');
 
 -- --------------------------------------------------------
 
@@ -192,25 +205,25 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `coches`
 --
 ALTER TABLE `coches`
-  MODIFY `CarID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
+  MODIFY `CarID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
 -- AUTO_INCREMENT de la tabla `favoritos`
 --
 ALTER TABLE `favoritos`
-  MODIFY `FavoritoID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `FavoritoID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `imagenes`
 --
 ALTER TABLE `imagenes`
-  MODIFY `ImagenID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `ImagenID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `reservas`
 --
 ALTER TABLE `reservas`
-  MODIFY `ReservationID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `ReservationID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
