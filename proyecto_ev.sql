@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-11-2023 a las 19:06:36
+-- Tiempo de generación: 15-11-2023 a las 16:39:14
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -67,6 +67,13 @@ CREATE TABLE `favoritos` (
   `CarID` bigint(20) UNSIGNED NOT NULL,
   `UserID` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `favoritos`
+--
+
+INSERT INTO `favoritos` (`FavoritoID`, `CarID`, `UserID`) VALUES
+(10, 82, 1);
 
 -- --------------------------------------------------------
 
@@ -189,7 +196,7 @@ ALTER TABLE `coches`
 -- AUTO_INCREMENT de la tabla `favoritos`
 --
 ALTER TABLE `favoritos`
-  MODIFY `FavoritoID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `FavoritoID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `imagenes`
@@ -201,7 +208,7 @@ ALTER TABLE `imagenes`
 -- AUTO_INCREMENT de la tabla `reservas`
 --
 ALTER TABLE `reservas`
-  MODIFY `ReservationID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `ReservationID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
