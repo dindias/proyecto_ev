@@ -29,7 +29,7 @@ include("funciones_BD.php");
         .card-img {
             display: block;
             width: auto;
-            height: 10vh;
+            height: 15vh;
             object-fit: cover;
         }
         .image-preview-thumbnail {
@@ -296,7 +296,9 @@ include ("register.php");
                                     </p>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="card-footer col-md-3">
+                                <?php $encodedParams = json_encode(["CarID" => $carID, "Marca" => $car['Marca'], "Modelo" => $car['Modelo']]); ?>
+                                <button type="button" class="btn btn-primary viewCarBtn" onclick="redirectToCarDetails('<?php echo urlencode($encodedParams); ?>')">Ver anuncio</button>
                                 <button type="button" class="btn btn-toggle-favorito" onclick="toggleFavorito(this)" data-car-id="<?php echo $carID?>" data-favorited="false">
                                     <i class="fa fa-star-o"></i> Añadir a Favoritos
                                 </button>
