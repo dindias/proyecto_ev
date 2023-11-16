@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $password = isset($_POST['password']) ? $_POST['password'] : '';
 
             login($email, $password);
-            header('Location: index.php');
+            header('Location: ' . $_SERVER["HTTP_REFERER"] );
             exit();
         }
         case 'logout':
@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $valuesToUpdate['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
             }
             updateUser($userID, $valuesToUpdate);
-            header('Location: control_panel.php');
+            header("Refresh:0");
             break;
         }
             case 'añadir_coche':
