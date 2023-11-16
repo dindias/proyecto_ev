@@ -4,6 +4,34 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 ?>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .cookie-popup {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 10px;
+        display: none;
+    }
+
+    .cookie-popup-btn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
 <nav class="navbar navbar-expand bg-body-tertiary">
     <div class="container-fluid">
         <a class="navbar-brand">Logo</a>
@@ -14,7 +42,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="/proyecto_ev/index.php">Inicio</a></li>
                 <li class="nav-item"><a class="nav-link" href="/proyecto_ev/busqueda.php">Alquilar</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Precios</a></li>
+                <li class="nav-item"><a class="nav-link" href="info.php">Precios</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Sobre nosotros</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
             </ul>
@@ -44,6 +72,16 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
     </div>
 </nav>
+<?php
+
+if (!isset($_COOKIE['cookie_accepted'])) {
+    // Si no está configurada, mostrar el mensaje de popup
+    echo '<div class="cookie-popup" id="cookiePopup">
+            Este sitio web utiliza cookies para mejorar la experiencia del usuario.
+            <button class="cookie-popup-btn" onclick="acceptCookies()">Aceptar Cookies</button>
+          </div>';
+}
+?>
 
 <script>
     document.addEventListener('DOMContentLoaded', (event) => {
@@ -65,11 +103,19 @@ if (session_status() === PHP_SESSION_NONE) {
                     console.log(data)
 
                     // Recargar la página
-                    window.location.href="/proyecto_ev/index.php";
+                    location.reload();
                 })
                 .catch(error => console.error('Error:', error));
         });
     });
+
+    function acceptCookies() {
+        // Establecer la cookie con una duración de 30 días (puedes ajustar esto según tus necesidades)
+        document.cookie = "cookie_accepted=true; expires=" + new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000).toUTCString() + "; path=/";
+
+        // Ocultar el popup
+        document.getElementById("cookiePopup").style.display = "none";
+    }
 </script>
 
 

@@ -141,26 +141,26 @@ $car = getCar($carID);
                         <div class="row specs-data">
                             <div class="col-sm-6 col-md-12 col-lg-6">
                                 <ul class="list-unstyled">
-                                    <li class="mb-2"><strong>Año:</strong><span class="opacity-70 ms-1"><?php echo $car[0]['Ano']; ?></span></li>
-                                    <li class="mb-2"><strong>Matricula:</strong><span class="opacity-70 ms-1"><?php echo $car[0]['Matricula']; ?></span></li>
-                                    <li class="mb-2"><strong>Potencia:</strong><span class="opacity-70 ms-1"><?php echo $car[0]['Potencia']; ?></span></li>
-                                    <li class="mb-2"><strong>Autonomia:</strong><span class="opacity-70 ms-1"><?php echo $car[0]['Autonomia']; ?></span></li>
-                                    <li class="mb-2"><strong>Kilometraje:</strong><span class="opacity-70 ms-1"><?php echo $car[0]['Kilometraje']; ?></span></li>
+                                    <li class="mb-2"><i class="fa-solid fa-calendar-days"></i> <strong>Año:</strong><span class="opacity-70 ms-1"><?php echo $car[0]['Ano']; ?></span></li>
+                                    <li class="mb-2"><i class="fa-solid fa-address-card"></i> <strong>Matricula:</strong><span class="opacity-70 ms-1"><?php echo $car[0]['Matricula']; ?></span></li>
+                                    <li class="mb-2"><i class="fa-solid fa-gauge-high"></i> <strong>Potencia:</strong><span class="opacity-70 ms-1"><?php echo $car[0]['Potencia']; ?></span></li>
+                                    <li class="mb-2"><i class="fa-solid fa-charging-station"></i> <strong>Autonomia:</strong><span class="opacity-70 ms-1"><?php echo $car[0]['Autonomia']; ?></span></li>
+                                    <li class="mb-2"><i class="fa-solid fa-road"></i> <strong>Kilometraje:</strong><span class="opacity-70 ms-1"><?php echo $car[0]['Kilometraje']; ?></span></li>
                                 </ul>
                             </div>
                             <div class="col-sm-6 col-md-12 col-lg-6">
                                 <ul class="list-unstyled">
-                                    <li class="mb-2"><strong>Motorizacion:</strong><span class="opacity-70 ms-1"><?php echo $car[0]['Motorizacion']; ?></span></li>
-                                    <li class="mb-2"><strong>Contaminación:</strong><span class="opacity-70 ms-1"><?php echo $car[0]['Contaminacion']; ?> G/Km</span></li>
-                                    <li class="mb-2"><strong>Precio:</strong><span class="opacity-70 ms-1"><?php echo number_format($car[0]['Precio'], 2); ?>€/día</span></li>
-                                    <li class="mb-2"><strong>Tipo:</strong><span class="opacity-70 ms-1"><?php echo $car[0]['Tipo']; ?></span></li>
-                                    <li class="mb-2"><strong>Ubicacion:</strong><span class="opacity-70 ms-1"><?php echo $car[0]['ubicacion']; ?></span></li>
+                                    <li class="mb-2"><i class="fa-solid fa-oil-can"></i> <strong>Motorizacion:</strong><span class="opacity-70 ms-1"><?php echo $car[0]['Motorizacion']; ?></span></li>
+                                    <li class="mb-2"><i class="fa-solid fa-biohazard"></i> <strong>Contaminación:</strong><span class="opacity-70 ms-1"><?php echo $car[0]['Contaminacion']; ?> G/Km</span></li>
+                                    <li class="mb-2"><i class="fa-solid fa-landmark"></i> <strong>Precio:</strong><span class="opacity-70 ms-1"><?php echo number_format($car[0]['Precio'], 2); ?>€/día</span></li>
+                                    <li class="mb-2"><i class="fa-solid fa-car"></i> <strong>Tipo:</strong><span class="opacity-70 ms-1"><?php echo $car[0]['Tipo']; ?></span></li>
+                                    <li class="mb-2"><i class="fa-solid fa-map"></i> <strong>Ubicacion:</strong><span class="opacity-70 ms-1"><?php echo $car[0]['ubicacion']; ?></span></li>
                                 </ul>
                             </div>
                         </div>
                         <div class="row col-sm-6 col-md-12 col-lg-6 specs-data">
                             <ul class="list-unstyled">
-                                <p><strong>Descripción:</strong></p>
+                                <p><i class="fa-solid fa-list-check"></i> <strong>Descripción:</strong></p>
                                 <?php echo $car[0]['Descripcion']; ?>
                             </ul>
                         </div><br>
@@ -234,12 +234,16 @@ $car = getCar($carID);
                             <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                         </div>
                         <div class="card-body">
+                            <?php if(isset($_SESSION['user_id'])): ?>
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#comprarModal" onclick="loadCarDetails(<?php echo htmlspecialchars(json_encode($car[0]['CarID']), ENT_QUOTES, 'UTF-8'); ?>)">
                                 Comprar
                             </button>
                             <button type="button" class="btn btn-toggle-favorito" onclick="toggleFavorito(this)" data-car-id="<?php echo $car[0]['CarID']?>" data-favorited="false">
                                 <i class="fa fa-star-o"></i> Añadir a Favoritos
                             </button>
+                            <?php else: ?>
+                            <button type="button" class="btn btn-primary"><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login para ver mas opciones</a></button>
+                            <?php endif?>
                         </div>
                     </div>
                 </div>

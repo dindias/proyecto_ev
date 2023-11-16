@@ -12,6 +12,7 @@ include("funciones_BD.php");
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
+    <script src="https://kit.fontawesome.com/305aef3688.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -34,8 +35,19 @@ include ("register.php");
 
 <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner" style="max-height: 90vh">
-        <div class="carousel-item active">
+        <div class="carousel-item active" data-bs-interval="10000">
             <img src="img/turismo_ID.png" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item" data-bs-interval="10000">
+            <img src="img/ford-electric.jpg" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item" data-bs-interval="10000">
+            <img src="img/toyota-electric.jpg" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-caption d-none d-md-block" style="position: absolute; width: 50%; margin: auto; background-color: rgba(173, 216, 230, 0.8); border: 2px solid #ADD8E6; border-radius: 10px; padding: 10px;">
+            <h2>Bienvenido a nuestro servicio de alquiler de coches eléctricos</h2>
+            <p>Descubre una nueva forma de movilidad sostenible. Explora nuestra flota de coches eléctricos y encuentra el vehículo perfecto para ti.</p>
+            <a href="busqueda.php" class="btn btn-primary">Buscar tu coche</a>
         </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
