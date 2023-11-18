@@ -157,6 +157,8 @@ include ("register.php");
     </div>
 </div>
 
+<!-- Ultimas adiciones de coches aqui -->
+
 <?php
 include ("footer.php");
 ?>
