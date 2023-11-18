@@ -17,7 +17,7 @@ include("funciones_BD.php");
 </head>
 <body>
 
-<header>
+<header class="sticky-top">
     <?php
     require ("header.php");
     ?>
@@ -44,7 +44,7 @@ include ("register.php");
         <div class="carousel-item" data-bs-interval="10000">
             <img src="img/toyota-electric.jpg" class="d-block w-100" alt="...">
         </div>
-        <div class="carousel-caption d-none d-md-block" style="position: absolute; width: 50%; margin: auto; background-color: rgba(173, 216, 230, 0.8); border: 2px solid #ADD8E6; border-radius: 10px; padding: 10px;">
+        <div class="carousel-caption d-none d-md-block" style="position: absolute; width: 50%; margin: auto auto 10%;background-color: rgba(89, 108, 114, 0.8); border: 2px solid #ADD8E6; border-radius: 10px; padding: 10px;">
             <h2>Bienvenido a nuestro servicio de alquiler de coches eléctricos</h2>
             <p>Descubre una nueva forma de movilidad sostenible. Explora nuestra flota de coches eléctricos y encuentra el vehículo perfecto para ti.</p>
             <a href="busqueda.php" class="btn btn-primary">Buscar tu coche</a>

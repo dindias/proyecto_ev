@@ -42,11 +42,10 @@ if (session_status() === PHP_SESSION_NONE) {
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="/proyecto_ev/index.php">Inicio</a></li>
                 <li class="nav-item"><a class="nav-link" href="/proyecto_ev/busqueda.php">Alquilar</a></li>
-                <li class="nav-item"><a class="nav-link" href="info.php">Precios</a></li>
+                <li class="nav-item"><a class="nav-link" href="/proyecto_ev/info.php">Precios</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Sobre nosotros</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
             </ul>
-            <!-- Dropdown -->
             <!-- Dropdown -->
             <?php if(isset($_SESSION['user_id'])): ?>
                 <li class="nav-item dropdown">

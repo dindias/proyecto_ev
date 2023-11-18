@@ -544,6 +544,10 @@ include ("register.php");
                                 </li>
                                 <li class="mb-2">
                                     <label for="motorizacion" class="form-label">Motorizacion:</label>
+                                    <select class="form-select" id="motorizacion" name="Motorizacion" required>
+                                        <option value="Hibrido">Híbrido</option>
+                                        <option value="Electrico">Eléctrico</option>
+                                    </select>
                                     <input type="text" id="motorizacion" name="Motorizacion" class="form-control" placeholder="Motorizacion" required/>
                                 </li>
                                 <li class="mb-2">
