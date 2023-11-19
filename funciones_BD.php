@@ -21,21 +21,43 @@ function connectDB()
     }
 }
 
-function registrarUsuario($nombre, $apellido, $email, $nacimiento, $direccion, $password)
+function registrarUsuario($nombre, $apellido, $email, $nacimiento, $direccion, $password, $confirm_password)
 {
+    // Comprobaciones
+    if (empty($nombre) || empty($apellido) || empty($email) || empty($nacimiento) || empty($direccion) || empty($password) || empty($confirm_password)) {
+        return ['status' => 'error', 'message' => 'Todos los campos son obligatorios.'];
+    }
+
+    if ($password !== $confirm_password) {
+        return ['status' => 'error', 'message' => 'Las contraseñas no coinciden.'];
+    }
+
     // Llamada a la función connectDB() para obtener la conexión
     $conn = connectDB();
 
     if ($conn != null) {
         try {
+            // Verificar si el correo electrónico ya existe
+            $checkEmailQuery = "SELECT COUNT(*) as count FROM usuarios WHERE Email = :email";
+            $checkEmailStmt = $conn->prepare($checkEmailQuery);
+            $checkEmailStmt->bindParam(':email', $email, PDO::PARAM_STR);
+            $checkEmailStmt->execute();
+            $emailCount = $checkEmailStmt->fetch(PDO::FETCH_ASSOC)['count'];
+
+            if ($emailCount > 0) {
+                return ['status' => 'error', 'message' => 'El correo electrónico ya está registrado.'];
+            }
+
+            // Consulta SQL para insertar en la base de datos
             $sql = "INSERT INTO usuarios (Nombre, Apellido, Email, Nacimiento, Direccion, password) 
-                        VALUES (:nombre, :apellido, :email, :nacimiento, :direccion, :password)";
+                    VALUES (:nombre, :apellido, :email, :nacimiento, :direccion, :password)";
 
             $stmt = $conn->prepare($sql);
 
             // Hash de la contraseña
             $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
+            // Bind de los parámetros
             $stmt->bindParam(':nombre', $nombre, PDO::PARAM_STR);
             $stmt->bindParam(':apellido', $apellido, PDO::PARAM_STR);
             $stmt->bindParam(':email', $email, PDO::PARAM_STR);
@@ -43,16 +65,20 @@ function registrarUsuario($nombre, $apellido, $email, $nacimiento, $direccion, $
             $stmt->bindParam(':direccion', $direccion, PDO::PARAM_STR);
             $stmt->bindParam(':password', $passwordHash, PDO::PARAM_STR);
 
+            // Ejecución de la consulta
             $stmt->execute();
 
-            echo 'Usuario registrado con éxito';
+            // Respuesta de éxito
+            return ['status' => 'success', 'message' => 'Usuario registrado con éxito.'];
 
         } catch (PDOException $e) {
-            echo 'Error: ' . $e->getMessage();
+            // Respuesta de error en caso de excepción
+            return ['status' => 'error', 'message' => 'Error: ' . $e->getMessage()];
         }
 
     } else {
-        echo 'No se pudo conectar a la base de datos.';
+        // Respuesta de error si no se pudo conectar a la base de datos
+        return ['status' => 'error', 'message' => 'No se pudo conectar a la base de datos.'];
     }
 }
 
@@ -63,13 +89,17 @@ function login($email, $password) {
     $user = $stmt->fetch();
 
     if ($user && password_verify($password, $user['password'])) {
-        session_start();
         $_SESSION['user_id'] = $user['UserID'];
         $_SESSION['nombre'] = $user['Nombre'];
+
+        // Devuelve un JSON con éxito
+        return ['status' => 'success', 'message' => 'Inicio de sesión exitoso'];
     } else {
-        echo 'Correo electrónico o contraseña incorrecto.';
+        // Devuelve un JSON con error
+        return ['status' => 'error', 'message' => 'Correo electrónico o contraseña incorrecto.'];
     }
 }
+
 
 function getReservas($userID)
 {

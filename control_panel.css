@@ -1,0 +1,41 @@
+
+/* Add a gray background color and some padding to the footer */
+body{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+/* Add a gray background color and some padding to the footer */
+footer {
+    margin-top: auto;
+    background-color: #f2f2f2;
+    padding: 25px;
+}
+
+.card-img {
+    display: block;
+    width: auto;
+    height: 15vh;
+    object-fit: cover;
+}
+.image-preview-thumbnail {
+    max-width: 100px; /* O el tamaño que prefieras */
+    max-height: 100px;
+    object-fit: cover; /* Esto asegura que la imagen se recorte si no encaja, en lugar de deformarse */
+}
+
+.btn-toggle-favorito {
+    color: #ffc107; /* Utilizamos un color amarillo similar al de una estrella */
+    border-color: #ffc107;
+}
+.btn-toggle-favorito .fa {
+    margin-right: 5px;
+}
+/* Cuando el coche es favorito, queremos un relleno sólido y un fondo amarillo */
+.btn-toggle-favorito[data-favorited="true"] {
+    background-color: #ffc107;
+    color: white; /* Cambiamos el texto a blanco para que resalte en fondo amarillo */
+}
+.btn-toggle-favorito[data-favorited="true"] .fa {
+    color: white;
+}

@@ -1,3 +1,4 @@
+
 // Event listener que se dispara cuando se carga el contenido de la página
 document.querySelectorAll('.filtro-tipo').forEach(function(card) {
     card.addEventListener('click', function() {

@@ -12,25 +12,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     switch($action) {
         case 'registro':
         {
+            // Obtén los datos del formulario
             $nombre = $_POST['nombre'];
             $apellido = $_POST['apellido'];
             $email = $_POST['email'];
             $nacimiento = $_POST['nacimiento'];
             $direccion = $_POST['direccion'];
             $password = $_POST['password'];
+            $confirm_password = $_POST['confirm_password'];
 
-            // Llama a la función registrarUsuario()
-            registrarUsuario($nombre, $apellido, $email, $nacimiento, $direccion, $password);
-            header('Location: index.php');
+            // Llama a la función registrarUsuario() y obtén la respuesta
+            $response = registrarUsuario($nombre, $apellido, $email, $nacimiento, $direccion, $password, $confirm_password);
+
+            // Envia la respuesta al JavaScript en formato JSON
+            echo json_encode($response);
             exit();
         }
         case 'login':
         {
-            $email = isset($_POST['email']) ? $_POST['email'] : '';
-            $password = isset($_POST['password']) ? $_POST['password'] : '';
+            $email = $_POST['email'];
+            $password = $_POST['password'];
 
-            login($email, $password);
-            header('Location: ' . $_SERVER["HTTP_REFERER"] );
+            $response = login($email, $password);
+
+            echo json_encode($response);
             exit();
         }
         case 'logout':
