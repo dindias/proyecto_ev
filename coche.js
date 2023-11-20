@@ -102,6 +102,26 @@ function loadCarDetails(car) {
     }
 }
 
+var modalElement = document.getElementById('comprarModal');
+
+if (modalElement) {
+    modalElement.addEventListener('hidden.bs.modal', function () {
+        // Comprueba si el cuerpo tiene la clase 'modal-open' y la elimina
+        document.body.classList.remove('modal-open');
+
+        // Elimina las propiedades 'overflow' y 'padding-right' estilo directamente en el body, si existen
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+
+        // Elimina el modal backdrop si existe
+        var backdrops = document.querySelectorAll('.modal-backdrop');
+        backdrops.forEach(function(backdrop) {
+            backdrop.remove();
+        });
+    });
+}
+
+
 
 document.addEventListener('DOMContentLoaded', function() {
     const button = document.querySelector('.btn-toggle-favorito'); // El selector debe apuntar al botón correcto
