@@ -225,7 +225,7 @@ $car = getCar($carID);
             <div class="card mb-3 profile" style="max-width: 540px;">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <img src="..." class="img-fluid rounded-start" alt="...">
+                        <img src="" class="img-fluid rounded-start" alt="...">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
@@ -346,7 +346,11 @@ $car = getCar($carID);
                                             </div>
                                         </div>
                                     </div>
-
+                                    <div>
+                                        <ul class="list-group" id="precioTotal" data-precio-base="<?php echo $car[0]['Precio']; ?>">
+                                            <li class="list-group-item active">Coste total: <span id="precioValor"><?php echo number_format($car[0]['Precio'], 2); ?></span></li>
+                                        </ul>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary btn-cancelar" data-bs-dismiss="modal">Cancelar</button>

@@ -460,19 +460,20 @@ function updateCar($userID, $valuesToUpdate) {
     return $result;
 }
 
-function insertarReserva($userID, $carID, $fechaInicio, $fechaFin, $observaciones)
+function insertarReserva($userID, $carID, $fechaInicio, $fechaFin, $coste, $observaciones)
 {
     try {
         $conn = connectDB();
 
         if ($conn !== null) {
-            $sql = "INSERT INTO reservas (UserID, CarID, FechaInicio, FechaFin, Observaciones) VALUES (:userID, :carID, :fechaInicio, :fechaFin, :observaciones)";
+            $sql = "INSERT INTO reservas (UserID, CarID, FechaInicio, FechaFin, Coste, Observaciones) VALUES (:userID, :carID, :fechaInicio, :fechaFin, :coste, :observaciones)";
             $stmt = $conn->prepare($sql);
 
             $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
             $stmt->bindParam(':carID', $carID, PDO::PARAM_INT);
             $stmt->bindParam(':fechaInicio', $fechaInicio, PDO::PARAM_STR);
             $stmt->bindParam(':fechaFin', $fechaFin, PDO::PARAM_STR);
+            $stmt->bindParam(':coste', $coste, PDO::PARAM_STR);
             $stmt->bindParam(':observaciones', $observaciones, PDO::PARAM_STR);
 
             $stmt->execute();

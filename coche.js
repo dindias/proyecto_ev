@@ -24,17 +24,25 @@ document.addEventListener('DOMContentLoaded', function () {
         const today = new Date();
         today.setHours(0, 0, 0, 0); // Establece la hora a medianoche para asegurarse de que hoy no esté bloqueado.
 
+        console.log("estoy aqui");
         picker = new Litepicker({
             element: document.getElementById('dateRangePicker'),
-            minDate: today, // Deshabilita los días anteriores a hoy
+            minDate: today,
             singleMode: false,
             allowRepick: true,
-            onSelect: function(start, end) {
-                console.log(start, end);
-            },
             lockDays: datesToLock,
             disallowLockDaysInRange: true,
             lockDaysFormat: 'YYYY-MM-DD'
+        });
+        // Enganchando el evento 'preselect' después de haber inicializado picker
+        picker.on('preselect', function(date1, date2) {
+            const precioElement = document.getElementById('precioValor');
+            const precioBase = parseFloat(document.getElementById('precioTotal').dataset.precioBase);
+            const diffTime = Math.abs(date2.getTime() - date1.getTime());
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; // +1 para incluir tanto el día de inicio como el de fin
+            const precioTotal = precioBase * diffDays;
+
+            precioElement.textContent = precioTotal.toFixed(2);
         });
     }
 
@@ -66,12 +74,14 @@ function loadCarDetails(car) {
             let carID = car;
             let startDate = picker.getStartDate().format('YYYY-MM-DD');
             let endDate = picker.getEndDate().format('YYYY-MM-DD');
+            let precioTotal = document.getElementById('precioValor').textContent;
 
             let formData = new FormData();
             formData.append('action', 'reservar_coche');
             formData.append('carID', carID);
             formData.append('startDate', startDate);
             formData.append('endDate', endDate);
+            formData.append('precioTotal', precioTotal);
 
             // Enviar los datos de carID, userID, startDate y endDate al servidor
             fetch('backend.php', {
@@ -91,6 +101,8 @@ function loadCarDetails(car) {
         });
     }
 }
+
+
 document.addEventListener('DOMContentLoaded', function() {
     const button = document.querySelector('.btn-toggle-favorito'); // El selector debe apuntar al botón correcto
     if (button) {

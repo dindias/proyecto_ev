@@ -222,16 +222,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         case 'reservar_coche':
         {
-            if (isset($_POST['carID']) && isset($_SESSION['user_id']) && isset($_POST['startDate']) && isset($_POST['endDate'])) {
+            if (isset($_POST['carID']) && isset($_SESSION['user_id']) && isset($_POST['startDate']) && isset($_POST['endDate']) && isset($_POST['precioTotal'])) {
                 $carId = $_POST['carID'];
                 $userID = $_SESSION['user_id'];
                 $startDate = $_POST['startDate'];
                 $endDate = $_POST['endDate'];
+                $precioTotal = $_POST['precioTotal'];
                 $observaciones = '';
 
-                echo $userID, $carId, $startDate, $endDate, $observaciones;
-
-                insertarReserva($userID, $carId, $startDate, $endDate, $observaciones);
+                insertarReserva($userID, $carId, $startDate, $endDate, $precioTotal, $observaciones);
 
                 echo json_encode(array('message' => 'Operación exitosa'));
             } else {
