@@ -269,7 +269,7 @@ $car = getCar($carID);
                                                 Ubicación del vehículo
                                             </button>
                                         </h2>
-                                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
+                                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#comprarModal">
                                             <div class="accordion-body">
                                                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d397142.1769148011!2d-6.39879255!3d38.9542923!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd1426b8c9359ae9%3A0xbe6ed2ee13cfca3f!2sM%C3%A9rida%2C%2006800%2C%20Badajoz!5e0!3m2!1ses!2ses!4v1700044104021!5m2!1ses!2ses"
                                                         width="690"
@@ -288,7 +288,7 @@ $car = getCar($carID);
                                                 Fechas
                                             </button>
                                         </h2>
-                                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
+                                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#comprarModal">
                                             <div class="accordion-body">
                                                 <!-- Campo para la selección del rango de fechas -->
                                                 <label for="dateRangePicker">
@@ -302,7 +302,7 @@ $car = getCar($carID);
                                                 Condiciones del servicio
                                             </button>
                                         </h2>
-                                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour">
+                                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#comprarModal">
                                             <div class="accordion-body">
                                                 <h5>1. Alquiler de Coches</h5>
                                                 <p>
