@@ -39,3 +39,21 @@ footer {
 .btn-toggle-favorito[data-favorited="true"] .fa {
     color: white;
 }
+
+.card {
+    /* Otras propiedades CSS... */
+    height: 300px; /* Ajusta la altura según tus necesidades */
+}
+
+.card-body {
+    overflow-y: auto; /* Añade desplazamiento vertical si el contenido es demasiado grande */
+}
+
+.avatar-lg {
+    height: 10rem; /* Ajusta el tamaño del avatar según tus necesidades */
+    width: 10rem; /* Ajusta el tamaño del avatar según tus necesidades */
+}
+
+.font-size-18 {
+    font-size: 16px!important; /* Ajusta el tamaño del texto según tus necesidades */
+}

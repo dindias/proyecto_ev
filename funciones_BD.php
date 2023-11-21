@@ -106,25 +106,40 @@ function getReservas($userID)
     $conn = connectDB();
 
     try {
-        // Consultar las reservas y sus datos de coche para el usuario
-        $stmt = $conn->prepare("SELECT r.*, c.Marca, c.Modelo, c.Ano, c.Matricula, c.Potencia , c.Autonomia, c.Descripcion, c.Precio, c.Tipo
+        // Consultar las reservas y sus datos de coche para el usuario, incluyendo el join con la tabla de imágenes
+        $stmt = $conn->prepare("SELECT r.*, c.Marca, c.Modelo, c.Ano, c.Matricula, c.Potencia , c.Autonomia, c.Descripcion, c.Precio, c.Tipo, i.Imagen
                                 FROM reservas r
                                 JOIN coches c ON c.CarID = r.CarID
+                                LEFT JOIN imagenes i ON i.CarID = c.CarID AND i.UserID = r.UserID
                                 WHERE r.UserID = :userID");
         $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
         $stmt->execute();
 
-        // Set the resulting array to associative
+        // Establecer el modo de resultado en modo asociativo
         $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
-        // Retornar las reservas con los datos del coche
-        return $stmt->fetchAll();
+        // Organizar los resultados por ReservationID para manejar múltiples imágenes por coche
+        $reservas = [];
+        while ($row = $stmt->fetch()) {
+            $reservaID = $row['ReservationID'];
+            if (!isset($reservas[$reservaID])) {
+                $reservas[$reservaID] = $row;
+                $reservas[$reservaID]['Imagenes'] = [];
+            }
+
+            // Agregar la imagen a la reserva si está presente
+            if (!empty($row['Imagen'])) {
+                $reservas[$reservaID]['Imagenes'][] = $row['Imagen'];
+            }
+        }
+
+        // Retornar las reservas con los datos del coche e imágenes
+        return array_values($reservas); // Reindexar el array antes de devolverlo
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
         return [];
     }
 }
-
 
 
 function getTotalCars($filters = []) {

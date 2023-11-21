@@ -168,33 +168,102 @@ include ("register.php");
 
 <div id="historial" class="tabContent" style="display: none;">
     <div class="container" style="max-height: 100vh;">
+
         <!-- Contenedor con barra de desplazamiento -->
         <div class="container-fluid" style="overflow-y: auto; max-height: 75vh;">
             <div class="d-flex flex-column align-items-stretch"> <!-- Asegurarse de estirar los elementos de la columna -->
+
                 <?php
                 $reservas = getReservas($_SESSION['user_id']); // Obtiene las reservas del usuario
                 foreach ($reservas as $reserva) {
+                    print_r($reserva);
                     ?>
-                    <!-- Acordeón para cada reserva -->
-                    <div class="accordion" id="reserva-<?php echo $reserva['ReservationID']; ?>">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="heading-<?php echo $reserva['ReservationID']; ?>">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-<?php echo $reserva['ReservationID']; ?>" aria-expanded="true" aria-controls="collapse-<?php echo $reserva['ReservationID']; ?>">
-                                    <?php echo $reserva['Marca'] . " " . $reserva['Modelo']; ?>
-                                </button>
-                            </h2>
-                            <div id="collapse-<?php echo $reserva['ReservationID']; ?>" class="accordion-collapse collapse" aria-labelledby="heading-<?php echo $reserva['ReservationID']; ?>">
-                                <div class="accordion-body">
-                                    <!-- Mostrar detalles de la reserva, como FechaInicio, FechaFin y Observaciones -->
-                                    Fecha de Inicio: <?php echo $reserva['FechaInicio']; ?><br>
-                                    Fecha de Fin: <?php echo $reserva['FechaFin']; ?><br>
-                                    Observaciones: <?php echo $reserva['Observaciones']; ?>
+                    <div class="card border shadow-none mb-4">
+                        <div class="card-body">
+                            <div class="d-flex align-items-start border-bottom pb-3">
+                                <div class="me-4">
+                                    <?php
+                                    $imagenes = $reserva['Imagenes'];
+                                    if (!empty($imagenes)) {
+                                        ?>
+                                        <div id="carousel-<?php echo $reserva['ReservationID']; ?>" class="carousel slide avatar-lg rounded" data-ride="carousel">
+                                            <div class="carousel-inner">
+                                                <?php
+                                                foreach ($imagenes as $index => $imagen) {
+                                                    $activeClass = ($index == 0) ? 'active' : '';
+                                                    ?>
+                                                    <div class="carousel-item <?php echo $activeClass; ?>">
+                                                        <img src="<?php echo $imagen; ?>" class="d-block w-100" alt="Imagen <?php echo $index; ?>">
+                                                    </div>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </div>
+                                        </div>
+                                        <?php
+                                    } else {
+                                        // Mostrar una imagen predeterminada si no hay imágenes disponibles
+                                        ?>
+                                        <img src="https://www.bootdey.com/image/380x380/FF00FF/000000" alt="" class="avatar-lg rounded">
+                                        <?php
+                                    }
+                                    ?>
                                 </div>
-                                <button onclick="eliminarReserva(<?php echo $reserva['ReservationID']; ?>, <?php echo $reserva['UserID']; ?>)" class="btn btn-danger">Eliminar</button>
+
+                                <div class="flex-grow-1 align-self-center overflow-hidden">
+                                    <div>
+                                        <h5 class="text-truncate font-size-18"><a class="text-dark"><?php echo $reserva['Marca'] . " " . $reserva['Modelo']; ?></a></h5>
+                                        <div class="row row-cols-auto">
+                                            <div class="col">Año: <?php echo $reserva['Ano']; ?></div>
+                                            <div class="col">patata</div>
+                                            <div class="col">patata</div>
+                                            <div class="col">patata</div>
+                                        </div>
+                                        <p class="text-muted mb-0">
+                                            patata
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="flex-shrink-0 ms-2">
+                                    <ul class="list-inline mb-0 font-size-16">
+                                        <li class="list-inline-item">
+                                            <a href="#" class="text-muted px-1" onclick="eliminarReserva(<?php echo $reserva['ReservationID']; ?>, <?php echo $reserva['UserID']; ?>)">
+                                                <i class="mdi mdi-trash-can-outline"></i> Eliminar
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col">
+                                    <div class="mt-3">
+                                        <p class="text-muted mb-2">Fecha de Inicio</p>
+                                        <h5 class="mb-0 mt-2"><?php echo $reserva['FechaInicio']; ?></h5>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mt-3">
+                                        <p class="text-muted mb-2">Fecha de Fin</p>
+                                        <h5 class="mb-0 mt-2"><?php echo $reserva['FechaFin']; ?></h5>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mt-3">
+                                        <p class="text-muted mb-2">Precio</p>
+                                        <h5 class="mb-0 mt-2"><?php echo $reserva['Coste']; ?>€</h5>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mt-3">
+                                        <p class="text-muted mb-2">Observaciones</p>
+                                        <h5 class="mb-0 mt-2"><?php echo $reserva['Observaciones']; ?></h5>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Fin del acordeón -->
+
                     <?php
                 }
                 ?>
