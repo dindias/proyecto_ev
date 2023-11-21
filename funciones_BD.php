@@ -107,11 +107,14 @@ function getReservas($userID)
 
     try {
         // Consultar las reservas y sus datos de coche para el usuario, incluyendo el join con la tabla de imágenes
-        $stmt = $conn->prepare("SELECT r.*, c.Marca, c.Modelo, c.Ano, c.Matricula, c.Potencia , c.Autonomia, c.Descripcion, c.Precio, c.Tipo, i.Imagen
-                                FROM reservas r
-                                JOIN coches c ON c.CarID = r.CarID
-                                LEFT JOIN imagenes i ON i.CarID = c.CarID AND i.UserID = r.UserID
-                                WHERE r.UserID = :userID");
+        $stmt = $conn->prepare("SELECT r.*, c.CarID, c.UserID, c.Marca, c.Modelo, c.Ano, c.Matricula, c.Potencia, c.Autonomia, c.Kilometraje,
+                        c.Motorizacion, c.Contaminacion, c.Precio, c.Tipo, c.ubicacion, c.Descripcion, c.Exterior, c.Interior,
+                        c.Seguridad, c.Tecnologia, c.fecha_adicion, i.Imagen
+                        FROM reservas r
+                        JOIN coches c ON c.CarID = r.CarID
+                        LEFT JOIN imagenes i ON i.CarID = c.CarID AND i.UserID = r.UserID
+                        WHERE r.UserID = :userID");
+
         $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
         $stmt->execute();
 

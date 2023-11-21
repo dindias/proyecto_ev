@@ -176,9 +176,8 @@ include ("register.php");
                 <?php
                 $reservas = getReservas($_SESSION['user_id']); // Obtiene las reservas del usuario
                 foreach ($reservas as $reserva) {
-                    print_r($reserva);
                     ?>
-                    <div class="card border shadow-none mb-4">
+                    <div class="card border shadow-none mb-4 reservas" data-fecha-inicio="<?php echo $reserva['FechaInicio']; ?>" data-fecha-fin="<?php echo $reserva['FechaFin']; ?>">
                         <div class="card-body">
                             <div class="d-flex align-items-start border-bottom pb-3">
                                 <div class="me-4">
@@ -192,7 +191,7 @@ include ("register.php");
                                                 foreach ($imagenes as $index => $imagen) {
                                                     $activeClass = ($index == 0) ? 'active' : '';
                                                     ?>
-                                                    <div class="carousel-item <?php echo $activeClass; ?>">
+                                                    <div class="carousel-item <?php echo $activeClass; ?>" data-bs-interval="2000">
                                                         <img src="<?php echo $imagen; ?>" class="d-block w-100" alt="Imagen <?php echo $index; ?>">
                                                     </div>
                                                     <?php
@@ -213,21 +212,25 @@ include ("register.php");
                                 <div class="flex-grow-1 align-self-center overflow-hidden">
                                     <div>
                                         <h5 class="text-truncate font-size-18"><a class="text-dark"><?php echo $reserva['Marca'] . " " . $reserva['Modelo']; ?></a></h5>
-                                        <div class="row row-cols-auto">
-                                            <div class="col">Año: <?php echo $reserva['Ano']; ?></div>
-                                            <div class="col">patata</div>
-                                            <div class="col">patata</div>
-                                            <div class="col">patata</div>
+                                        <div class="col-md-8">
+                                            <div class="row row-cols-2">
+                                                <div class="col"><strong>Año: </strong><?php echo $reserva['Ano']; ?></div>
+                                                <div class="col"><strong>Potencia: </strong><?php echo $reserva['Potencia']; ?></div>
+                                                <div class="col"><strong>Autonomia: </strong><?php echo $reserva['Autonomia']; ?></div>
+                                                <div class="col"><strong>Motorizacion: </strong><?php echo $reserva['Motorizacion']; ?></div>
+                                            </div>
                                         </div>
+                                        <div class="row">
                                         <p class="text-muted mb-0">
-                                            patata
+                                            <strong>Descripcion: </strong><?php echo $reserva['Descripcion']; ?>
                                         </p>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="flex-shrink-0 ms-2">
                                     <ul class="list-inline mb-0 font-size-16">
                                         <li class="list-inline-item">
-                                            <a href="#" class="text-muted px-1" onclick="eliminarReserva(<?php echo $reserva['ReservationID']; ?>, <?php echo $reserva['UserID']; ?>)">
+                                            <a href="#" class="text-muted px-1 eliminarReserva" onclick="eliminarReserva(<?php echo $reserva['ReservationID']; ?>, <?php echo $reserva['UserID']; ?>)">
                                                 <i class="mdi mdi-trash-can-outline"></i> Eliminar
                                             </a>
                                         </li>

@@ -335,3 +335,36 @@ function eliminarReserva(reservationID, UserID) {
             console.error('Error:', error);
         });
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Obtener la fecha actual en formato DateTime
+    const now = new Date();
+
+    // Obtener todas las tarjetas de reservas
+    const tarjetasReserva = document.querySelectorAll('.reservas');
+
+    // Iterar sobre cada tarjeta de reserva
+    tarjetasReserva.forEach(tarjeta => {
+        // Obtener la fecha de inicio y fin de la tarjeta en formato DateTime
+        const fechaInicio = new Date(tarjeta.dataset.fechaInicio);
+        const fechaFin = new Date(tarjeta.dataset.fechaFin);
+
+        // Calcular la diferencia en horas entre la fecha actual y la fecha de inicio
+        const diferenciaHoras = Math.abs(fechaInicio - now) / 36e5;
+
+        // Determinar si el botón de eliminar debe mostrarse o no (menos de 48 horas)
+        const mostrarEliminar = diferenciaHoras >= 48;
+
+        // Determinar si la tarjeta está vencida (fecha de fin ha pasado)
+        const tarjetaVencida = now > fechaFin;
+
+        // Aplicar clases de Bootstrap según las condiciones
+        tarjeta.classList.toggle('bg-secondary', tarjetaVencida);
+
+        // Obtener el elemento del botón de eliminar dentro de la tarjeta
+        const btnEliminar = tarjeta.querySelector('.eliminarReserva');
+
+        // Mostrar u ocultar el botón de eliminar según la condición
+        btnEliminar.style.display = mostrarEliminar ? 'block' : 'none';
+    });
+});
