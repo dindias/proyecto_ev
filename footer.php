@@ -18,10 +18,7 @@ if (session_status() === PHP_SESSION_NONE) {
 </style>
 <!-- Remove the container if you want to extend the Footer to full width. -->
     <!-- Footer -->
-<br><footer
-        class="text-center text-lg-start text-white"
-        style="background-color: #45526e"
->
+<br><footer class="text-center text-lg-start text-white" style="background-color: #45526e">
     <!-- Grid container -->
     <div class="container p-4 pb-0">
         <!-- Section: Links -->
