@@ -57,3 +57,8 @@ footer {
 .font-size-18 {
     font-size: 16px!important; /* Ajusta el tamaño del texto según tus necesidades */
 }
+
+.opciones {
+    border-left: 5px solid blue;
+    border-radius: 15px;
+}
