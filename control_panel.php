@@ -46,6 +46,9 @@ include ("register.php");
                     <a class="nav-link active" aria-current="page" id="perfilTab" href="#perfil" onclick="showTab('perfil'); return false;">Perfil</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" id="notificacionesTab" href="#notificaciones" onclick="showTab('notificaciones'); return false;">Notificaciones</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" id="anunciosTab" href="#anuncios" onclick="showTab('anuncios'); return false;">Anuncios</a>
                 </li>
                 <li class="nav-item">

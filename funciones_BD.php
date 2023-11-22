@@ -508,7 +508,6 @@ function insertarReserva($userID, $carID, $fechaInicio, $fechaFin, $coste, $obse
         return false; // Ocurrió un error durante la inserción
     }
 }
-
 function sendNotificationToCarOwner($carID, $userID)
 {
     try {
