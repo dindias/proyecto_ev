@@ -482,6 +482,7 @@ function insertarReserva($userID, $carID, $fechaInicio, $fechaFin, $coste, $obse
         $conn = connectDB();
 
         if ($conn !== null) {
+            // Insertar la reserva
             $sql = "INSERT INTO reservas (UserID, CarID, FechaInicio, FechaFin, Coste, Observaciones) VALUES (:userID, :carID, :fechaInicio, :fechaFin, :coste, :observaciones)";
             $stmt = $conn->prepare($sql);
 
@@ -493,6 +494,11 @@ function insertarReserva($userID, $carID, $fechaInicio, $fechaFin, $coste, $obse
             $stmt->bindParam(':observaciones', $observaciones, PDO::PARAM_STR);
 
             $stmt->execute();
+
+            // Notificar al propietario del coche
+            // $message = "El usuario con ID {$userID} ha reservado tu coche (CarID: {$carID}).";
+            sendNotificationToCarOwner($carID, $userID);
+
             return true;
         } else {
             return false; // La conexión a la base de datos falló
@@ -502,6 +508,112 @@ function insertarReserva($userID, $carID, $fechaInicio, $fechaFin, $coste, $obse
         return false; // Ocurrió un error durante la inserción
     }
 }
+
+function sendNotificationToCarOwner($carID, $userID)
+{
+    try {
+        $conn = connectDB();
+
+        if ($conn !== null) {
+            // Obtener información del usuario (nombre y correo)
+            $userStmt = $conn->prepare("SELECT Nombre, Email FROM usuarios WHERE UserID = :userID");
+            $userStmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $userStmt->execute();
+
+            $userResult = $userStmt->fetch(PDO::FETCH_ASSOC);
+            $userName = $userResult['Nombre'];
+            $userEmail = $userResult['Email'];
+
+            // Obtener información del coche (marca, modelo y año)
+            $carStmt = $conn->prepare("SELECT UserID, Marca, Modelo, Ano FROM coches WHERE CarID = :carID");
+            $carStmt->bindParam(':carID', $carID, PDO::PARAM_INT);
+            $carStmt->execute();
+
+            $carResult = $carStmt->fetch(PDO::FETCH_ASSOC);
+            $ownerID = $carResult['UserID'];
+            $carMarca = $carResult['Marca'];
+            $carModelo = $carResult['Modelo'];
+            $carAno = $carResult['Ano'];
+
+            $reservaInfo = $conn->prepare("SELECT * FROM reservas WHERE CarID = :carID");
+            $reservaInfo->bindParam(':carID', $carID, PDO::PARAM_INT);
+            $reservaInfo->execute();
+
+            $reservaResult = $reservaInfo->fetch(PDO::FETCH_ASSOC);
+            $reservaFechaInicio = $reservaResult['FechaInicio'];
+            $reservaFechaFin = $reservaResult['FechaFin'];
+            $reservaCoste = $reservaResult['Coste'];
+            $reservaObservaciones = $reservaResult['Observaciones'];
+            $reservaMomento = $reservaResult['fecha_reserva'];
+
+            // Elaborar el mensaje
+            $message = "El usuario $userName ($userEmail) ha alquilado tu coche $carMarca $carModelo ($carAno) por un coste de $reservaCoste € entre los días $reservaFechaInicio - $reservaFechaFin a día $reservaMomento. Ha dejado las siguientes Observaciones: $reservaObservaciones";
+
+            // Insertar notificación en la tabla
+            sendNotification($ownerID, $carID, $message);
+
+            return true;
+        } else {
+            return false; // La conexión a la base de datos falló
+        }
+    } catch (PDOException $e) {
+        echo "Error al enviar notificación al propietario: " . $e->getMessage();
+        return false; // Ocurrió un error durante la operación
+    }
+}
+
+
+
+function sendNotification($userID, $carID, $message) {
+    $conn = connectDB();
+
+    try {
+        $stmt = $conn->prepare("INSERT INTO notificaciones (UserID, CarID, Message) VALUES (:userID, :carID, :message)");
+        $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+        $stmt->bindParam(':carID', $carID, PDO::PARAM_INT);
+        $stmt->bindParam(':message', $message, PDO::PARAM_STR);
+        $stmt->execute();
+
+        // Puedes agregar aquí lógica adicional si es necesario
+
+        return true;
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+function getUnreadNotifications($userID) {
+    $conn = connectDB();
+
+    try {
+        $stmt = $conn->prepare("SELECT * FROM notificaciones WHERE UserID = :userID AND IsRead = 0 ORDER BY CreatedAt DESC");
+        $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return [];
+    }
+}
+
+function markNotificationAsRead($notificationID) {
+    $conn = connectDB();
+
+    try {
+        $stmt = $conn->prepare("UPDATE notificaciones SET IsRead = 1 WHERE NotificationID = :notificationID");
+        $stmt->bindParam(':notificationID', $notificationID, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return true;
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+
 
 function eliminarReserva($reservationID) {
     $conn = connectDB();
@@ -638,7 +750,7 @@ function getUserFavoriteCars($userID) {
     return $cars;
 }
 
-function getReservedDates()
+function getReservedDates($carID)
 {
     // Asegurate de que este header sea lo primero antes de cualquier salida.
     header('Content-Type: application/json');
@@ -652,7 +764,9 @@ function getReservedDates()
     }
 
     try {
-        $stmt = $conn->prepare("SELECT FechaInicio, FechaFin FROM reservas");
+        // Modifica la consulta SQL para incluir el filtro por CarID.
+        $stmt = $conn->prepare("SELECT FechaInicio, FechaFin FROM reservas WHERE CarID = :carID");
+        $stmt->bindParam(':carID', $carID, PDO::PARAM_INT);
         $stmt->execute();
 
         // fetchAll te dará un array, incluso si está vacío.

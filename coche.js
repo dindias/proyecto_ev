@@ -1,9 +1,11 @@
 var picker;
 document.addEventListener('DOMContentLoaded', function () {
+    const carID = document.getElementById('dateRangePicker').dataset.carId;
 
     function fetchReservedDates(callback) {
         let formData = new FormData();
         formData.append('action', 'checkFecha');
+        formData.append('carID', carID);
         fetch('backend.php', {
             method: 'POST',
             body: formData

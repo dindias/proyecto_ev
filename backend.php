@@ -279,8 +279,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         case 'checkFecha':
         {
             $userID = $_SESSION['user_id'];
-            $fechas = getReservedDates();
+            $carID = $_POST['carID'];
+            $fechas = getReservedDates($carID);
             break;
+        }
+        case 'checkNotificacion':
+        {
+            $userID = $_SESSION['user_id'];
+            $notifications = getUnreadNotifications($userID);
+            echo json_encode($notifications);
+            exit;
+        }
+        case 'marcarLeido':
+        {
+
         }
     }
 }

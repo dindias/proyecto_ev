@@ -291,8 +291,8 @@ $car = getCar($carID);
                                         <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#comprarModal">
                                             <div class="accordion-body">
                                                 <!-- Campo para la selección del rango de fechas -->
-                                                <label for="dateRangePicker">
-                                                </label><input type="text" id="dateRangePicker" class="form-control">
+                                                <label for="dateRangePicker"></label>
+                                                <input type="text" id="dateRangePicker" class="form-control" data-car-id="<?php echo $car['CarID']; ?>">
                                             </div>
                                         </div>
                                     </div>

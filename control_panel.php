@@ -587,7 +587,6 @@ include ("register.php");
                                                     <option value="Hibrido">Híbrido</option>
                                                     <option value="Electrico">Eléctrico</option>
                                                 </select>
-                                                <input type="text" id="motorizacion" name="Motorizacion" class="form-control" placeholder="Motorizacion" required/>
                                             </li>
                                             <li class="mb-2">
                                                 <label for="contaminacion" class="form-label">Contaminacion:</label>
