@@ -107,9 +107,7 @@ function getReservas($userID)
 
     try {
         // Consultar las reservas y sus datos de coche para el usuario, incluyendo el join con la tabla de imágenes
-        $stmt = $conn->prepare("SELECT r.*, c.CarID, c.UserID, c.Marca, c.Modelo, c.Ano, c.Matricula, c.Potencia, c.Autonomia, c.Kilometraje,
-                        c.Motorizacion, c.Contaminacion, c.Precio, c.Tipo, c.ubicacion, c.Descripcion, c.Exterior, c.Interior,
-                        c.Seguridad, c.Tecnologia, c.fecha_adicion, i.Imagen
+        $stmt = $conn->prepare("SELECT r.*, c.*, i.*
                         FROM reservas r
                         JOIN coches c ON c.CarID = r.CarID
                         LEFT JOIN imagenes i ON i.CarID = c.CarID AND i.UserID = r.UserID
@@ -667,5 +665,29 @@ function getReservedDates()
         // Si hay un error en la consulta, devuelve ese error como JSON.
         echo json_encode(['error' => $e->getMessage()]);
         exit; // Importante para detener la ejecución del script.
+    }
+}
+
+function getUltimasAdiciones()
+{
+    $conn = connectDB();
+
+    try {
+        // Consultar las 4 últimas adiciones en la tabla de coches
+        $stmt = $conn->prepare('SELECT coches.*, GROUP_CONCAT(imagenes.Imagen SEPARATOR ",") AS Imagenes 
+                                      FROM coches
+                                      LEFT JOIN imagenes ON coches.CarID = imagenes.CarID 
+                                      ORDER BY coches.fecha_adicion DESC
+                                      LIMIT 4');
+        $stmt->execute();
+
+        // Establecer el modo de resultado en modo asociativo
+        $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+        // Retornar las 4 últimas adiciones
+        return $stmt->fetchAll();
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return [];
     }
 }

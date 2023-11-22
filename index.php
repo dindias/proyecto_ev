@@ -158,12 +158,61 @@ include ("register.php");
 </div>
 
 <!-- Ultimas adiciones de coches aqui -->
+<div class="container mt-5">
+    <h2 class="mb-4">Últimas Adiciones</h2>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+        <?php
+        $ultimasAdiciones = getUltimasAdiciones();
+
+        foreach ($ultimasAdiciones as $coche) {
+            print_r($coche);
+            $imagenes = explode(",", $coche['Imagenes']);
+            ?>
+            <div class="col">
+                <div class="card h-100">
+                    <div id="carousel-<?php echo $coche['CarID']; ?>" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <?php
+                            foreach ($imagenes as $index => $imagen) {
+                                ?>
+                                <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
+                                    <img src="<?php echo $imagen; ?>" class="d-block card-img-top w-100" alt="Imagen del coche">
+                                </div>
+                                <?php
+                            }
+                            ?>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel-<?php echo $coche['CarID']; ?>" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Anterior</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carousel-<?php echo $coche['CarID']; ?>" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Siguiente</span>
+                        </button>
+                    </div>
+                    <?php $encodedParams = json_encode(["CarID" => $coche['CarID'], "Marca" => $coche['Marca'], "Modelo" => $coche['Modelo']]); ?>
+                    <div class="card-body" onclick="redirectToCarDetails('<?php echo urlencode($encodedParams); ?>')" style="cursor: pointer;">
+                        <h5 class="card-title"><?php echo $coche['Marca'] . ' ' . $coche['Modelo']; ?></h5>
+                        <p class="card-text">Motorización: <?php echo $coche['Motorizacion']; ?></p>
+                        <p class="card-text">Año: <?php echo $coche['Ano']; ?></p>
+                        <p class="card-text">Precio: <?php echo $coche['Precio']; ?>€/día</p>
+                        <p class="card-text">Ubicacion: <?php echo $coche['ubicacion']; ?></p>
+                    </div>
+                </div>
+            </div>
+            <?php
+        }
+        ?>
+    </div><br>
+</div>
 
 <?php
 include ("footer.php");
 ?>
 
 <script src="index.js"></script>
+<script src="busqueda.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 </html>
