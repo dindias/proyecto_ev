@@ -1,15 +1,57 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Supongamos que tienes una función para mostrar toasts de Bootstrap 5
     function showToast(message) {
-        // Implementa la lógica para mostrar toasts aquí
-        // Puedes usar librerías como Bootstrap Toast o implementar tu propio mecanismo
-        console.log(message);
+        // Crear el elemento de toast
+        var toast = document.createElement('div');
+        toast.classList.add('toast');
+        toast.setAttribute('role', 'alert');
+        toast.setAttribute('aria-live', 'assertive');
+        toast.setAttribute('aria-atomic', 'true');
+        toast.setAttribute('data-bs-autohide', 'false');
+
+        // Crear el encabezado del toast
+        var toastHeader = document.createElement('div');
+        toastHeader.classList.add('toast-header');
+        toast.appendChild(toastHeader);
+
+        toastHeader.innerHTML = `
+        <strong class="me-auto">Notificación</strong>
+        <small class="text-muted">${getCurrentTime()}</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    `;
+
+        // Crear el cuerpo del toast
+        var toastBody = document.createElement('div');
+        toastBody.classList.add('toast-body');
+        toastBody.textContent = message;
+        toast.appendChild(toastBody);
+
+        // Agregar el toast al contenedor
+        var toastContainer = document.querySelector('.toast-container');
+        toastContainer.appendChild(toast);
+
+        // Inicializar el objeto Toast de Bootstrap
+        var bootstrapToast = new bootstrap.Toast(toast);
+
+        // Mostrar el toast
+        bootstrapToast.show();
     }
 
+// Función para obtener la hora actual en formato hh:mm:ss
+    function getCurrentTime() {
+        var now = new Date();
+        var hours = now.getHours().toString().padStart(2, '0');
+        var minutes = now.getMinutes().toString().padStart(2, '0');
+        var seconds = now.getSeconds().toString().padStart(2, '0');
+        return `${hours}:${minutes}:${seconds}`;
+    }
+
+
     // Función para obtener notificaciones no leídas y mostrar toasts
-    function checkAndShowNotifications() {
+    function checkAndShowNotifications(userID) {
         let formData = new FormData();
-        formData.append('case', 'checkNotificacion');
+        formData.append('action', 'checkNotificacion');
+        formData.append('userID', userID);
         // Llamada a la función para obtener notificaciones no leídas
         fetch('backend.php', {
             method: 'POST',
@@ -21,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (data.length > 0) {
                     // Mostrar cada notificación como toast
                     data.forEach(notification => {
-                        showToast(notification.message);
+                        showToast(notification.Message);
 
                         // Llamada a la función para marcar la notificación como leída
                         fetch('ruta-al-backend/markNotificationAsRead.php?notificationID=' + notification.notificationID);
@@ -35,6 +77,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Llamada a la función para obtener y mostrar notificaciones al cargar la página
     // Asegúrate de tener el ID del usuario disponible (puedes obtenerlo desde el backend si es necesario)
-    var userID = obtenerUserIDDesdeDondeSea(); // Reemplaza esto con tu lógica real para obtener el ID del usuario
+    var userID = document.querySelector('.toast-container').dataset.userId; // Reemplaza esto con tu lógica real para obtener el ID del usuario
     checkAndShowNotifications(userID);
 });

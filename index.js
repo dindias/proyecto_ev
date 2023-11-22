@@ -34,3 +34,11 @@ setInterval(function(){
         autoToggle();
     }
 }, 2000);
+
+function redirectToCarDetails(carParams) {
+    const decodedParams = JSON.parse(decodeURIComponent(carParams));
+    const carID = decodedParams.CarID;
+    const marca = decodedParams.Marca;
+    const modelo = decodedParams.Modelo;
+    window.location.href = `coche.php?CarID=${carID}&Marca=${marca}&Modelo=${modelo}`;
+}

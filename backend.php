@@ -285,7 +285,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         case 'checkNotificacion':
         {
-            $userID = $_SESSION['user_id'];
+            $userID = $_POST['userID'];
             $notifications = getUnreadNotifications($userID);
             echo json_encode($notifications);
             exit;
