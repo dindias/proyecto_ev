@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-11-2023 a las 00:28:25
+-- Tiempo de generación: 22-11-2023 a las 13:03:35
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -55,9 +55,8 @@ CREATE TABLE `coches` (
 --
 
 INSERT INTO `coches` (`CarID`, `UserID`, `Marca`, `Modelo`, `Ano`, `Matricula`, `Potencia`, `Autonomia`, `Kilometraje`, `Motorizacion`, `Contaminacion`, `Precio`, `Tipo`, `ubicacion`, `Descripcion`, `Exterior`, `Interior`, `Seguridad`, `Tecnologia`, `fecha_adicion`) VALUES
-(82, 1, 'BMW', 'X3', '2023', 'AAA1111', 500, 800, 25000, 'Hibrida', 100, 600, 'Suv', 'Mérida', 'Nuevo', 'Negro', 'Beige', 'Es de hierro coño', 'ABS', '2023-11-15'),
-(83, 1, 'Ford', 'Focus', '2022', 'ZZZ5555', 100, 500, 10000, 'Hibrida', 80, 100, 'Compacto', 'Badajoz', 'Coche pequeño como nuevo pese a tener algo de uso', 'Azul\r\nLlantas negras', 'Negro', 'Poquita, es basico', 'ABS', '2023-11-15'),
-(84, 1, 'Tesla', 'Model S', '2020', 'OOO1111', 300, 500, 5000, 'Electrico', 0, 200, 'Berlina', 'Mérida', 'Electrico nuevo', 'Rojo', 'Beige', 'Reglamentaria', 'ABS', '2023-11-15');
+(82, 1, 'BMW', 'X3', '2023', 'AAA1111', 500, 800, 25000, 'Hibrida', 100, 600, 'Suv', 'Mérida', 'Nuevo', 'Negro', 'Beige', 'Es de hierro coño', 'ABS', '2023-11-16'),
+(84, 1, 'Ford', 'Focus', '2022', 'ZZZ1111', 200, 600, 10000, 'Hibrido', 80, 200, 'Compacto', 'Mérida', 'Nuevo', '', '', '', '', '2023-11-22');
 
 -- --------------------------------------------------------
 
@@ -76,7 +75,7 @@ CREATE TABLE `favoritos` (
 --
 
 INSERT INTO `favoritos` (`FavoritoID`, `CarID`, `UserID`) VALUES
-(15, 82, 1);
+(10, 82, 1);
 
 -- --------------------------------------------------------
 
@@ -98,10 +97,32 @@ CREATE TABLE `imagenes` (
 INSERT INTO `imagenes` (`ImagenID`, `CarID`, `UserID`, `Imagen`) VALUES
 (10, 82, 1, 'img/bmw-x3.jpg'),
 (11, 82, 1, 'img/bmw-x32.jpg'),
-(12, 83, 1, 'img/ford-focus.jpg'),
-(13, 83, 1, 'img/for-focus2.jpg'),
-(14, 84, 1, 'img/tesla-s.jpg'),
-(15, 84, 1, 'img/tesla-s2.jpg');
+(12, 84, 1, 'img/ford-focus.jpg'),
+(13, 84, 1, 'img/for-focus2.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `notificaciones`
+--
+
+CREATE TABLE `notificaciones` (
+  `NotificationID` bigint(20) UNSIGNED NOT NULL,
+  `RservaID` int(20) NULL,
+  `UserID` bigint(20) UNSIGNED NOT NULL,
+  `CarID` bigint(20) UNSIGNED NOT NULL,
+  `Message` varchar(255) NOT NULL,
+  `IsRead` tinyint(1) NOT NULL DEFAULT 0,
+  `CreatedAt` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `notificaciones`
+--
+
+INSERT INTO `notificaciones` (`NotificationID`, `UserID`, `CarID`, `Message`, `IsRead`, `CreatedAt`) VALUES
+(4, 1, 82, 'El usuario Daniel (indiasdaniel@gmail.com) ha alquilado tu coche BMW X3 (2023) por un coste de 1800 € entre los días 2023-11-23 - 2023-11-25 a día 2023-11-22 12:46:13. Ha dejado las siguientes Observaciones: ', 0, '2023-11-22 11:46:13'),
+(5, 1, 84, 'El usuario Daniel (indiasdaniel@gmail.com) ha alquilado tu coche Ford Focus (2022) por un coste de 600 € entre los días 2023-11-23 - 2023-11-25 a día 2023-11-22 12:46:23. Ha dejado las siguientes Observaciones: ', 0, '2023-11-22 11:46:23');
 
 -- --------------------------------------------------------
 
@@ -115,16 +136,18 @@ CREATE TABLE `reservas` (
   `CarID` bigint(20) UNSIGNED NOT NULL,
   `FechaInicio` date NOT NULL,
   `FechaFin` date NOT NULL,
-  `Observaciones` varchar(255) DEFAULT NULL
+  `Coste` int(11) NOT NULL,
+  `Observaciones` varchar(255) DEFAULT NULL,
+  `fecha_reserva` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `reservas`
 --
 
-INSERT INTO `reservas` (`ReservationID`, `UserID`, `CarID`, `FechaInicio`, `FechaFin`, `Observaciones`) VALUES
-(28, 1, 82, '2023-11-16', '2023-11-17', ''),
-(29, 1, 82, '2023-11-18', '2023-11-19', '');
+INSERT INTO `reservas` (`ReservationID`, `UserID`, `CarID`, `FechaInicio`, `FechaFin`, `Coste`, `Observaciones`, `fecha_reserva`) VALUES
+(47, 1, 82, '2023-11-23', '2023-11-25', 1800, '', '2023-11-22 12:46:13'),
+(48, 1, 84, '2023-11-23', '2023-11-25', 600, '', '2023-11-22 12:46:23');
 
 -- --------------------------------------------------------
 
@@ -182,6 +205,12 @@ ALTER TABLE `imagenes`
   ADD KEY `UserID` (`UserID`);
 
 --
+-- Indices de la tabla `notificaciones`
+--
+ALTER TABLE `notificaciones`
+  ADD PRIMARY KEY (`NotificationID`);
+
+--
 -- Indices de la tabla `reservas`
 --
 ALTER TABLE `reservas`
@@ -211,19 +240,25 @@ ALTER TABLE `coches`
 -- AUTO_INCREMENT de la tabla `favoritos`
 --
 ALTER TABLE `favoritos`
-  MODIFY `FavoritoID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `FavoritoID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `imagenes`
 --
 ALTER TABLE `imagenes`
-  MODIFY `ImagenID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `ImagenID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT de la tabla `notificaciones`
+--
+ALTER TABLE `notificaciones`
+  MODIFY `NotificationID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `reservas`
 --
 ALTER TABLE `reservas`
-  MODIFY `ReservationID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `ReservationID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`

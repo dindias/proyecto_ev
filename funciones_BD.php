@@ -497,7 +497,7 @@ function insertarReserva($userID, $carID, $fechaInicio, $fechaFin, $coste, $obse
 
             // Notificar al propietario del coche
             // $message = "El usuario con ID {$userID} ha reservado tu coche (CarID: {$carID}).";
-            sendNotificationToCarOwner($carID, $userID);
+            sendNotificationToCarOwner($carID, $userID, $fechaInicio, $fechaFin);
 
             return true;
         } else {
@@ -508,7 +508,8 @@ function insertarReserva($userID, $carID, $fechaInicio, $fechaFin, $coste, $obse
         return false; // Ocurrió un error durante la inserción
     }
 }
-function sendNotificationToCarOwner($carID, $userID)
+
+function sendNotificationToCarOwner($carID, $userID, $reservaInicio, $reservaFin)
 {
     try {
         $conn = connectDB();
@@ -534,11 +535,14 @@ function sendNotificationToCarOwner($carID, $userID)
             $carModelo = $carResult['Modelo'];
             $carAno = $carResult['Ano'];
 
-            $reservaInfo = $conn->prepare("SELECT * FROM reservas WHERE CarID = :carID");
+            $reservaInfo = $conn->prepare("SELECT * FROM reservas WHERE CarID = :carID AND FechaInicio = :reservaInicio AND FechaFin = :reservaFin");
             $reservaInfo->bindParam(':carID', $carID, PDO::PARAM_INT);
+            $reservaInfo->bindParam(':reservaInicio', $reservaInicio, PDO::PARAM_STR);
+            $reservaInfo->bindParam(':reservaFin', $reservaFin, PDO::PARAM_STR);
             $reservaInfo->execute();
 
             $reservaResult = $reservaInfo->fetch(PDO::FETCH_ASSOC);
+            $reservaID = $reservaResult['ReservationID'];
             $reservaFechaInicio = $reservaResult['FechaInicio'];
             $reservaFechaFin = $reservaResult['FechaFin'];
             $reservaCoste = $reservaResult['Coste'];
@@ -549,7 +553,7 @@ function sendNotificationToCarOwner($carID, $userID)
             $message = "El usuario $userName ($userEmail) ha alquilado tu coche $carMarca $carModelo ($carAno) por un coste de $reservaCoste € entre los días $reservaFechaInicio - $reservaFechaFin a día $reservaMomento. Ha dejado las siguientes Observaciones: $reservaObservaciones";
 
             // Insertar notificación en la tabla
-            sendNotification($ownerID, $carID, $message);
+            sendNotification($ownerID, $reservaID, $carID, $message);
 
             return true;
         } else {
@@ -561,13 +565,12 @@ function sendNotificationToCarOwner($carID, $userID)
     }
 }
 
-
-
-function sendNotification($userID, $carID, $message) {
+function sendNotification($userID, $reservaID, $carID, $message) {
     $conn = connectDB();
 
     try {
-        $stmt = $conn->prepare("INSERT INTO notificaciones (UserID, CarID, Message) VALUES (:userID, :carID, :message)");
+        $stmt = $conn->prepare("INSERT INTO notificaciones (ReservaID, UserID, CarID, Message) VALUES (:reservaID, :userID, :carID, :message)");
+        $stmt->bindParam(':reservaID', $reservaID, PDO::PARAM_INT);
         $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
         $stmt->bindParam(':carID', $carID, PDO::PARAM_INT);
         $stmt->bindParam(':message', $message, PDO::PARAM_STR);
@@ -619,17 +622,26 @@ function eliminarReserva($reservationID) {
 
     if ($conn) {
         try {
-            // Preparamos la sentencia SQL
-            $stmt = $conn->prepare("DELETE FROM reservas WHERE ReservationID = :reservationID");
-            $stmt->bindParam(':reservationID', $reservationID, PDO::PARAM_INT);
+            $conn->beginTransaction(); // Comenzar una transacción para asegurar la consistencia de las operaciones
 
-            // Ejecutamos la sentencia
-            $stmt->execute();
+            // Primero, eliminamos el registro de la tabla 'reservas'
+            $stmtReservas = $conn->prepare("DELETE FROM reservas WHERE ReservationID = :reservationID");
+            $stmtReservas->bindParam(':reservationID', $reservationID, PDO::PARAM_INT);
+            $stmtReservas->execute();
+
+            // Luego, eliminamos el registro correspondiente de la tabla 'notificaciones'
+            $stmtNotificaciones = $conn->prepare("DELETE FROM notificaciones WHERE ReservaID = :reservationID");
+            $stmtNotificaciones->bindParam(':reservationID', $reservationID, PDO::PARAM_INT);
+            $stmtNotificaciones->execute();
+
+            // Confirmamos la transacción si todas las operaciones fueron exitosas
+            $conn->commit();
 
             // Respondemos al cliente
-            echo json_encode(['success' => true, 'message' => 'Reserva eliminada correctamente']);
+            echo json_encode(['success' => true, 'message' => 'Reserva y notificación eliminadas correctamente']);
         } catch (PDOException $e) {
-            // En caso de error
+            // En caso de error, revertimos la transacción
+            $conn->rollBack();
             echo json_encode(['success' => false, 'message' => 'Error al eliminar reserva: ' . $e->getMessage()]);
         }
     } else {
