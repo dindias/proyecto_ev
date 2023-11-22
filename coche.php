@@ -236,7 +236,7 @@ $car = getCar($carID);
                         <div class="card-body">
                             <?php if(isset($_SESSION['user_id'])): ?>
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#comprarModal" onclick="loadCarDetails(<?php echo htmlspecialchars(json_encode($car[0]['CarID']), ENT_QUOTES, 'UTF-8'); ?>)">
-                                Comprar
+                                Alquilar
                             </button>
                             <button type="button" class="btn btn-toggle-favorito" onclick="toggleFavorito(this)" data-car-id="<?php echo $car[0]['CarID']?>" data-favorited="false">
                                 <i class="fa fa-star-o"></i> Añadir a Favoritos
