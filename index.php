@@ -165,7 +165,6 @@ include ("register.php");
         $ultimasAdiciones = getUltimasAdiciones();
 
         foreach ($ultimasAdiciones as $coche) {
-            print_r($coche);
             $imagenes = explode(",", $coche['Imagenes']);
             ?>
             <div class="col">

@@ -107,9 +107,11 @@ include ("register.php");
                 </div>
             </div>
 
-            <div id ="notificaciones" class="tabContent container mt-5">
-                <div id="notificacionesAccordion" class="accordion" data-user-id="<?php echo $_SESSION['user_id']?>">
-                    <!-- Aquí se mostrarán las notificaciones -->
+            <div id ="notificaciones" class="tabContent" style="display: none;">
+                <div class="container mt-5">
+                    <div id="notificacionesAccordion" class="accordion" data-user-id="<?php echo $_SESSION['user_id']?>">
+                        <!-- Aquí se mostrarán las notificaciones -->
+                    </div>
                 </div>
             </div>
 
