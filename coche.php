@@ -292,7 +292,7 @@ $car = getCar($carID);
                                             <div class="accordion-body">
                                                 <!-- Campo para la selección del rango de fechas -->
                                                 <label for="dateRangePicker"></label>
-                                                <input type="text" id="dateRangePicker" class="form-control" data-car-id="<?php echo $car['CarID']; ?>">
+                                                <input type="text" id="dateRangePicker" class="form-control" data-car-id="<?php echo $car[0]['CarID']?>">
                                             </div>
                                         </div>
                                     </div>
