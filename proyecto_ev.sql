@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-11-2023 a las 13:03:35
+-- Tiempo de generación: 22-11-2023 a las 16:18:20
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -108,7 +108,7 @@ INSERT INTO `imagenes` (`ImagenID`, `CarID`, `UserID`, `Imagen`) VALUES
 
 CREATE TABLE `notificaciones` (
   `NotificationID` bigint(20) UNSIGNED NOT NULL,
-  `RservaID` int(20) NULL,
+  `ReservaID` int(11) DEFAULT NULL,
   `UserID` bigint(20) UNSIGNED NOT NULL,
   `CarID` bigint(20) UNSIGNED NOT NULL,
   `Message` varchar(255) NOT NULL,
@@ -120,9 +120,9 @@ CREATE TABLE `notificaciones` (
 -- Volcado de datos para la tabla `notificaciones`
 --
 
-INSERT INTO `notificaciones` (`NotificationID`, `UserID`, `CarID`, `Message`, `IsRead`, `CreatedAt`) VALUES
-(4, 1, 82, 'El usuario Daniel (indiasdaniel@gmail.com) ha alquilado tu coche BMW X3 (2023) por un coste de 1800 € entre los días 2023-11-23 - 2023-11-25 a día 2023-11-22 12:46:13. Ha dejado las siguientes Observaciones: ', 0, '2023-11-22 11:46:13'),
-(5, 1, 84, 'El usuario Daniel (indiasdaniel@gmail.com) ha alquilado tu coche Ford Focus (2022) por un coste de 600 € entre los días 2023-11-23 - 2023-11-25 a día 2023-11-22 12:46:23. Ha dejado las siguientes Observaciones: ', 0, '2023-11-22 11:46:23');
+INSERT INTO `notificaciones` (`NotificationID`, `ReservaID`, `UserID`, `CarID`, `Message`, `IsRead`, `CreatedAt`) VALUES
+(4, NULL, 1, 82, 'El usuario Daniel (indiasdaniel@gmail.com) ha alquilado tu coche BMW X3 (2023) por un coste de 1800 € entre los días 2023-11-23 - 2023-11-25 a día 2023-11-22 12:46:13. Ha dejado las siguientes Observaciones: ', 1, '2023-11-22 11:46:13'),
+(5, NULL, 1, 84, 'El usuario Daniel (indiasdaniel@gmail.com) ha alquilado tu coche Ford Focus (2022) por un coste de 600 € entre los días 2023-11-23 - 2023-11-25 a día 2023-11-22 12:46:23. Ha dejado las siguientes Observaciones: ', 1, '2023-11-22 11:46:23');
 
 -- --------------------------------------------------------
 
@@ -147,7 +147,8 @@ CREATE TABLE `reservas` (
 
 INSERT INTO `reservas` (`ReservationID`, `UserID`, `CarID`, `FechaInicio`, `FechaFin`, `Coste`, `Observaciones`, `fecha_reserva`) VALUES
 (47, 1, 82, '2023-11-23', '2023-11-25', 1800, '', '2023-11-22 12:46:13'),
-(48, 1, 84, '2023-11-23', '2023-11-25', 600, '', '2023-11-22 12:46:23');
+(48, 1, 84, '2023-11-23', '2023-11-25', 600, '', '2023-11-22 12:46:23'),
+(49, 1, 84, '2023-11-27', '2023-11-30', 800, '', '2023-11-22 13:08:57');
 
 -- --------------------------------------------------------
 
@@ -252,13 +253,13 @@ ALTER TABLE `imagenes`
 -- AUTO_INCREMENT de la tabla `notificaciones`
 --
 ALTER TABLE `notificaciones`
-  MODIFY `NotificationID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `NotificationID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `reservas`
 --
 ALTER TABLE `reservas`
-  MODIFY `ReservationID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `ReservationID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
