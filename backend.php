@@ -290,9 +290,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo json_encode($notifications);
             exit;
         }
-        case 'marcarLeido':
+        case 'markNotification':
         {
-
+            $notificationID = $_POST['notificationID'];
+            $notifications = markNotificationAsRead($notificationID);
+            echo json_encode($notifications);
+            exit;
         }
     }
 }
