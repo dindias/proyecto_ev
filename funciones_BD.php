@@ -615,7 +615,23 @@ function markNotificationAsRead($notificationID) {
     }
 }
 
+function getNotifications($userID) {
+    $conn = connectDB();
 
+    try {
+        $stmt = $conn->prepare("SELECT * FROM notificaciones WHERE UserID = :userID");
+        $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $notifications;
+    } catch (PDOException $e) {
+        // Manejo de errores
+        echo "Error: " . $e->getMessage();
+        return [];
+    }
+}
 
 function eliminarReserva($reservationID) {
     $conn = connectDB();

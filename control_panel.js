@@ -368,3 +368,108 @@ document.addEventListener('DOMContentLoaded', function () {
         btnEliminar.style.display = mostrarEliminar ? 'block' : 'none';
     });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    let userID = document.getElementById('notificacionesAccordion').dataset.userId;
+
+// Llamada a la función para obtener notificaciones
+    getNotifications(userID);
+
+    function getNotifications(userID) {
+        let formData = new FormData();
+        formData.append('action', 'getNotificaciones');
+        formData.append('userID', userID);
+        fetch('backend.php', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Construir la tabla de notificaciones
+                data.sort((a, b) => new Date(b.CreatedAt) - new Date(a.CreatedAt));
+                buildNotificationsTable(data);
+            })
+            .catch(error => {
+                console.error('Error al obtener notificaciones:', error);
+            });
+    }
+
+    function buildNotificationsTable(notifications) {
+        var accordionDiv = document.getElementById('notificacionesAccordion');
+
+        notifications.forEach((notification, index) => {
+            // Crear un elemento de acordeón para cada notificación
+            var accordionItem = document.createElement('div');
+            accordionItem.classList.add('accordion-item');
+
+            // Aplicar clase para notificaciones leídas
+            if (notification.IsRead === 1) {
+                accordionItem.classList.add('notificacion-leida');
+            }
+
+            // Crear el encabezado del elemento de acordeón
+            var accordionHeader = document.createElement('h2');
+            accordionHeader.classList.add('accordion-header');
+            accordionHeader.setAttribute('id', 'heading' + index);
+
+            // Crear el botón de acordeón
+            var btn = document.createElement('button');
+            btn.classList.add('accordion-button');
+            btn.setAttribute('type', 'button');
+            btn.setAttribute('data-bs-toggle', 'collapse');
+            btn.setAttribute('data-bs-target', '#collapse' + index);
+            btn.setAttribute('aria-expanded', 'false');
+            btn.setAttribute('aria-controls', 'collapse' + index);
+            btn.innerHTML = `Notificación recibida el ${notification.CreatedAt}`;
+
+            // Agregar el botón al encabezado
+            accordionHeader.appendChild(btn);
+
+            // Agregar el encabezado al elemento de acordeón
+            accordionItem.appendChild(accordionHeader);
+
+            // Crear el cuerpo del elemento de acordeón (contenido colapsable)
+            var collapseDiv = document.createElement('div');
+            collapseDiv.classList.add('accordion-collapse', 'collapse');
+            collapseDiv.setAttribute('id', 'collapse' + index);
+            collapseDiv.setAttribute('aria-labelledby', 'heading' + index);
+            collapseDiv.setAttribute('data-bs-parent', '#notificacionesAccordion');
+
+            // Crear el cuerpo del elemento de acordeón con el mensaje
+            var accordionBody = document.createElement('div');
+            accordionBody.classList.add('accordion-body');
+            accordionBody.innerHTML = `<strong>Mensaje:</strong> ${notification.Message}`;
+
+            // Agregar el cuerpo al elemento de acordeón
+            collapseDiv.appendChild(accordionBody);
+
+            // Agregar el cuerpo al elemento de acordeón
+            accordionItem.appendChild(collapseDiv);
+
+            // Agregar el elemento de acordeón al contenedor
+            accordionDiv.appendChild(accordionItem);
+
+            btn.addEventListener('click', function () {
+                markNotificationAsRead(notification.NotificationID);
+            });
+        });
+    }
+});
+
+function markNotificationAsRead(notificationID) {
+    let markNotificationFormData = new FormData();
+    markNotificationFormData.append('action', 'markNotification');
+    markNotificationFormData.append('notificationID', notificationID);
+
+    fetch('backend.php', {
+        method: 'POST',
+        body: markNotificationFormData
+    })
+        .then(markResponse => markResponse.json())
+        .then(markData => {
+            // Puedes realizar acciones adicionales después de marcar la notificación como leída, si es necesario.
+        })
+        .catch(markError => {
+            console.error('Error al marcar notificación como leída:', markError);
+        });
+}

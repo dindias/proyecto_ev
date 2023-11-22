@@ -297,5 +297,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo json_encode($notifications);
             exit;
         }
+        case 'getNotificaciones':
+        {
+            $userID = $_POST['userID'];
+            $notifications = getNotifications($userID);
+            echo json_encode($notifications);
+            exit;
+        }
     }
 }
