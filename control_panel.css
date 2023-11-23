@@ -41,6 +41,7 @@ footer {
 .card {
     /* Otras propiedades CSS... */
     height: 300px; /* Ajusta la altura según tus necesidades */
+    --card-border-color: #C3CBD2;
 }
 
 .card-body {
@@ -68,4 +69,10 @@ footer {
 
 .notificacion-leida .accordion-button {
     background-color: #e0e0e0; /* Color de fondo para notificaciones leídas */
+}
+
+.card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
 }

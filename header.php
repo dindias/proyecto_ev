@@ -48,10 +48,14 @@ if (session_status() === PHP_SESSION_NONE) {
             </ul>
             <!-- Dropdown -->
             <?php if(isset($_SESSION['user_id'])): ?>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown d-flex align-items-center">
+                    <a href="/proyecto_ev/control_panel.php#notificaciones" class="nav-link">
+                    <i class="fa-regular fa-bell fa-xl ms-2" id="notificationsBell" style="margin-right: 10px;"></i>
+                    </a>
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <?php echo $_SESSION['nombre']; ?>
                     </a>
+                    <!-- Campana de notificaciones -->
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="/proyecto_ev/control_panel.php">Panel de control</a></li>
                         <li><a class="dropdown-item" id="logoutlink" href="#">Cerrar sesión</a></li>
@@ -71,16 +75,6 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
     </div>
 </nav>
-<?php
-
-if (!isset($_COOKIE['cookie_accepted'])) {
-    // Si no está configurada, mostrar el mensaje de popup
-    echo '<div class="cookie-popup" id="cookiePopup">
-            Este sitio web utiliza cookies para mejorar la experiencia del usuario.
-            <button class="cookie-popup-btn" onclick="acceptCookies()">Aceptar Cookies</button>
-          </div>';
-}
-?>
 
 <script>
     document.addEventListener('DOMContentLoaded', (event) => {
@@ -108,13 +102,6 @@ if (!isset($_COOKIE['cookie_accepted'])) {
         });
     });
 
-    function acceptCookies() {
-        // Establecer la cookie con una duración de 30 días (puedes ajustar esto según tus necesidades)
-        document.cookie = "cookie_accepted=true; expires=" + new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000).toUTCString() + "; path=/";
-
-        // Ocultar el popup
-        document.getElementById("cookiePopup").style.display = "none";
-    }
 </script>
 
 

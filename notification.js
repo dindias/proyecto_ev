@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
         toast.setAttribute('role', 'alert');
         toast.setAttribute('aria-live', 'assertive');
         toast.setAttribute('aria-atomic', 'true');
-        toast.setAttribute('data-bs-autohide', 'false');
+        toast.setAttribute('data-bs-autohide', 'true');
 
         // Crear el encabezado del toast
         var toastHeader = document.createElement('div');
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 // Verificar si hay notificaciones no leídas
                 if (data.length > 0) {
-                    // Mostrar cada notificación como toast
+                    updateNotificationsBellIcon(data);
                     data.forEach(notification => {
                         showToast(notification.Message, notification.NotificationID);
                     });
@@ -97,9 +97,23 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-
-    // Llamada a la función para obtener y mostrar notificaciones al cargar la página
-    // Asegúrate de tener el ID del usuario disponible (puedes obtenerlo desde el backend si es necesario)
-    var userID = document.querySelector('.toast-container').dataset.userId; // Reemplaza esto con tu lógica real para obtener el ID del usuario
+    var userID = document.querySelector('.toast-container').dataset.userId;
     checkAndShowNotifications(userID);
+
+    function updateNotificationsBellIcon(notifications) {
+        var hasUnreadNotifications = notifications.some(notification => notification.IsRead !== 1);
+
+        var notificationsBell = document.getElementById('notificationsBell');
+        if (notificationsBell) {
+            notificationsBell.classList.remove('fa-regular', 'fa-solid', 'fa-shake', 'fa-xl', 'ms-2');
+
+            if (hasUnreadNotifications) {
+                notificationsBell.classList.add('fa-solid', 'fa-bell', 'fa-xl', 'ms-2', 'fa-shake');
+            } else {
+                notificationsBell.classList.add('fa-regular', 'fa-bell', 'fa-xl', 'ms-2');
+            }
+
+            notificationsBell.style.marginRight = hasUnreadNotifications ? '10px' : '0';
+        }
+    }
 });
