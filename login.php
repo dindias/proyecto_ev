@@ -20,7 +20,7 @@ if (session_status() === PHP_SESSION_NONE) {
                     <div class="form-group">
                         <label for="password">Contraseña:</label>
                         <input type="password" class="form-control" id="password" name="password">
-                    </div>
+                    </div><br>
 
                     <!-- Alerta de éxito -->
                     <div id="loginSuccessAlert" class="alert alert-success d-none" role="alert"></div>

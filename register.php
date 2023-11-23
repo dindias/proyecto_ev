@@ -41,7 +41,12 @@ if (session_status() === PHP_SESSION_NONE) {
                         <label for="confirm_password">Confirmar Contraseña:</label>
                         <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
                         <small id="password_match_error" class="text-danger"></small>
-                    </div>
+                    </div><br>
+
+                    <div id="registerSuccessAlert" class="alert alert-success d-none" role="alert"></div>
+
+                    <div id="registerErrorAlert" class="alert alert-danger d-none" role="alert"></div>
+
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     <button type="button" class="btn btn-primary" onclick="registerUser()">Registrarse</button>
                 </form>
@@ -66,14 +71,18 @@ if (session_status() === PHP_SESSION_NONE) {
                 // Manejar la respuesta del servidor
                 console.log(data);
 
-                // Muestra un mensaje al usuario (éxito o error)
-                alert(data.message);
-
                 // Cierra el modal solo si la respuesta indica éxito
                 if (data.status === 'success') {
+                    document.getElementById('registerSuccessAlert').innerText = data.message;
+                    document.getElementById('registerSuccessAlert').classList.remove('d-none');
+                    document.getElementById('registerErrorAlert').classList.add('d-none');
                     var registerModal = new bootstrap.Modal(document.getElementById('registerModal'));
                     registerModal.hide();
                     window.location.reload();
+                } else {
+                    document.getElementById('registerErrorAlert').innerText = data.message;
+                    document.getElementById('registerErrorAlert').classList.remove('d-none');
+                    document.getElementById('registerSuccessAlert').classList.add('d-none');
                 }
             })
             .catch(error => {
@@ -84,4 +93,3 @@ if (session_status() === PHP_SESSION_NONE) {
             });
     }
 </script>
-
