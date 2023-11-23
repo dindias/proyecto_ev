@@ -167,6 +167,77 @@ include ("register.php");
                         </div>
                     </div>
                 </div>
+                <!-- Filtro Kilometraje -->
+                <div class="accordion-item filtro" data-filtro="kilometraje">
+                    <h2 class="accordion-header" id="headingKilometraje">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseKilometraje" aria-expanded="false" aria-controls="collapseKilometraje">
+                            Kilometraje
+                        </button>
+                    </h2>
+                    <div id="collapseKilometraje" class="accordion-collapse collapse" aria-labelledby="headingKilometraje" data-bs-parent="#accordionFilters">
+                        <div class="accordion-body">
+                            <?php
+                            $kilometros = get_unique_values('Kilometraje', 'coches');
+                            foreach($kilometros as $kilometro):
+                                ?>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="<?php echo $kilometro; ?>" id="distancia<?php echo $kilometro; ?>">
+                                    <label class="form-check-label" for="distancia<?php echo $kilometro; ?>">
+                                        <?php echo $kilometro; ?>
+                                    </label>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filtro Motorizacion -->
+                <div class="accordion-item filtro" data-filtro="motorizacion">
+                    <h2 class="accordion-header" id="headingMotorizacion">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMotorizacion" aria-expanded="false" aria-controls="collapseMotorizacion">
+                            Motorizacion
+                        </button>
+                    </h2>
+                    <div id="collapseMotorizacion" class="accordion-collapse collapse" aria-labelledby="headingMotorizacion" data-bs-parent="#accordionFilters">
+                        <div class="accordion-body">
+                            <?php
+                            $motorizacion = get_unique_values('Motorizacion', 'coches');
+                            foreach($motorizacion as $motor):
+                                ?>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="<?php echo $motor; ?>" id="distancia<?php echo $motor; ?>">
+                                    <label class="form-check-label" for="distancia<?php echo $motor; ?>">
+                                        <?php echo $motor; ?>
+                                    </label>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filtro Ubicacion -->
+                <div class="accordion-item filtro" data-filtro="ubicacion">
+                    <h2 class="accordion-header" id="headingUbicacion">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUbicacion" aria-expanded="false" aria-controls="collapseUbicacion">
+                            Ubicacion
+                        </button>
+                    </h2>
+                    <div id="collapseUbicacion" class="accordion-collapse collapse" aria-labelledby="headingUbicacion" data-bs-parent="#accordionFilters">
+                        <div class="accordion-body">
+                            <?php
+                            $ubicaciones = get_unique_values('ubicacion', 'coches');
+                            foreach($ubicaciones as $ubicacion):
+                                ?>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="<?php echo $ubicacion; ?>" id="distancia<?php echo $ubicacion; ?>">
+                                    <label class="form-check-label" for="distancia<?php echo $ubicacion; ?>">
+                                        <?php echo $ubicacion; ?>
+                                    </label>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Filtro Precio -->
                 <div class="accordion-item filtro" data-filtro="precio">
