@@ -67,7 +67,7 @@ include ("register.php");
             </nav>
         </div>
         <div class="col-md-8 opciones" style="margin: 10px;">
-            <div id="perfil" class="tabContent">
+            <div id="perfil" class="tabContent" style="height: 100%">
                 <div class="container">
                     <h2 class="mb-4">Tus datos</h2>
                     <div class="row">
@@ -164,7 +164,7 @@ include ("register.php");
                 </div>
             </div>
 
-            <div id ="notificaciones" class="tabContent" style="display: none;">
+            <div id ="notificaciones" class="tabContent" style="display: none; height: 100%;">
                 <h2 class="mb-4">Tus notificaciones</h2>
                 <div class="container mt-5">
                     <div id="notificacionesAccordion" class="accordion" data-user-id="<?php echo $_SESSION['user_id']?>">
@@ -242,7 +242,7 @@ include ("register.php");
                 <div class="container" style="max-height: 100vh;">
 
                     <!-- Contenedor con barra de desplazamiento -->
-                    <div class="container-fluid" style="overflow-y: auto; max-height: 75vh;">
+                    <div class="container-fluid" style="overflow-y: auto; max-height: 120vh;">
                         <div class="d-flex flex-column align-items-stretch"> <!-- Asegurarse de estirar los elementos de la columna -->
 
                             <?php
@@ -251,7 +251,7 @@ include ("register.php");
                                 ?>
                                 <div class="card border shadow-none mb-4 reservas" data-fecha-inicio="<?php echo $reserva['FechaInicio']; ?>" data-fecha-fin="<?php echo $reserva['FechaFin']; ?>">
                                     <div class="card-body">
-                                        <div class="d-flex align-items-start border-bottom pb-3">
+                                        <div class="d-flex align-items-start border-bottom pb-3 flex-md-row flex-column">
                                             <div class="me-4">
                                                 <?php
                                                 $imagenes = $reserva['Imagenes'];
@@ -264,7 +264,7 @@ include ("register.php");
                                                                 $activeClass = ($index == 0) ? 'active' : '';
                                                                 ?>
                                                                 <div class="carousel-item <?php echo $activeClass; ?>" data-bs-interval="2000">
-                                                                    <img src="<?php echo $imagen; ?>" class="d-block w-100" alt="Imagen <?php echo $index; ?>">
+                                                                    <img src="<?php echo $imagen; ?>" class="d-block w-100 img-fluid" alt="Imagen <?php echo $index; ?>">
                                                                 </div>
                                                                 <?php
                                                             }
@@ -275,30 +275,24 @@ include ("register.php");
                                                 } else {
                                                     // Mostrar una imagen predeterminada si no hay imágenes disponibles
                                                     ?>
-                                                    <img src="https://www.bootdey.com/image/380x380/FF00FF/000000" alt="" class="avatar-lg rounded">
+                                                    <img src="https://www.bootdey.com/image/380x380/FF00FF/000000" alt="" class="avatar-lg rounded img-fluid">
                                                     <?php
                                                 }
                                                 ?>
                                             </div>
 
                                             <div class="flex-grow-1 align-self-center overflow-hidden">
-                                                <div>
+                                                <div class="order-md-2">
                                                     <h5 class="text-truncate font-size-18"><a class="text-dark"><?php echo $reserva['Marca'] . " " . $reserva['Modelo']; ?></a></h5>
-                                                    <div class="col-md-8">
-                                                        <div class="row row-cols-2">
-                                                            <div class="col"><strong>Año: </strong><?php echo $reserva['Ano']; ?></div>
-                                                            <div class="col"><strong>Potencia: </strong><?php echo $reserva['Potencia']; ?></div>
-                                                            <div class="col"><strong>Autonomia: </strong><?php echo $reserva['Autonomia']; ?></div>
-                                                            <div class="col"><strong>Motorizacion: </strong><?php echo $reserva['Motorizacion']; ?></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <p class="text-muted mb-0">
-                                                            <strong>Descripcion: </strong><?php echo $reserva['Descripcion']; ?>
-                                                        </p>
+                                                    <div class="row row-cols-md-2">
+                                                        <div class="col-md-6"><strong>Año: </strong><?php echo $reserva['Ano']; ?></div>
+                                                        <div class="col-md-6"><strong>Potencia: </strong><?php echo $reserva['Potencia']; ?></div>
+                                                        <div class="col-md-6"><strong>Autonomia: </strong><?php echo $reserva['Autonomia']; ?></div>
+                                                        <div class="col-md-6"><strong>Motorizacion: </strong><?php echo $reserva['Motorizacion']; ?></div>
                                                     </div>
                                                 </div>
                                             </div>
+
                                             <div class="flex-shrink-0 ms-2">
                                                 <ul class="list-inline mb-0 font-size-16">
                                                     <li class="list-inline-item">
