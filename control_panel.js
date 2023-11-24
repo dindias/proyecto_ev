@@ -474,3 +474,59 @@ function markNotificationAsRead(notificationID) {
             console.error('Error al marcar notificación como leída:', markError);
         });
 }
+
+var editPerfilButton = document.querySelectorAll('.editPerfilBtn');
+editPerfilButton.forEach(function (editPerfilButton) {
+    editPerfilButton.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        // Obtiene el ID del coche usando dataset.
+        var userID = this.dataset.userId; // 'carId' en camelCase corresponde a 'data-car-id'
+        console.log(userID);
+
+        var formData = new FormData();
+        formData.append("userID", userID);
+        formData.append("action", "recoger_perfil");
+
+        var request = new XMLHttpRequest();
+        request.open('POST', 'backend.php', true);
+        request.responseType = 'json';
+
+        request.onload = function () {
+            if (this.status >= 200 && this.status < 400) {
+                // Exito!
+                let userDetails = this.response;
+                console.log(userDetails.Nombre);
+
+                document.getElementById('nombre').defaultValue = userDetails.Nombre;
+                document.getElementById('apellido').value = userDetails.Apellido;
+                document.getElementById('email').value = userDetails.Email;
+                document.getElementById('nacimiento').value = userDetails.Nacimiento;
+                document.getElementById('numeroCuenta').value = userDetails.NumeroCuenta;
+                document.getElementById('direccion').value = userDetails.Direccion;
+                document.getElementById('password').value = userDetails.password;
+
+                // Muestra las imágenes en el modal.
+                let imagenPreview = document.getElementById('imagenPreview');
+                imagenPreview.innerHTML = ""; // Limpiamos el contenido previo
+
+                let imgElement = document.createElement('img');
+                imgElement.src = userDetails.imagen;  // Asegúrate de que el src es correcto. Puede que necesites ajustar la ruta
+                imgElement.classList.add('image-preview-thumbnail', 'img-thumbnail', 'm-1');
+                imagenPreview.appendChild(imgElement);
+
+            } else {
+                // Alcanzamos nuestro servidor objetivo, pero devolvió un error
+                console.error('Error del servidor: ', this.status);
+            }
+        };
+
+        request.onerror = function () {
+            // Hubo un error de conexión de algún tipo
+            console.error('Error de conexión');
+        };
+
+        request.send(formData);
+
+    });
+});

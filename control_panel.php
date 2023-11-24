@@ -62,12 +62,62 @@ include ("register.php");
         <div class="col opciones">
             <div id="perfil" class="tabContent">
                 <div class="container">
-                    <h2>Actualizar Perfil</h2>
-                    <div class="col-lg-6 mx-auto">
+                    <h2 class="mb-4">Tus datos</h2>
+                    <div class="row">
+                        <?php
+                        // Obtén los datos del usuario
+                        $userData = getYourData($_SESSION['user_id']);
+
+                        // Verifica si se obtuvieron datos
+                        if ($userData) {
+                            ?>
+                            <div class="col-md-4">
+                                <?php if (!empty($userData['imagen'])) : ?>
+                                    <img src="<?php echo htmlspecialchars($userData['imagen'], ENT_QUOTES, 'UTF-8'); ?>" class="img-fluid rounded" alt="Imagen de perfil">
+                                <?php endif; ?>
+                            </div>
+                            <div class="col-md-8">
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <strong>Nombre:</strong> <?php echo htmlspecialchars($userData['Nombre'], ENT_QUOTES, 'UTF-8'); ?>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Apellido:</strong> <?php echo htmlspecialchars($userData['Apellido'], ENT_QUOTES, 'UTF-8'); ?>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Email:</strong> <?php echo htmlspecialchars($userData['Email'], ENT_QUOTES, 'UTF-8'); ?>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Nacimiento:</strong> <?php echo htmlspecialchars($userData['Nacimiento'], ENT_QUOTES, 'UTF-8'); ?>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Descripción:</strong> <?php echo htmlspecialchars($userData['Descripcion'], ENT_QUOTES, 'UTF-8'); ?>
+                                    </li>
+                                    <!-- Agrega más campos según sea necesario -->
+                                </ul><br>
+                                <button type="button" class="btn btn-primary editPerfilBtn" data-bs-toggle="modal" data-bs-target="#editPerfil" data-user-id="<?php echo $userData['UserID']; ?>">Editar perfil</button>
+                            </div>
+                            <?php
+                        } else {
+                            // Manejo si no se pueden obtener los datos del usuario
+                            echo '<div class="alert alert-danger" role="alert">Error al obtener datos del usuario.</div>';
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="editPerfil" tabindex="-1" role="dialog" aria-labelledby="editPerfilModal" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
                         <form id="perfilForm" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label for="imagen" class="form-label">Imagen de Perfil:</label>
                                 <input type="file" class="form-control" id="imagen" name="imagen">
+                            </div>
+                            <div class="mb-2">
+                                <label for="imagenPreview" class="form-label">Vista previa tu imágen actual:</label>
+                                <div id="imagenPreview" class="mb-3"></div>
                             </div>
                             <div class="mb-3">
                                 <label for="nombre" class="form-label">Nombre:</label>

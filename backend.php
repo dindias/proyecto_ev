@@ -320,5 +320,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo json_encode($notifications);
             exit;
         }
+        case 'recoger_perfil':
+        {
+            $userID = $_POST['userID'];
+            $user = getYourData($userID);
+            echo json_encode($user);
+            exit;
+        }
     }
 }

@@ -852,3 +852,23 @@ function getUserData($userID) {
         $conn = null;
     }
 }
+
+function getYourData($userID) {
+    $conn = connectDB();
+
+    try {
+        $stmt = $conn->prepare("SELECT * FROM usuarios WHERE UserID = :userID");
+        $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // Devuelve los datos del usuario como un array asociativo
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        // Manejo de errores, puedes personalizar según tus necesidades
+        echo json_encode(['error' => $e->getMessage()]);
+        exit;
+    } finally {
+        // Cierra la conexión
+        $conn = null;
+    }
+}

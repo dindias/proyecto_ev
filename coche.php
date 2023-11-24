@@ -6,7 +6,6 @@ if (session_status() === PHP_SESSION_NONE) {
 include("funciones_BD.php");
 $carID = $_GET['CarID'];
 $car = getCar($carID);
-print_r($car);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -233,8 +232,8 @@ print_r($car);
                         <div class="card-body">
                             <h5 class="card-title">Información del Anunciante</h5>
                             <h6 class="card-title"><?php echo $ownerData['Nombre'] . " " . $ownerData['Apellido']; ?></h6>
-                            <h6 class="card-title"><?php echo $ownerData['Email'];?></h6>
                             <p class="card-text"><?php echo $ownerData['Descripcion'];?></p>
+                            <h6 class="card-title"><strong>Contacto: </strong><?php echo $ownerData['Email'];?></h6>
                             <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                         </div>
                         <div class="card-body">
