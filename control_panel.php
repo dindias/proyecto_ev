@@ -41,27 +41,32 @@ include ("register.php");
 <div class="container-flex" style="min-height: 1080px">
     <div class="row">
         <div class="col-md-2 opciones">
-            <nav class="navbar navbar-expand-lg flex-column flex-sm-row">
-                <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" id="perfilTab" href="#perfil" onclick="showTab('perfil'); return false;">Perfil</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="notificacionesTab" href="#notificaciones" onclick="showTab('notificaciones'); return false;">Notificaciones</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="anunciosTab" href="#anuncios" onclick="showTab('anuncios'); return false;">Anuncios</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="historialTab" href="#historial" onclick="showTab('historial'); return false;">Reservas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="favoritosTab" href="#favoritos" onclick="showTab('favoritos'); return false;">Favoritos</a>
-                    </li>
-                </ul>
+            <nav id="sidebar" class="navbar navbar-expand-lg d-flex justify-content-center align-items-center">
+                <button class="navbar-toggler w-100 bg-primary" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarCollapse" aria-controls="sidebarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fa-solid fa-user-gear"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="sidebarCollapse">
+                    <ul class="nav flex-column nav-pills">
+                        <li class="nav-item text-center">
+                            <a class="nav-link active" aria-current="page" id="perfilTab" href="#perfil" onclick="showTab('perfil'); return false;">Perfil</a>
+                        </li>
+                        <li class="nav-item text-center">
+                            <a class="nav-link" id="notificacionesTab" href="#notificaciones" onclick="showTab('notificaciones'); return false;">Notificaciones</a>
+                        </li>
+                        <li class="nav-item text-center">
+                            <a class="nav-link" id="anunciosTab" href="#anuncios" onclick="showTab('anuncios'); return false;">Anuncios</a>
+                        </li>
+                        <li class="nav-item text-center">
+                            <a class="nav-link" id="historialTab" href="#historial" onclick="showTab('historial'); return false;">Reservas</a>
+                        </li>
+                        <li class="nav-item text-center">
+                            <a class="nav-link" id="favoritosTab" href="#favoritos" onclick="showTab('favoritos'); return false;">Favoritos</a>
+                        </li>
+                    </ul>
+                </div>
             </nav>
         </div>
-        <div class="col-md-6 opciones">
+        <div class="col-md-8 opciones" style="margin: 10px;">
             <div id="perfil" class="tabContent">
                 <div class="container">
                     <h2 class="mb-4">Tus datos</h2>
@@ -158,7 +163,9 @@ include ("register.php");
                     </div>
                 </div>
             </div>
+
             <div id ="notificaciones" class="tabContent" style="display: none;">
+                <h2 class="mb-4">Tus notificaciones</h2>
                 <div class="container mt-5">
                     <div id="notificacionesAccordion" class="accordion" data-user-id="<?php echo $_SESSION['user_id']?>">
                         <!-- Aquí se mostrarán las notificaciones -->
