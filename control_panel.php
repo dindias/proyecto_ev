@@ -38,28 +38,30 @@ include ("register.php");
 ?>
 <!-- Resto del body aquí -->
 
-<div class="container-flex">
+<div class="container-flex" style="min-height: 1080px">
     <div class="row">
-        <div class="col-1 opciones">
-            <ul class="nav flex-column nav-pills">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" id="perfilTab" href="#perfil" onclick="showTab('perfil'); return false;">Perfil</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="notificacionesTab" href="#notificaciones" onclick="showTab('notificaciones'); return false;">Notificaciones</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="anunciosTab" href="#anuncios" onclick="showTab('anuncios'); return false;">Anuncios</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="historialTab" href="#historial" onclick="showTab('historial'); return false;">Reservas</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="favoritosTab" href="#favoritos" onclick="showTab('favoritos'); return false;">Favoritos</a>
-                </li>
-            </ul>
+        <div class="col-md-2 opciones">
+            <nav class="navbar navbar-expand-lg flex-column flex-sm-row">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" id="perfilTab" href="#perfil" onclick="showTab('perfil'); return false;">Perfil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="notificacionesTab" href="#notificaciones" onclick="showTab('notificaciones'); return false;">Notificaciones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="anunciosTab" href="#anuncios" onclick="showTab('anuncios'); return false;">Anuncios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="historialTab" href="#historial" onclick="showTab('historial'); return false;">Reservas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="favoritosTab" href="#favoritos" onclick="showTab('favoritos'); return false;">Favoritos</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
-        <div class="col opciones">
+        <div class="col-md-6 opciones">
             <div id="perfil" class="tabContent">
                 <div class="container">
                     <h2 class="mb-4">Tus datos</h2>
