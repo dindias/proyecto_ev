@@ -69,8 +69,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!empty($_POST['password'])) {
                 $valuesToUpdate['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
             }
-            updateUser($userID, $valuesToUpdate);
-            header("Refresh:0");
+            if (!empty($_POST['descripcion'])) {
+                $valuesToUpdate['descripcion'] = $_POST['descripcion'];
+            }
+            print_r($valuesToUpdate);
+            if (!empty($_FILES['imagen']['name'])) {
+                $uploadDir = 'img/'; // Cambia esto con la ruta deseada
+                $uploadFile = $uploadDir . basename($_FILES['imagen']['name']);
+
+                if (move_uploaded_file($_FILES['imagen']['tmp_name'], $uploadFile)) {
+                    // Imagen cargada exitosamente, guarda la ruta en la base de datos o realiza otras acciones necesarias
+                    $valuesToUpdate['imagen'] = $uploadFile;
+                } else {
+                    echo "Error al cargar la imagen.";
+                    exit;
+                }
+            }
+            $user = updateUser($userID, $valuesToUpdate);
+            //header("Refresh:0");
             break;
         }
             case 'añadir_coche':

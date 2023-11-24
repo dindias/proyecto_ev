@@ -64,49 +64,48 @@ include ("register.php");
                 <div class="container">
                     <h2>Actualizar Perfil</h2>
                     <div class="col-lg-6 mx-auto">
-                        <form action="backend.php" method="post">
-                            <input type="hidden" name="action" value="modificar_perfil">
+                        <form id="perfilForm" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label for="imagen" class="form-label">Imagen de Perfil:</label>
+                                <input type="file" class="form-control" id="imagen" name="imagen">
+                            </div>
                             <div class="mb-3">
                                 <label for="nombre" class="form-label">Nombre:</label>
                                 <input type="text" class="form-control" id="nombre" placeholder="Introduce nuevo nombre" name="nombre">
                             </div>
-
                             <div class="mb-3">
                                 <label for="apellido" class="form-label">Apellido:</label>
                                 <input type="text" class="form-control" id="apellido" placeholder="Introduce nuevo apellido" name="apellido">
                             </div>
-
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email:</label>
                                 <input type="email" class="form-control" id="email" placeholder="Introduce nuevo email" name="email">
                             </div>
-
                             <div class="mb-3">
                                 <label for="nacimiento" class="form-label">Nacimiento:</label>
                                 <input type="date" class="form-control" id="nacimiento" name="nacimiento">
                             </div>
-
                             <div class="mb-3">
                                 <label for="numeroCuenta" class="form-label">Número de cuenta:</label>
-                                <input type="text" class="form-control" id="numeroCuenta" placeholder="Introduce nuevo número de cuenta" name="numeroCuenta">
+                                <input type="text" class="form-control" id="numeroCuenta" placeholder="Introduce un número de cuenta válido" name="numeroCuenta">
                             </div>
-
                             <div class="mb-3">
                                 <label for="direccion" class="form-label">Dirección:</label>
                                 <input type="text" class="form-control" id="direccion" placeholder="Introduce nueva dirección" name="direccion">
                             </div>
-
                             <div class="mb-3">
                                 <label for="password" class="form-label">Contraseña:</label>
                                 <input type="password" class="form-control" id="password" placeholder="Introduce nueva contraseña" name="password">
                             </div>
-
-                            <button type="submit" class="btn btn-primary">Actualizar</button>
+                            <div class="mb-3">
+                                <label for="descripcion" class="form-label">Descripcion:</label>
+                                <textarea id="descripcion" class="form-control" name="descripcion"></textarea>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="actualizarPerfil(<?php echo $_SESSION['user_id']?>)">Actualizar</button>
                         </form>
                     </div>
                 </div>
             </div>
-
             <div id ="notificaciones" class="tabContent" style="display: none;">
                 <div class="container mt-5">
                     <div id="notificacionesAccordion" class="accordion" data-user-id="<?php echo $_SESSION['user_id']?>">

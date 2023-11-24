@@ -124,23 +124,24 @@ document.addEventListener('DOMContentLoaded', showTabFromHash);
 window.addEventListener('hashchange', showTabFromHash);
 //Modificación tabla usuarios
 
+function actualizarPerfil(userID) {
+
+    // Prepara el objeto FormData
+    let formData = new FormData(document.getElementById('perfilForm'));
+    formData.append('userID', userID);
+    formData.append('action', 'modificar_perfil');
+
+    fetch('backend.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.text())
+        .then(response => {
+            window.location.reload();
+        });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Reemplaza $('#perfil form').on('submit', ...) con una versión en JS puro
-    document.querySelector('#perfil form').addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        // Prepara el objeto FormData
-        var formData = new FormData(this);
-
-        fetch('backend.php', {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => response.text())
-            .then(response => {
-                window.location.reload();
-            });
-    });
 
     document.querySelector("#addCarModal form").addEventListener("submit", function(e) {
         e.preventDefault();

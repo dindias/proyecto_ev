@@ -6,6 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 include("funciones_BD.php");
 $carID = $_GET['CarID'];
 $car = getCar($carID);
+print_r($car);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -223,14 +224,17 @@ $car = getCar($carID);
         </div>
         <div class="col-md-5 col-sticky">
             <div class="card mb-3 profile" style="max-width: 540px;">
+                <?php $ownerData = getUserData($car[0]['UserID']);?>
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <img src="" class="img-fluid rounded-start" alt="...">
+                        <img src="<?php echo $ownerData['imagen'];?>" class="rounded img-fluid" alt="Imágen de perfil" style="margin: 5%;">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
                             <h5 class="card-title">Información del Anunciante</h5>
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <h6 class="card-title"><?php echo $ownerData['Nombre'] . " " . $ownerData['Apellido']; ?></h6>
+                            <h6 class="card-title"><?php echo $ownerData['Email'];?></h6>
+                            <p class="card-text"><?php echo $ownerData['Descripcion'];?></p>
                             <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                         </div>
                         <div class="card-body">
