@@ -872,3 +872,29 @@ function getYourData($userID) {
         $conn = null;
     }
 }
+
+function isAdmin($userID) {
+    $conn = connectDB();
+
+    try {
+        $stmt = $conn->prepare("SELECT Privilegios FROM usuarios WHERE UserID = :userID");
+        $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($result && isset($result['Privilegios'])) {
+            return ($result['Privilegios'] == 1);
+        } else {
+            // Si no se encuentra el usuario o no se puede obtener el campo 'Privilegios', devolvemos false.
+            return false;
+        }
+    } catch (PDOException $e) {
+        // Manejo de errores, puedes personalizar según tus necesidades
+        echo json_encode(['error' => $e->getMessage()]);
+        exit;
+    } finally {
+        // Cierra la conexión
+        $conn = null;
+    }
+}

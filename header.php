@@ -47,7 +47,9 @@ if (session_status() === PHP_SESSION_NONE) {
                 <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
             </ul>
             <!-- Dropdown -->
-            <?php if(isset($_SESSION['user_id'])): ?>
+            <?php if(isAdmin($_SESSION['user_id']))?>
+                <button type="button" class="btn btn-info" id="adminPanelButton">Panel de administrador</button>
+            <?php if(isset($_SESSION['user_id'])):?>
                 <li class="nav-item dropdown d-flex align-items-center">
                     <a href="/proyecto_ev/control_panel.php#notificaciones" class="nav-link">
                     <i class="fa-regular fa-bell fa-xl ms-2" id="notificationsBell" style="margin-right: 10px;"></i>
@@ -77,6 +79,12 @@ if (session_status() === PHP_SESSION_NONE) {
 </nav>
 
 <script>
+
+    document.getElementById('adminPanelButton').addEventListener('click', function() {
+        // Redirige a admin_panel.php
+        window.location.href = 'admin_panel.php';
+    });
+
     document.addEventListener('DOMContentLoaded', (event) => {
         document.getElementById('logoutlink').addEventListener('click', function(e){
             console.log("hola");
