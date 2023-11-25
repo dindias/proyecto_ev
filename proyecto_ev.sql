@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-11-2023 a las 22:47:14
+-- Tiempo de generación: 25-11-2023 a las 11:40:12
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -55,7 +55,7 @@ CREATE TABLE `coches` (
 --
 
 INSERT INTO `coches` (`CarID`, `UserID`, `Marca`, `Modelo`, `Ano`, `Matricula`, `Potencia`, `Autonomia`, `Kilometraje`, `Motorizacion`, `Contaminacion`, `Precio`, `Tipo`, `ubicacion`, `Descripcion`, `Exterior`, `Interior`, `Seguridad`, `Tecnologia`, `fecha_adicion`) VALUES
-(82, 1, 'BMW', 'X3', '2023', 'AAA1111', 500, 800, 25000, 'Hibrida', 100, 600, 'Suv', 'Mérida', 'Nuevo', 'Negro', 'Beige', 'Es de hierro coño', 'ABS', '2023-11-16'),
+(82, 1, 'BMW', 'X3', '2023', 'AAA1111', 500, 800, 25000, 'Hibrido', 100, 600, 'Suv', 'Mérida', 'Nuevo', 'Negro', 'Beige', 'Es de hierro coño', 'ABS', '2023-11-16'),
 (84, 1, 'Ford', 'Focus', '2022', 'ZZZ1111', 200, 600, 10000, 'Hibrido', 80, 200, 'Compacto', 'Mérida', 'Nuevo', '', '', '', '', '2023-11-22');
 
 -- --------------------------------------------------------
@@ -122,7 +122,7 @@ CREATE TABLE `notificaciones` (
 
 INSERT INTO `notificaciones` (`NotificationID`, `ReservaID`, `UserID`, `CarID`, `Message`, `IsRead`, `CreatedAt`) VALUES
 (4, NULL, 1, 82, 'El usuario Daniel (indiasdaniel@gmail.com) ha alquilado tu coche BMW X3 (2023) por un coste de 1800 € entre los días 2023-11-23 - 2023-11-25 a día 2023-11-22 12:46:13. Ha dejado las siguientes Observaciones: ', 1, '2023-11-22 11:46:13'),
-(5, NULL, 1, 84, 'El usuario Daniel (indiasdaniel@gmail.com) ha alquilado tu coche Ford Focus (2022) por un coste de 600 € entre los días 2023-11-23 - 2023-11-25 a día 2023-11-22 12:46:23. Ha dejado las siguientes Observaciones: ', 0, '2023-11-22 11:46:23');
+(5, NULL, 1, 84, 'El usuario Daniel (indiasdaniel@gmail.com) ha alquilado tu coche Ford Focus (2022) por un coste de 600 € entre los días 2023-11-23 - 2023-11-25 a día 2023-11-22 12:46:23. Ha dejado las siguientes Observaciones: ', 1, '2023-11-22 11:46:23');
 
 -- --------------------------------------------------------
 
@@ -157,6 +157,7 @@ INSERT INTO `reservas` (`ReservationID`, `UserID`, `CarID`, `FechaInicio`, `Fech
 
 CREATE TABLE `usuarios` (
   `UserID` bigint(20) UNSIGNED NOT NULL,
+  `imagen` varchar(255) DEFAULT NULL,
   `Nombre` varchar(50) NOT NULL,
   `Apellido` varchar(50) NOT NULL,
   `Email` varchar(50) NOT NULL,
@@ -165,17 +166,18 @@ CREATE TABLE `usuarios` (
   `Nacimiento` date NOT NULL,
   `NumeroCuenta` varchar(255) DEFAULT NULL,
   `Direccion` varchar(100) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `password` varchar(255) NOT NULL,
+  `Descripcion` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`UserID`, `Nombre`, `Apellido`, `Email`, `email_verified_at`, `Privilegios`, `Nacimiento`, `NumeroCuenta`, `Direccion`, `password`) VALUES
-(1, 'Daniel', 'Indias', 'indiasdaniel@gmail.com', NULL, 0, '2000-06-20', NULL, 'inventada', '$2y$10$ZYkCygPKFTpVURqe/Md0I.cAxrShSLvdbexE4T5/smTnftpG0hk0O'),
-(2, 'Alvaro', '', 'alvaro@gmail.com', NULL, 0, '2000-06-20', NULL, 'inventada', '$2y$10$W9TQnruj1/MY/R3K.ElXSeYNUFl13.Jnnc9kJsQ/uvN49woJrqFGi'),
-(3, 'Pepito', 'Palotes', 'inventada@gmail.com', NULL, 0, '2000-06-20', NULL, 'inventada', '$2y$10$ZsW.wfsK0bhj6UHfaWwn2efEIp5wbnznwkYQc1IlCUt5.rb9E3lOm');
+INSERT INTO `usuarios` (`UserID`, `imagen`, `Nombre`, `Apellido`, `Email`, `email_verified_at`, `Privilegios`, `Nacimiento`, `NumeroCuenta`, `Direccion`, `password`, `Descripcion`) VALUES
+(1, 'img/IMG_20220724_221039_998.jpg', 'Daniel', 'Indias', 'indiasdaniel@gmail.com', NULL, 0, '2000-06-20', NULL, 'inventada', '$2y$10$ZYkCygPKFTpVURqe/Md0I.cAxrShSLvdbexE4T5/smTnftpG0hk0O', 'He empezado a convertir coches a electricos y a venderlos por aficion'),
+(2, NULL, 'Alvaro', '', 'alvaro@gmail.com', NULL, 0, '2000-06-20', NULL, 'inventada', '$2y$10$W9TQnruj1/MY/R3K.ElXSeYNUFl13.Jnnc9kJsQ/uvN49woJrqFGi', NULL),
+(3, NULL, 'Pepito', 'Palotes', 'inventada@gmail.com', NULL, 0, '2000-06-20', NULL, 'inventada', '$2y$10$ZsW.wfsK0bhj6UHfaWwn2efEIp5wbnznwkYQc1IlCUt5.rb9E3lOm', NULL);
 
 --
 -- Índices para tablas volcadas

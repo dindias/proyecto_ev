@@ -474,15 +474,11 @@ function markNotificationAsRead(notificationID) {
             console.error('Error al marcar notificación como leída:', markError);
         });
 }
+document.addEventListener('DOMContentLoaded', function() {
+    var editPerfilBtn = document.querySelector('.editPerfilBtn');
 
-var editPerfilButton = document.querySelectorAll('.editPerfilBtn');
-editPerfilButton.forEach(function (editPerfilButton) {
-    editPerfilButton.addEventListener('click', function (e) {
-        e.preventDefault();
-
-        // Obtiene el ID del coche usando dataset.
-        var userID = this.dataset.userId; // 'carId' en camelCase corresponde a 'data-car-id'
-        console.log(userID);
+    editPerfilBtn.addEventListener('click', function () {
+        var userID = this.dataset.userId;
 
         var formData = new FormData();
         formData.append("userID", userID);
@@ -492,41 +488,63 @@ editPerfilButton.forEach(function (editPerfilButton) {
         request.open('POST', 'backend.php', true);
         request.responseType = 'json';
 
+        // Manejar el evento de carga
         request.onload = function () {
-            if (this.status >= 200 && this.status < 400) {
-                // Exito!
-                let userDetails = this.response;
-                console.log(userDetails.Nombre);
+            if (request.status === 200) {
+                // Parsear la respuesta JSON
+                var userData = request.response;
 
-                document.getElementById('nombre').defaultValue = userDetails.Nombre;
-                document.getElementById('apellido').value = userDetails.Apellido;
-                document.getElementById('email').value = userDetails.Email;
-                document.getElementById('nacimiento').value = userDetails.Nacimiento;
-                document.getElementById('numeroCuenta').value = userDetails.NumeroCuenta;
-                document.getElementById('direccion').value = userDetails.Direccion;
-                document.getElementById('password').value = userDetails.password;
+                // Asignar datos a los elementos del modal
+                document.getElementById('nombre').value = userData.Nombre;
+                document.getElementById('apellido').value = userData.Apellido;
+                document.getElementById('email').value = userData.Email;
+                document.getElementById('nacimiento').value = userData.Nacimiento;
+                document.getElementById('numeroCuenta').value = userData.NumeroCuenta;
+                document.getElementById('direccion').value = userData.Direccion;
+                document.getElementById('password').value = userData.password;
 
-                // Muestra las imágenes en el modal.
+                // Muestra la imagen en el modal.
                 let imagenPreview = document.getElementById('imagenPreview');
                 imagenPreview.innerHTML = ""; // Limpiamos el contenido previo
 
                 let imgElement = document.createElement('img');
-                imgElement.src = userDetails.imagen;  // Asegúrate de que el src es correcto. Puede que necesites ajustar la ruta
+                imgElement.src = userData.imagen;
                 imgElement.classList.add('image-preview-thumbnail', 'img-thumbnail', 'm-1');
                 imagenPreview.appendChild(imgElement);
 
+                // Mostrar el modal después de asignar datos
+                var editPerfilModal = new bootstrap.Modal(document.getElementById('editPerfil'));
+                editPerfilModal.show();
             } else {
-                // Alcanzamos nuestro servidor objetivo, pero devolvió un error
-                console.error('Error del servidor: ', this.status);
+                console.error('Error en la solicitud AJAX: ', request.statusText);
             }
         };
 
+        // Manejar el evento de error
         request.onerror = function () {
-            // Hubo un error de conexión de algún tipo
-            console.error('Error de conexión');
+            console.error('Error en la solicitud AJAX.');
         };
 
+        // Enviar la solicitud con FormData
         request.send(formData);
-
     });
 });
+
+var modalElement = document.getElementById('editPerfil');
+
+if (modalElement) {
+    modalElement.addEventListener('hidden.bs.modal', function () {
+        // Comprueba si el cuerpo tiene la clase 'modal-open' y la elimina
+        document.body.classList.remove('modal-open');
+
+        // Elimina las propiedades 'overflow' y 'padding-right' estilo directamente en el body, si existen
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+
+        // Elimina el modal backdrop si existe
+        var backdrops = document.querySelectorAll('.modal-backdrop');
+        backdrops.forEach(function(backdrop) {
+            backdrop.remove();
+        });
+    });
+}

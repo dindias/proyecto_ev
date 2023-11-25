@@ -117,7 +117,7 @@ include ("register.php");
             <div class="modal fade" id="editPerfil" tabindex="-1" role="dialog" aria-labelledby="editPerfilModal" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                        <form id="perfilForm" enctype="multipart/form-data">
+                        <form id="perfilForm" enctype="multipart/form-data" style="margin: 10px;">
                             <div class="mb-3">
                                 <label for="imagen" class="form-label">Imagen de Perfil:</label>
                                 <input type="file" class="form-control" id="imagen" name="imagen">
@@ -158,7 +158,10 @@ include ("register.php");
                                 <label for="descripcion" class="form-label">Descripcion:</label>
                                 <textarea id="descripcion" class="form-control" name="descripcion"></textarea>
                             </div>
-                            <button type="button" class="btn btn-primary" onclick="actualizarPerfil(<?php echo $_SESSION['user_id']?>)">Actualizar</button>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-primary" onclick="actualizarPerfil(<?php echo $_SESSION['user_id']?>)">Actualizar</button>
+                            </div>
                         </form>
                     </div>
                 </div>
