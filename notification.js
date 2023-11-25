@@ -101,9 +101,10 @@ document.addEventListener('DOMContentLoaded', function () {
     checkAndShowNotifications(userID);
 
     function updateNotificationsBellIcon(notifications) {
+        console.log(notifications);
         var hasUnreadNotifications = notifications.some(notification => notification.IsRead !== 1);
 
-        var notificationsBell = document.getElementById('notificationsBell');
+        var notificationsBell = document.getElementById('notificationBell');
         if (notificationsBell) {
             notificationsBell.classList.remove('fa-regular', 'fa-solid', 'fa-shake', 'fa-xl', 'ms-2');
 
@@ -112,8 +113,6 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 notificationsBell.classList.add('fa-regular', 'fa-bell', 'fa-xl', 'ms-2');
             }
-
-            notificationsBell.style.marginRight = hasUnreadNotifications ? '10px' : '0';
         }
     }
 });

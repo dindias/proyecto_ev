@@ -48,12 +48,19 @@ if (session_status() === PHP_SESSION_NONE) {
             </ul>
             <!-- Dropdown -->
             <?php if(isAdmin($_SESSION['user_id']))?>
-                <button type="button" class="btn btn-info" id="adminPanelButton">Panel de administrador</button>
+                <button type="button" class="btn btn-info" id="adminPanelButton" style="margin-right: 5px;">Panel de administrador</button>
             <?php if(isset($_SESSION['user_id'])):?>
                 <li class="nav-item dropdown d-flex align-items-center">
-                    <a href="/proyecto_ev/control_panel.php#notificaciones" class="nav-link">
-                    <i class="fa-regular fa-bell fa-xl ms-2" id="notificationsBell" style="margin-right: 10px;"></i>
-                    </a>
+                        <a href="/proyecto_ev/control_panel.php#notificaciones" class="btn btn-light position-relative" style="margin-right: 15px;">
+                            <i id="notificationBell" class="far fa-bell fa-lg"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                <?php
+                                $unreadNotifications = count(getUnreadNotifications($_SESSION['user_id']));
+                                echo $unreadNotifications > 0 ? $unreadNotifications : '0';
+                                ?>
+                                <span class="visually-hidden">unread notifications</span>
+                            </span>
+                        </a>
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <?php echo $_SESSION['nombre']; ?>
                     </a>
