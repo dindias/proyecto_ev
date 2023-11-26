@@ -983,3 +983,22 @@ function getReservationEvolution() {
     }
 }
 
+function getTablaUsuarios() {
+    $conn = connectDB();
+
+    if ($conn === null) {
+        return null;
+    }
+
+    try {
+        $stmt = $conn->query("
+            SELECT *
+            FROM `usuarios`;
+        ");
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        return null;
+    }
+}
+

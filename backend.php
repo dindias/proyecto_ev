@@ -351,5 +351,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo json_encode($data);
             exit;
         }
+        case 'tablaUsuarios':
+        {
+            $data = getTablaUsuarios();
+            echo json_encode($data);
+            exit;
+        }
     }
 }
