@@ -940,3 +940,46 @@ function getContaminationData() {
         return null;
     }
 }
+
+function getCarsByType()
+{
+    $conn = connectDB();
+
+    if ($conn === null) {
+        return null;
+    }
+
+    try {
+        $stmt = $conn->query("
+            SELECT Tipo, COUNT(*) as TotalCoches
+            FROM coches
+            GROUP BY Tipo;
+        ");
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        return null;
+    }
+}
+
+function getReservationEvolution() {
+    $conn = connectDB();
+
+    if ($conn === null) {
+        return null;
+    }
+
+    try {
+        $stmt = $conn->query("
+            SELECT DATE_FORMAT(`fecha_reserva`, '%Y-%m') AS `Mes`, COUNT(*) AS `TotalReservas`
+            FROM `reservas`
+            GROUP BY `Mes`
+            ORDER BY `Mes` ASC;
+        ");
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        return null;
+    }
+}
+

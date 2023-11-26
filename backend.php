@@ -339,5 +339,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo json_encode($data);
             exit;
         }
+        case 'tiposCoche':
+        {
+            $data = getCarsByType();
+            echo json_encode($data);
+            exit;
+        }
+        case 'evolucionReservas':
+        {
+            $data = getReservationEvolution();
+            echo json_encode($data);
+            exit;
+        }
     }
 }

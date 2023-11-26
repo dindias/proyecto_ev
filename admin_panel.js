@@ -69,7 +69,7 @@ function renderChartRegistro(data) {
         type: 'line',
         data: {
             datasets: [{
-                label: 'Usuarios registrados',
+                label: 'Usuarios',
                 data: chartData,
                 borderColor: 'rgb(75, 192, 192)',
                 tension: 0.1,
@@ -129,7 +129,7 @@ function renderChartContaminacion(data) {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Contaminación Promedio por Marca',
+                label: 'Gramos de CO2 por Km',
                 data: contaminationValues,
                 backgroundColor: 'rgba(75, 192, 192, 0.5)', // Color de fondo de las barras
                 borderColor: 'rgba(75, 192, 192, 1)', // Borde de las barras
@@ -153,4 +153,147 @@ function renderChartContaminacion(data) {
 
     // Crea el gráfico
     new Chart(ctx, config);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Hacer la solicitud Fetch para obtener los datos de registro
+    let formData = new FormData();
+    formData.append('action', 'tiposCoche');
+
+    // Llamada a la función para obtener notificaciones no leídas
+    fetch('backend.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Crear el gráfico cuando se obtengan los datos
+            console.log(data);
+            createCarsByTypeChart(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+});
+
+function getColorByType(type) {
+    switch (type) {
+        case 'Sedán':
+            return 'rgb(255, 99, 132)';
+        case 'SUV':
+            return 'rgb(255, 205, 86)';
+        case 'Deportivo':
+            return 'rgb(75, 192, 192)';
+        // Agrega colores para los otros tipos de coche
+        case 'Compacto':
+            return 'rgb(54, 162, 235)';
+        case 'Híbrido':
+            return 'rgb(153, 102, 255)';
+        case 'Eléctrico':
+            return 'rgb(255, 159, 64)';
+        case 'Furgoneta':
+            return 'rgb(255, 0, 0)';
+        case 'Pickup':
+            return 'rgb(0, 255, 0)';
+        default:
+            return 'rgb(0, 0, 0)'; // Color predeterminado en caso de tipo desconocido
+    }
+}
+
+function createCarsByTypeChart(data) {
+    const chartData = data.map(item => ({
+        label: item.Tipo,
+        data: item.TotalCoches,
+        backgroundColor: getColorByType(item.Tipo),
+    }));
+
+    // Configuración del gráfico
+    const config = {
+        type: 'doughnut',
+        data: {
+            labels: chartData.map(item => item.label),
+            datasets: [{
+                data: chartData.map(item => item.data),
+                backgroundColor: chartData.map(item => item.backgroundColor),
+            }],
+        },
+    };
+
+    // Obtén el contexto del lienzo
+    const ctx = document.getElementById('tiposCocheChart').getContext('2d');
+
+    // Crea el gráfico
+    new Chart(ctx, config);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Hacer la solicitud Fetch para obtener los datos de registro
+    let formData = new FormData();
+    formData.append('action', 'evolucionReservas');
+
+    // Llamada a la función para obtener notificaciones no leídas
+    fetch('backend.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Crear el gráfico cuando se obtengan los datos
+            console.log(data);
+            renderChartReservas(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+});
+
+function renderChartReservas(data) {
+    // Configura el gráfico
+    const chartData = data.map(item => ({
+        x: new Date(item.Mes),
+        y: item.TotalReservas,
+    }));
+
+    const config = {
+        type: 'bar',
+        data: {
+            datasets: [{
+                label: 'Total de Reservas',
+                data: chartData,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+                fill: true,
+            }],
+        },
+        options: {
+            scales: {
+                x: {
+                    type: 'time',
+                    time: {
+                        unit: 'month',
+                        displayFormats: {
+                            month: 'MMM YYYY',
+                        },
+                    },
+                    title: {
+                        display: true,
+                        text: 'Mes',
+                    },
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Total de Reservas',
+                    },
+                },
+            },
+        },
+    };
+
+    // Obtén el contexto del lienzo
+    const ctx = document.getElementById('reservasChart').getContext('2d');
+
+    // Crea el gráfico
+    const myChart = new Chart(ctx, config);
 }
