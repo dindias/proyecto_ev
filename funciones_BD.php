@@ -898,3 +898,45 @@ function isAdmin($userID) {
         $conn = null;
     }
 }
+
+function getRegistrationHistory() {
+    $conn = connectDB();
+
+    if ($conn === null) {
+        return null;
+    }
+
+    try {
+        $stmt = $conn->query("
+            SELECT COUNT(*) as `Registrados`, DATE_FORMAT(`registro`, '%Y-%m-%d') as `Fecha`
+            FROM `usuarios`
+            GROUP BY DATE_FORMAT(`registro`, '%Y-%m-%d')
+            ORDER BY `Fecha` ASC;
+        ");
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        return null;
+    }
+}
+
+function getContaminationData() {
+    $conn = connectDB();
+
+    if ($conn === null) {
+        return null;
+    }
+
+    try {
+        $stmt = $conn->query("
+            SELECT Marca, AVG(Contaminacion) as ContaminacionPromedio
+            FROM coches
+            GROUP BY Marca
+            ORDER BY ContaminacionPromedio DESC;
+        ");
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        return null;
+    }
+}

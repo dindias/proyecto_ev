@@ -327,5 +327,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo json_encode($user);
             exit;
         }
+        case 'registroUsuarios':
+        {
+            $data = getRegistrationHistory();
+            echo json_encode($data);
+            exit;
+        }
+        case 'contaminacionCoches':
+        {
+            $data = getContaminationData();
+            echo json_encode($data);
+            exit;
+        }
     }
 }
