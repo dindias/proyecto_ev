@@ -118,10 +118,14 @@ include ("register.php");
         <div id="usuarios" class="tabContent" style="display: none; height: 100%;">
             <h2 class="mb-4">Datos de usuarios</h2>
             <div class="row" id="busquedaTabla"></div>
-            <div class="container-fluid" id="tablaContainer">
+            <div class="container-fluid" id="tablaContainer"></div>
 
+            <!-- Contenedor para la paginación -->
+            <div id="paginacionContainer" class="mt-3">
+                <!-- Aquí se generarán los botones de paginación -->
             </div>
         </div>
+
     </div>
 </div>
 

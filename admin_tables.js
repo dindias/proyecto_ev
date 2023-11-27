@@ -11,15 +11,14 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             // Crear el gráfico cuando se obtengan los datos
-            tablaUsuarios(data);
+            mostrarPagina(data, 0, 10);
         })
         .catch(error => {
             console.error('Error:', error);
         });
 });
 
-// Función para crear la barra de búsqueda y tabla de usuarios
-function tablaUsuarios(data) {
+function mostrarPagina(data, startIndex, pageSize) {
     // Obtén el elemento donde se insertará la barra de búsqueda y la tabla
     const tablaContainer = document.getElementById('tablaContainer');
 
@@ -58,7 +57,9 @@ function tablaUsuarios(data) {
 
     // Crea el cuerpo de la tabla
     const tbody = document.createElement('tbody');
-    data.forEach(rowData => {
+    const endIndex = startIndex + pageSize;
+    const paginatedData = data.slice(startIndex, endIndex);
+    paginatedData.forEach(rowData => {
         const row = document.createElement('tr');
         Object.entries(rowData).forEach(([key, value]) => {
             const td = document.createElement('td');
@@ -175,6 +176,86 @@ function tablaUsuarios(data) {
     // Limpia el contenido existente y agrega la estructura al contenedor
     tablaContainer.innerHTML = '';
     tablaContainer.appendChild(rowContainer);
+
+    // Agrega la paginación
+    agregarPaginacion(data, startIndex, pageSize);
+}
+
+function agregarPaginacion(data, startIndex, pageSize) {
+    // Calcula el número total de páginas
+    const totalPages = Math.ceil(data.length / pageSize);
+
+    // Obtén el elemento donde se insertará la paginación
+    const paginacionContainer = document.getElementById('paginacionContainer');
+
+    // Crea el contenedor de fila (row) con clases de Bootstrap
+    const rowContainer = document.createElement('div');
+    rowContainer.classList.add('row', 'justify-content-center');
+
+    // Crea un contenedor de columna (col) con clases de Bootstrap para la paginación
+    const colContainer = document.createElement('div');
+    colContainer.classList.add('col-xxl'); // Ajusta el ancho de la columna según tus necesidades
+
+    // Crea el componente de paginación de Bootstrap
+    const pagination = document.createElement('ul');
+    pagination.classList.add('pagination');
+
+    // Crea el botón "Anterior"
+    const previousBtn = document.createElement('li');
+    previousBtn.classList.add('page-item');
+    const previousLink = document.createElement('a');
+    previousLink.classList.add('page-link');
+    previousLink.href = '#';
+    previousLink.textContent = 'Anterior';
+    previousLink.addEventListener('click', () => {
+        if (startIndex > 0) {
+            startIndex -= pageSize;
+            mostrarPagina(data, startIndex, pageSize);
+        }
+    });
+    previousBtn.appendChild(previousLink);
+    pagination.appendChild(previousBtn);
+
+    // Crea los botones de número de página
+    for (let i = 1; i <= totalPages; i++) {
+        const pageBtn = document.createElement('li');
+        pageBtn.classList.add('page-item');
+        const pageLink = document.createElement('a');
+        pageLink.classList.add('page-link');
+        pageLink.href = '#';
+        pageLink.textContent = i;
+        pageLink.addEventListener('click', () => {
+            startIndex = (i - 1) * pageSize;
+            mostrarPagina(data, startIndex, pageSize);
+        });
+        pageBtn.appendChild(pageLink);
+        pagination.appendChild(pageBtn);
+    }
+
+    // Crea el botón "Siguiente"
+    const nextBtn = document.createElement('li');
+    nextBtn.classList.add('page-item');
+    const nextLink = document.createElement('a');
+    nextLink.classList.add('page-link');
+    nextLink.href = '#';
+    nextLink.textContent = 'Siguiente';
+    nextLink.addEventListener('click', () => {
+        if (startIndex + pageSize < data.length) {
+            startIndex += pageSize;
+            mostrarPagina(data, startIndex, pageSize);
+        }
+    });
+    nextBtn.appendChild(nextLink);
+    pagination.appendChild(nextBtn);
+
+    colContainer.appendChild(pagination);
+
+    // Agrega el contenedor de columna al contenedor de fila
+    rowContainer.appendChild(colContainer);
+
+    // Limpia el contenido existente y agrega la estructura al contenedor de paginación
+    paginacionContainer.innerHTML = '';
+    paginacionContainer.appendChild(rowContainer);
 }
 
 function modificarUsuarios(originalData, modifiedData) {

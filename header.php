@@ -47,7 +47,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
             </ul>
             <!-- Dropdown -->
-            <?php if(isAdmin($_SESSION['user_id'])) {?>
+            <?php if (isset($_SESSION['user_id']) && isAdmin($_SESSION['user_id'])) {?>
                 <button type="button" class="btn btn-info" id="adminPanelButton" style="margin-right: 5px;">Panel de administrador</button>
             <?php }?>
             <?php if(isset($_SESSION['user_id'])):?>
