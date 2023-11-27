@@ -1002,3 +1002,62 @@ function getTablaUsuarios() {
     }
 }
 
+function updateUsuarios($requestData)
+{
+    // Conectamos a la base de datos
+    $conn = connectDB();
+
+    if ($conn === null) {
+        return null;
+    }
+
+    try {
+        // Iniciamos una transacción
+        $conn->beginTransaction();
+
+        // Iteramos sobre los datos recibidos
+        foreach ($requestData as $userID => $userData) {
+            // Creamos la consulta de actualización
+            $query = "UPDATE `usuarios` SET ";
+            $values = [];
+            foreach ($userData as $column => $value) {
+                // Evitamos actualizar el UserID directamente
+                if ($column !== 'UserID') {
+                    // Si estamos actualizando la contraseña, aplicamos password_hash
+                    if ($column === 'password') {
+                        $value = password_hash($value, PASSWORD_DEFAULT);
+                    }
+                    $query .= "`$column` = :$column, ";
+                    $values[":$column"] = $value;
+                }
+            }
+            // Eliminamos la coma adicional al final de la consulta
+            $query = rtrim($query, ', ');
+
+            // Agregamos la condición WHERE para actualizar solo el usuario específico
+            $query .= " WHERE `UserID` = :userID";
+
+            // Preparamos la consulta
+            $stmt = $conn->prepare($query);
+
+            // Asignamos los valores a los marcadores de posición
+            foreach ($values as $placeholder => $value) {
+                $stmt->bindValue($placeholder, $value);
+            }
+            // Asignamos el valor del UserID para la condición WHERE
+            $stmt->bindValue(":userID", $userID);
+
+            // Ejecutamos la consulta
+            $stmt->execute();
+        }
+
+        // Confirmamos la transacción
+        $conn->commit();
+
+        return ['success' => true, 'message' => 'Usuarios actualizados correctamente'];
+    } catch (PDOException $e) {
+        // Revertimos la transacción en caso de error
+        $conn->rollBack();
+        return ['success' => false, 'message' => 'Error al actualizar usuarios: ' . $e->getMessage()];
+    }
+}

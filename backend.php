@@ -357,5 +357,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo json_encode($data);
             exit;
         }
+        case 'modificarUsuarios':
+        {
+            // Obtenemos los datos del cuerpo de la solicitud
+            $requestData = json_decode(file_get_contents('php://input'), true);
+
+            // Llamamos a la función para actualizar usuarios
+            $data = updateUsuarios($requestData);
+
+            // Enviamos la respuesta como JSON
+            echo json_encode($data);
+            exit;
+        }
     }
 }
