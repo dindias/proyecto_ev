@@ -118,7 +118,7 @@ include ("register.php");
         <div id="usuarios" class="tabContent" style="display: none; height: 100%;">
             <h2 class="mb-4">Datos de usuarios</h2>
             <div class="row" id="busquedaTabla"></div>
-            <div class="container mt-5" id="tablaContainer">
+            <div class="container-fluid" id="tablaContainer">
 
             </div>
         </div>

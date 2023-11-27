@@ -23,21 +23,6 @@ function tablaUsuarios(data) {
     // Obtén el elemento donde se insertará la barra de búsqueda y la tabla
     const tablaContainer = document.getElementById('tablaContainer');
 
-    // Crea la barra de búsqueda
-    const busquedaInput = document.createElement('input');
-    busquedaInput.type = 'text';
-    busquedaInput.classList.add('form-control', 'mb-3');
-    busquedaInput.placeholder = 'Buscar...';
-    busquedaInput.addEventListener('input', () => {
-        // Llama a la función de búsqueda al cambiar el contenido del input
-        busquedaTabla(data, busquedaInput.value);
-    });
-
-    // Crea el contenedor para la barra de búsqueda
-    const busquedaContainer = document.createElement('div');
-    busquedaContainer.classList.add('input-group', 'mb-3');
-    busquedaContainer.appendChild(busquedaInput);
-
     // Crea el contenedor de fila (row) con clases de Bootstrap
     const rowContainer = document.createElement('div');
     rowContainer.classList.add('row', 'justify-content-center');
@@ -101,6 +86,7 @@ function tablaUsuarios(data) {
                     const input = document.createElement('input');
                     input.type = 'text';
                     input.value = td.textContent;
+                    input.classList.add('form-control');
                     // No permitir cambios en el campo UserID
                     if (td.cellIndex === 0) {
                         input.disabled = true;
@@ -181,8 +167,6 @@ function tablaUsuarios(data) {
     });
     table.appendChild(tbody);
 
-    // Agrega la barra de búsqueda y la tabla al contenedor de columna
-    colContainer.appendChild(busquedaContainer);
     colContainer.appendChild(table);
 
     // Agrega el contenedor de columna al contenedor de fila
@@ -192,25 +176,6 @@ function tablaUsuarios(data) {
     tablaContainer.innerHTML = '';
     tablaContainer.appendChild(rowContainer);
 }
-
-// Función para gestionar la búsqueda y actualización de la tabla
-function busquedaTabla(data, filtro) {
-    // Aquí deberías implementar la lógica para filtrar la tabla según el filtro proporcionado
-    // Actualiza la tabla con las filas que coinciden con el filtro
-    const tablaContainer = document.getElementById('tablaContainer');
-    // Limpia el contenido existente
-    tablaContainer.innerHTML = '';
-    // Vuelve a generar la tabla con los datos filtrados
-    tablaUsuarios(data.filter(rowData => cumpleFiltro(rowData, filtro)));
-}
-
-// Función de ejemplo para comprobar si una fila cumple con el filtro
-function cumpleFiltro(rowData, filtro) {
-    // Esta función debería adaptarse según la lógica de filtro que desees implementar
-    // En este ejemplo, comprueba si alguna celda contiene el texto del filtro
-    return Object.values(rowData).some(value => String(value).includes(filtro));
-}
-
 
 function modificarUsuarios(originalData, modifiedData) {
     console.log(originalData);
