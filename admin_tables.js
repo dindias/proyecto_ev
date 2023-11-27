@@ -177,10 +177,33 @@ function tablaUsuarios(data) {
 }
 
 function modificarUsuarios(originalData, modifiedData) {
+    console.log(originalData);
+    console.log(modifiedData);
+
     // Filtra los campos que han cambiado
-    const modifiedFields = Object.keys(modifiedData).filter(
-        key => originalData[key] !== modifiedData[key]
-    );
+    const modifiedFields = Object.keys(modifiedData).filter(key => {
+        const originalValue = originalData[key];
+        const modifiedValue = modifiedData[key];
+
+        // Maneja el caso cuando el valor original es null
+        if (originalValue === null) {
+            // Solo considera como modificado si el valor modificado no es una cadena vacía
+            return modifiedValue !== '';
+        }
+
+        // Maneja el caso cuando el valor es un número y el modificado es una cadena
+        if (typeof originalValue === 'number' && typeof modifiedValue === 'string') {
+            return originalValue.toString() !== modifiedValue;
+        }
+
+        // Maneja el caso cuando el valor es una cadena y el modificado es un número
+        if (typeof originalValue === 'string' && typeof modifiedValue === 'number') {
+            return originalValue !== modifiedValue.toString();
+        }
+
+        // Resto de los casos
+        return originalValue !== modifiedValue;
+    });
 
     if (modifiedFields.length === 0) {
         // No hay cambios, puedes manejarlo como desees
@@ -207,6 +230,8 @@ function modificarUsuarios(originalData, modifiedData) {
         .then(data => {
             // Maneja la respuesta del servidor si es necesario
             console.log(data);
+
+            // Muestra el mensaje de éxito en la interfaz
             if (data.success) {
                 alert('Usuarios actualizados correctamente');
             } else {
@@ -217,11 +242,3 @@ function modificarUsuarios(originalData, modifiedData) {
             console.error('Error:', error);
         });
 }
-
-
-
-
-
-
-
-
