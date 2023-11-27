@@ -1015,41 +1015,43 @@ function updateUsuarios($requestData)
         // Iniciamos una transacción
         $conn->beginTransaction();
 
-        // Iteramos sobre los datos recibidos
-        foreach ($requestData as $userID => $userData) {
-            // Creamos la consulta de actualización
-            $query = "UPDATE `usuarios` SET ";
-            $values = [];
-            foreach ($userData as $column => $value) {
-                // Evitamos actualizar el UserID directamente
-                if ($column !== 'UserID') {
-                    // Si estamos actualizando la contraseña, aplicamos password_hash
-                    if ($column === 'password') {
-                        $value = password_hash($value, PASSWORD_DEFAULT);
-                    }
-                    $query .= "`$column` = :$column, ";
-                    $values[":$column"] = $value;
-                }
-            }
-            // Eliminamos la coma adicional al final de la consulta
-            $query = rtrim($query, ', ');
-
-            // Agregamos la condición WHERE para actualizar solo el usuario específico
-            $query .= " WHERE `UserID` = :userID";
-
-            // Preparamos la consulta
-            $stmt = $conn->prepare($query);
-
-            // Asignamos los valores a los marcadores de posición
-            foreach ($values as $placeholder => $value) {
-                $stmt->bindValue($placeholder, $value);
-            }
-            // Asignamos el valor del UserID para la condición WHERE
-            $stmt->bindValue(":userID", $userID);
-
-            // Ejecutamos la consulta
-            $stmt->execute();
+        // Convertimos el objeto a un array asociativo si es necesario
+        if (!is_array($requestData)) {
+            $requestData = json_decode(json_encode($requestData), true);
         }
+
+        // Creamos la consulta de actualización
+        $query = "UPDATE `usuarios` SET ";
+        $values = [];
+        foreach ($requestData as $column => $value) {
+            // Evitamos actualizar el UserID directamente
+            if ($column !== 'UserID') {
+                // Si estamos actualizando la contraseña, aplicamos password_hash
+                if ($column === 'password') {
+                    $value = password_hash($value, PASSWORD_DEFAULT);
+                }
+                $query .= "`$column` = :$column, ";
+                $values[":$column"] = $value;
+            }
+        }
+        // Eliminamos la coma adicional al final de la consulta
+        $query = rtrim($query, ', ');
+
+        // Agregamos la condición WHERE para actualizar solo el usuario específico
+        $query .= " WHERE `UserID` = :userID";
+
+        // Preparamos la consulta
+        $stmt = $conn->prepare($query);
+
+        // Asignamos los valores a los marcadores de posición
+        foreach ($values as $placeholder => $value) {
+            $stmt->bindValue($placeholder, $value);
+        }
+        // Asignamos el valor del UserID para la condición WHERE
+        $stmt->bindValue(":userID", $requestData['UserID']);
+
+        // Ejecutamos la consulta
+        $stmt->execute();
 
         // Confirmamos la transacción
         $conn->commit();

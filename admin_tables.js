@@ -180,6 +180,9 @@ function modificarUsuarios(originalData, modifiedData) {
     console.log(originalData);
     console.log(modifiedData);
 
+    const dataToSave = {};
+    dataToSave['UserID'] = originalData['UserID'];
+
     // Filtra los campos que han cambiado
     const modifiedFields = Object.keys(modifiedData).filter(key => {
         const originalValue = originalData[key];
@@ -212,10 +215,17 @@ function modificarUsuarios(originalData, modifiedData) {
     }
 
     // Construye un objeto con los campos modificados
-    const dataToSave = {};
     modifiedFields.forEach(field => {
-        dataToSave[field] = modifiedData[field];
+        // Evita agregar el campo `password` si es una cadena vacía
+        if (field !== 'password' || modifiedData[field] !== '') {
+            dataToSave[field] = modifiedData[field];
+        }
     });
+
+    if ('password' in dataToSave && dataToSave['password'] === '') {
+        // Elimina el campo `password` si es una cadena vacía
+        delete dataToSave['password'];
+    }
 
     let formData = new FormData();
     formData.append('action', 'modificarUsuarios');

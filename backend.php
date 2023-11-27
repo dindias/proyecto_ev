@@ -360,7 +360,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         case 'modificarUsuarios':
         {
             // Obtenemos los datos del cuerpo de la solicitud
-            $requestData = json_decode(file_get_contents('php://input'), true);
+            $requestData = json_decode($_POST['modifiedData']);
 
             // Llamamos a la función para actualizar usuarios
             $data = updateUsuarios($requestData);
