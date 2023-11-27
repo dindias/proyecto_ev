@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-11-2023 a las 12:46:20
+-- Tiempo de generación: 27-11-2023 a las 19:31:36
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -176,7 +176,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`UserID`, `imagen`, `Nombre`, `Apellido`, `Email`, `email_verified_at`, `Privilegios`, `Nacimiento`, `NumeroCuenta`, `Direccion`, `password`, `Descripcion`, `registro`) VALUES
-(1, 'img/IMG_20220724_221039_998.jpg', 'Daniel', 'Indias', 'indiasdaniel@gmail.com', NULL, 1, '2000-06-20', NULL, 'inventada', '$2y$10$ZYkCygPKFTpVURqe/Md0I.cAxrShSLvdbexE4T5/smTnftpG0hk0O', 'He empezado a convertir coches a electricos y a venderlos por aficion', '2023-11-21 12:21:09'),
+(1, 'img/IMG_20220724_221039_998.jpg', 'Daniel', 'Indias', 'indiasdaniel@gmail.com', NULL, 1, '2000-06-20', NULL, 'inventada2', '$2y$10$ZYkCygPKFTpVURqe/Md0I.cAxrShSLvdbexE4T5/smTnftpG0hk0O', 'He empezado a convertir coches a electricos y a venderlos por aficion', '2023-11-21 12:21:09'),
 (2, NULL, 'Alvaro', '', 'alvaro@gmail.com', NULL, 0, '2000-06-20', NULL, 'inventada', '$2y$10$W9TQnruj1/MY/R3K.ElXSeYNUFl13.Jnnc9kJsQ/uvN49woJrqFGi', NULL, '2023-11-22 12:21:09'),
 (3, NULL, 'Pepito', 'Palotes', 'inventada@gmail.com', NULL, 0, '2000-06-20', NULL, 'inventada', '$2y$10$ZsW.wfsK0bhj6UHfaWwn2efEIp5wbnznwkYQc1IlCUt5.rb9E3lOm', NULL, '2023-11-23 12:21:09');
 
