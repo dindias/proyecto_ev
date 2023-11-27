@@ -198,7 +198,7 @@ function agregarPaginacion(data, startIndex, pageSize) {
 
     // Crea el componente de paginación de Bootstrap
     const pagination = document.createElement('ul');
-    pagination.classList.add('pagination');
+    pagination.classList.add('pagination', 'justify-content-center');
 
     // Crea el botón "Anterior"
     const previousBtn = document.createElement('li');
