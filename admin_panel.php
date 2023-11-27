@@ -117,9 +117,16 @@ include ("register.php");
 
         <div id="usuarios" class="tabContent" style="display: none; height: 100%;">
             <h2 class="mb-4">Datos de usuarios</h2>
-            <div class="row" id="busquedaTabla"></div>
+            <div class="d-flex justify-content-center">
+                <div class="input-group mb-3" style="max-width: 500px;">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="columnButton">Columna</button>
+                    <ul class="dropdown-menu" id="columnDropdown">
+                        <!-- Los nombres de las columnas se agregarán aquí dinámicamente -->
+                    </ul>
+                    <input type="text" class="form-control" id="searchInput" aria-label="Text input with dropdown button" placeholder="Buscar...">
+                </div>
+            </div>
             <div class="container-fluid" id="tablaContainer"></div>
-
             <!-- Contenedor para la paginación -->
             <div id="paginacionContainer" class="mt-3">
                 <!-- Aquí se generarán los botones de paginación -->

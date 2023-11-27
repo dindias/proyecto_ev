@@ -12,42 +12,104 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             // Crear el gráfico cuando se obtengan los datos
             mostrarPagina(data, 0, 10);
+            llenarDropdown(data);
         })
         .catch(error => {
             console.error('Error:', error);
         });
 });
 
-function mostrarPagina(data, startIndex, pageSize) {
-    // Obtén el elemento donde se insertará la barra de búsqueda y la tabla
-    const tablaContainer = document.getElementById('tablaContainer');
+function llenarDropdown(data) {
+    const columnDropdown = document.getElementById('columnDropdown');
+    const columnButton = document.getElementById('columnButton');
+    const searchInput = document.getElementById('searchInput');
 
-    // Crea el contenedor de fila (row) con clases de Bootstrap
+    // Obtener los nombres de las columnas
+    const columnNames = Object.keys(data[0]);
+
+    // Agregar elementos de lista al menú desplegable
+    columnNames.forEach(columnName => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.classList.add('dropdown-item');
+        a.href = '#';
+        a.textContent = columnName;
+        a.addEventListener('click', () => {
+            // Cambiar el texto del botón al nombre de la columna seleccionada
+            columnButton.textContent = columnName;
+            // Llamar a la función de filtrado cuando se selecciona una nueva columna
+            filtrarDatos(data);
+        });
+        li.appendChild(a);
+        columnDropdown.appendChild(li);
+    });
+
+    // Escuchar cambios en el input de búsqueda
+    searchInput.addEventListener('input', () => {
+        // Llamar a la función de filtrado cuando cambia el valor del input de búsqueda
+        filtrarDatos(data);
+    });
+}
+
+function filtrarDatos(data) {
+    const columnButton = document.getElementById('columnButton');
+    const searchInput = document.getElementById('searchInput');
+
+    // Obtén el nombre de la columna seleccionada
+    let selectedColumn = columnButton.textContent;
+
+    // Filtra los datos en función del valor introducido en el input y de la columna seleccionada
+    const filteredData = data.filter(rowData => {
+        const cellValue = rowData[selectedColumn] || ''; // Si el valor es null, utiliza una cadena vacía
+        const inputValue = searchInput.value.toLowerCase();
+        return cellValue.toLowerCase().includes(inputValue);
+    });
+
+    // Actualiza la página con los datos filtrados
+    mostrarPagina(filteredData, 0, 10);
+}
+
+function mostrarPagina(data, startIndex, pageSize) {
+    const tablaContainer = document.getElementById('tablaContainer');
+    const columnButton = document.getElementById('columnButton');
+    const searchInput = document.getElementById('searchInput');
+
+    // Obtén el nombre de la columna seleccionada
+    let selectedColumn = columnButton.textContent;
+
+    // Filtra los datos en función del valor introducido en el input y de la columna seleccionada
+    const filteredData = data.filter(rowData => {
+        const cellValue = rowData[selectedColumn] || ''; // Si el valor es null, utiliza una cadena vacía
+        const inputValue = searchInput.value.toLowerCase();
+        return cellValue.toLowerCase().includes(inputValue);
+    });
+
+    // Calcula el índice de finalización y extrae los datos filtrados
+    const endIndex = startIndex + pageSize;
+    const paginatedData = filteredData.slice(startIndex, endIndex);
+
+    // Crear la tabla y el resto de la estructura
     const rowContainer = document.createElement('div');
     rowContainer.classList.add('row', 'justify-content-center');
-
-    // Crea un contenedor de columna (col) con clases de Bootstrap para la tabla
     const colContainer = document.createElement('div');
-    colContainer.classList.add('col-xxl'); // Ajusta el ancho de la columna según tus necesidades
-
-    // Crea la tabla de Bootstrap
+    colContainer.classList.add('col-xxl');
     const table = document.createElement('table');
     table.classList.add('table');
-    // Añade las propiedades específicas
     table.style.maxWidth = 'none';
     table.style.tableLayout = 'fixed';
     table.style.wordWrap = 'break-word';
-
-    // Crea el encabezado de la tabla
     const thead = document.createElement('thead');
     const headerRow = document.createElement('tr');
+
+    // Crear las celdas del encabezado
     Object.keys(data[0]).forEach(columnName => {
         const th = document.createElement('th');
         th.scope = 'col';
         th.textContent = columnName;
         headerRow.appendChild(th);
     });
-    // Agrega las columnas de "Acciones"
+
+    // Agregar la columna de "Acciones"
     const accionesTh = document.createElement('th');
     accionesTh.scope = 'col';
     accionesTh.textContent = 'Acciones';
@@ -55,19 +117,15 @@ function mostrarPagina(data, startIndex, pageSize) {
     thead.appendChild(headerRow);
     table.appendChild(thead);
 
-    // Crea el cuerpo de la tabla
+    // Crear el cuerpo de la tabla
     const tbody = document.createElement('tbody');
-    const endIndex = startIndex + pageSize;
-    const paginatedData = data.slice(startIndex, endIndex);
     paginatedData.forEach(rowData => {
         const row = document.createElement('tr');
         Object.entries(rowData).forEach(([key, value]) => {
             const td = document.createElement('td');
-            // No permitir cambios en el campo UserID
             if (key === 'UserID') {
                 td.textContent = value;
             } else if (key === 'password') {
-                // Mostrar asteriscos en lugar de la contraseña
                 td.textContent = '*****';
             } else {
                 td.textContent = value;
@@ -75,7 +133,7 @@ function mostrarPagina(data, startIndex, pageSize) {
             row.appendChild(td);
         });
 
-        // Agrega las celdas de "Acciones" con botones de "Editar" y "Eliminar"
+        // Agregar las celdas de "Acciones"
         const accionesTd = document.createElement('td');
         const editarBtn = document.createElement('button');
         editarBtn.textContent = 'Editar';
@@ -154,11 +212,9 @@ function mostrarPagina(data, startIndex, pageSize) {
         const eliminarBtn = document.createElement('button');
         eliminarBtn.textContent = 'Eliminar';
         eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
-        // Agrega la lógica para eliminar el elemento si es necesario
         eliminarBtn.addEventListener('click', () => {
-            // Agrega aquí la lógica para eliminar el elemento
-            // Puedes usar el contenido de la fila (rowData) para identificar el elemento a eliminar
-            // row.remove(); // Esto eliminará la fila visualmente, pero debes manejar la eliminación en tu lógica
+            // Lógica para eliminar la fila
+            // ...
         });
 
         accionesTd.appendChild(editarBtn);
@@ -166,19 +222,15 @@ function mostrarPagina(data, startIndex, pageSize) {
         row.appendChild(accionesTd);
         tbody.appendChild(row);
     });
+
     table.appendChild(tbody);
-
     colContainer.appendChild(table);
-
-    // Agrega el contenedor de columna al contenedor de fila
     rowContainer.appendChild(colContainer);
-
-    // Limpia el contenido existente y agrega la estructura al contenedor
     tablaContainer.innerHTML = '';
     tablaContainer.appendChild(rowContainer);
 
-    // Agrega la paginación
-    agregarPaginacion(data, startIndex, pageSize);
+    // Agregar la paginación
+    agregarPaginacion(filteredData, startIndex, pageSize);
 }
 
 function agregarPaginacion(data, startIndex, pageSize) {
