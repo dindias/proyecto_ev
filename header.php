@@ -34,7 +34,9 @@ if (session_status() === PHP_SESSION_NONE) {
 </style>
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand">Logo</a>
+        <a class="navbar-brand" href="#">
+            <img src="img/logo.jpg" alt="Hispania EV logo" class="img-fluid" width="30" height="30">
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#myNavbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
