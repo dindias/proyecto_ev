@@ -1081,14 +1081,15 @@ function updateCoches($requestData)
         }
         $query = rtrim($query, ', ');
 
-        $query .= " WHERE `UserID` = :UserID";
+        $query .= " WHERE `CarID` = :CarID";
+        echo $query;
 
         $stmt = $conn->prepare($query);
 
         foreach ($values as $placeholder => $value) {
             $stmt->bindValue($placeholder, $value);
         }
-        $stmt->bindValue(":UserID", $requestData['UserID']);
+        $stmt->bindValue(":CarID", $requestData['CarID']);
 
         $stmt->execute();
 
@@ -1126,14 +1127,14 @@ function updateFavoritos($requestData)
         }
         $query = rtrim($query, ', ');
 
-        $query .= " WHERE `UserID` = :UserID";
+        $query .= " WHERE `FavoritoID` = :FavoritoID";
 
         $stmt = $conn->prepare($query);
 
         foreach ($values as $placeholder => $value) {
             $stmt->bindValue($placeholder, $value);
         }
-        $stmt->bindValue(":UserID", $requestData['UserID']);
+        $stmt->bindValue(":FavoritoID", $requestData['FavoritoID']);
 
         $stmt->execute();
 
@@ -1171,14 +1172,14 @@ function updateReservas($requestData)
         }
         $query = rtrim($query, ', ');
 
-        $query .= " WHERE `UserID` = :UserID";
+        $query .= " WHERE `ReservationID` = :ReservationID";
 
         $stmt = $conn->prepare($query);
 
         foreach ($values as $placeholder => $value) {
             $stmt->bindValue($placeholder, $value);
         }
-        $stmt->bindValue(":UserID", $requestData['UserID']);
+        $stmt->bindValue(":ReservationID", $requestData['ReservationID']);
 
         $stmt->execute();
 

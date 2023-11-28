@@ -411,7 +411,21 @@ function agregarPaginacion(data, startIndex, pageSize, activeTab) {
 function modificarDatos(originalData, modifiedData, activeTab) {
 
     const dataToSave = {};
-    dataToSave['UserID'] = originalData['UserID'];
+
+    if (activeTab === 'cochesTab') {
+        dataToSave['CarID'] = originalData['CarID'];
+        modificarCoches(dataToSave);
+    } else if (activeTab === 'favoritosTab') {
+        dataToSave['FavoritoID'] = originalData['FavoritoID'];
+        modificarFavoritos(dataToSave);
+    }
+    else if (activeTab === 'reservasTab') {
+        dataToSave['ReservationID'] = originalData['ReservationID'];
+        modificarReservas(dataToSave);
+    }
+    else if (activeTab === 'usuariosTab') {
+        dataToSave['UserID'] = originalData['UserID'];
+    }
 
     // Filtra los campos que han cambiado
     const modifiedFields = Object.keys(modifiedData).filter(key => {
@@ -457,16 +471,15 @@ function modificarDatos(originalData, modifiedData, activeTab) {
         delete dataToSave['password'];
     }
 
-    console.log("esto es el activetab: " + activeTab);
-    if (activeTab == 'cochesTab') {
+    if (activeTab === 'cochesTab') {
         modificarCoches(dataToSave);
-    } else if (activeTab == 'favoritosTab') {
+    } else if (activeTab === 'favoritosTab') {
         modificarFavoritos(dataToSave);
     }
-    else if (activeTab == 'reservasTab') {
+    else if (activeTab === 'reservasTab') {
         modificarReservas(dataToSave);
     }
-    else if (activeTab == 'usuariosTab') {
+    else if (activeTab === 'usuariosTab') {
         modificarUsuarios(dataToSave);
     }
 }
