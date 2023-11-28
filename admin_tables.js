@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 function actualizarTabla(tab) {
-    console.log(tab);
     const formData = new FormData();
     const action = obtenerActionSegunTab(tab.id);
     formData.append('action', action);
@@ -279,7 +278,7 @@ function mostrarPagina(data, startIndex, pageSize, activeTab) {
                     accionesTd.appendChild(eliminarBtn);
 
                     // Llama a la función para enviar los datos modificados al servidor
-                    modificarUsuarios(originalData, modifiedData);
+                    modificarDatos(originalData, modifiedData, activeTab);
                 });
 
                 const cancelarBtn = document.createElement('button');
@@ -409,7 +408,7 @@ function agregarPaginacion(data, startIndex, pageSize, activeTab) {
 }
 
 
-function modificarUsuarios(originalData, modifiedData) {
+function modificarDatos(originalData, modifiedData, activeTab) {
 
     const dataToSave = {};
     dataToSave['UserID'] = originalData['UserID'];
@@ -458,6 +457,99 @@ function modificarUsuarios(originalData, modifiedData) {
         delete dataToSave['password'];
     }
 
+    console.log("esto es el activetab: " + activeTab);
+    if (activeTab == 'cochesTab') {
+        modificarCoches(dataToSave);
+    } else if (activeTab == 'favoritosTab') {
+        modificarFavoritos(dataToSave);
+    }
+    else if (activeTab == 'reservasTab') {
+        modificarReservas(dataToSave);
+    }
+    else if (activeTab == 'usuariosTab') {
+        modificarUsuarios(dataToSave);
+    }
+}
+function modificarCoches(dataToSave){
+    let formData = new FormData();
+    formData.append('action', 'modificarCoches');
+    formData.append('modifiedData', JSON.stringify(dataToSave));
+
+    // Llamada a la función para modificar usuarios
+    fetch('backend.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Maneja la respuesta del servidor si es necesario
+            console.log(data);
+
+            // Muestra el mensaje de éxito en la interfaz
+            if (data.success) {
+                alert('Coches actualizados correctamente');
+            } else {
+                alert('Error al actualizar coches: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+function modificarFavoritos(dataToSave){
+    let formData = new FormData();
+    formData.append('action', 'modificarFavoritos');
+    formData.append('modifiedData', JSON.stringify(dataToSave));
+
+    // Llamada a la función para modificar usuarios
+    fetch('backend.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Maneja la respuesta del servidor si es necesario
+            console.log(data);
+
+            // Muestra el mensaje de éxito en la interfaz
+            if (data.success) {
+                alert('Favoritos actualizados correctamente');
+            } else {
+                alert('Error al actualizar favoritos: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+function modificarReservas(dataToSave){
+    let formData = new FormData();
+    formData.append('action', 'modificarReservas');
+    formData.append('modifiedData', JSON.stringify(dataToSave));
+
+    // Llamada a la función para modificar usuarios
+    fetch('backend.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Maneja la respuesta del servidor si es necesario
+            console.log(data);
+
+            // Muestra el mensaje de éxito en la interfaz
+            if (data.success) {
+                alert('Reservas actualizadas correctamente');
+            } else {
+                alert('Error al actualizar las reservas: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+function modificarUsuarios(dataToSave){
     let formData = new FormData();
     formData.append('action', 'modificarUsuarios');
     formData.append('modifiedData', JSON.stringify(dataToSave));

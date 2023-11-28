@@ -375,6 +375,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo json_encode($data);
             exit;
         }
+        case 'modificarCoches':
+        {
+            // Obtenemos los datos del cuerpo de la solicitud
+            $requestData = json_decode($_POST['modifiedData']);
+
+            // Llamamos a la función para actualizar usuarios
+            $data = updateCoches($requestData);
+
+            // Enviamos la respuesta como JSON
+            //echo json_encode($data);
+            exit;
+        }
+        case 'modificarFavoritos':
+        {
+            // Obtenemos los datos del cuerpo de la solicitud
+            $requestData = json_decode($_POST['modifiedData']);
+
+            // Llamamos a la función para actualizar usuarios
+            $data = updateFavoritos($requestData);
+
+            // Enviamos la respuesta como JSON
+            echo json_encode($data);
+            exit;
+        }
+        case 'modificarReservas':
+        {
+            // Obtenemos los datos del cuerpo de la solicitud
+            $requestData = json_decode($_POST['modifiedData']);
+
+            // Llamamos a la función para actualizar usuarios
+            $data = updateReservas($requestData);
+
+            // Enviamos la respuesta como JSON
+            echo json_encode($data);
+            exit;
+        }
         case 'modificarUsuarios':
         {
             // Obtenemos los datos del cuerpo de la solicitud

@@ -1056,6 +1056,141 @@ function getTablaUsuarios() {
     }
 }
 
+function updateCoches($requestData)
+{
+    $conn = connectDB();
+
+    if ($conn === null) {
+        return null;
+    }
+
+    try {
+        $conn->beginTransaction();
+
+        if (!is_array($requestData)) {
+            $requestData = json_decode(json_encode($requestData), true);
+        }
+
+        $query = "UPDATE `coches` SET ";
+        $values = [];
+        foreach ($requestData as $column => $value) {
+            if ($column !== 'CocheID') {
+                $query .= "`$column` = :$column, ";
+                $values[":$column"] = $value;
+            }
+        }
+        $query = rtrim($query, ', ');
+
+        $query .= " WHERE `UserID` = :UserID";
+
+        $stmt = $conn->prepare($query);
+
+        foreach ($values as $placeholder => $value) {
+            $stmt->bindValue($placeholder, $value);
+        }
+        $stmt->bindValue(":UserID", $requestData['UserID']);
+
+        $stmt->execute();
+
+        $conn->commit();
+
+        return ['success' => true, 'message' => 'Coches actualizados correctamente'];
+    } catch (PDOException $e) {
+        $conn->rollBack();
+        return ['success' => false, 'message' => 'Error al actualizar coches: ' . $e->getMessage()];
+    }
+}
+
+function updateFavoritos($requestData)
+{
+    $conn = connectDB();
+
+    if ($conn === null) {
+        return null;
+    }
+
+    try {
+        $conn->beginTransaction();
+
+        if (!is_array($requestData)) {
+            $requestData = json_decode(json_encode($requestData), true);
+        }
+
+        $query = "UPDATE `favoritos` SET ";
+        $values = [];
+        foreach ($requestData as $column => $value) {
+            if ($column !== 'FavoritoID') {
+                $query .= "`$column` = :$column, ";
+                $values[":$column"] = $value;
+            }
+        }
+        $query = rtrim($query, ', ');
+
+        $query .= " WHERE `UserID` = :UserID";
+
+        $stmt = $conn->prepare($query);
+
+        foreach ($values as $placeholder => $value) {
+            $stmt->bindValue($placeholder, $value);
+        }
+        $stmt->bindValue(":UserID", $requestData['UserID']);
+
+        $stmt->execute();
+
+        $conn->commit();
+
+        return ['success' => true, 'message' => 'Favoritos actualizados correctamente'];
+    } catch (PDOException $e) {
+        $conn->rollBack();
+        return ['success' => false, 'message' => 'Error al actualizar favoritos: ' . $e->getMessage()];
+    }
+}
+
+function updateReservas($requestData)
+{
+    $conn = connectDB();
+
+    if ($conn === null) {
+        return null;
+    }
+
+    try {
+        $conn->beginTransaction();
+
+        if (!is_array($requestData)) {
+            $requestData = json_decode(json_encode($requestData), true);
+        }
+
+        $query = "UPDATE `reservas` SET ";
+        $values = [];
+        foreach ($requestData as $column => $value) {
+            if ($column !== 'ReservaID') {
+                $query .= "`$column` = :$column, ";
+                $values[":$column"] = $value;
+            }
+        }
+        $query = rtrim($query, ', ');
+
+        $query .= " WHERE `UserID` = :UserID";
+
+        $stmt = $conn->prepare($query);
+
+        foreach ($values as $placeholder => $value) {
+            $stmt->bindValue($placeholder, $value);
+        }
+        $stmt->bindValue(":UserID", $requestData['UserID']);
+
+        $stmt->execute();
+
+        $conn->commit();
+
+        return ['success' => true, 'message' => 'Reservas actualizadas correctamente'];
+    } catch (PDOException $e) {
+        $conn->rollBack();
+        return ['success' => false, 'message' => 'Error al actualizar reservas: ' . $e->getMessage()];
+    }
+}
+
 function updateUsuarios($requestData)
 {
     // Conectamos a la base de datos
