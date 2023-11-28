@@ -1,7 +1,17 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Inicializar la página con la pestaña activa actual
-    const activeTab = document.querySelector('.nav-link.active');
-    actualizarTabla(activeTab);
+    const currentURL = window.location.href;
+
+    // Verificar si la URL contiene un fragmento (#)
+    if (currentURL.indexOf('#') === -1) {
+        // Si no tiene un fragmento, agregar #coches y recargar la página
+        window.location.replace(currentURL + '#coches');
+        window.location.reload();
+    } else {
+        // Si ya tiene un fragmento, mostrar la tabla correspondiente
+        const activeTab = document.querySelector('.nav-link.active');
+        actualizarTabla(activeTab);
+    }
 
     // Agregar un manejador de clic a las pestañas dentro del contenedor con clase 'nav-tabs'
     const tabsContainer = document.querySelector('.nav-tabs');
