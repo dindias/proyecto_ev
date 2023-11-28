@@ -3,8 +3,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const activeTab = document.querySelector('.nav-link.active');
     actualizarTabla(activeTab);
 
-    // Agregar un manejador de clic a todas las pestañas
-    const tabs = document.querySelectorAll('.nav-link');
+    // Agregar un manejador de clic a las pestañas dentro del contenedor con clase 'nav-tabs'
+    const tabsContainer = document.querySelector('.nav-tabs');
+    const tabs = tabsContainer.querySelectorAll('.nav-link');
     tabs.forEach(tab => {
         tab.addEventListener('click', function (event) {
             event.preventDefault(); // Prevenir el comportamiento predeterminado del enlace
@@ -13,7 +14,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+
 function actualizarTabla(tab) {
+    console.log(tab);
     const formData = new FormData();
     const action = obtenerActionSegunTab(tab.id);
     formData.append('action', action);
