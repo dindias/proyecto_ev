@@ -351,6 +351,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo json_encode($data);
             exit;
         }
+        case 'tablaCoches':
+        {
+            $data = getTablaCoches();
+            echo json_encode($data);
+            exit;
+        }
+        case 'tablaFavoritos':
+        {
+            $data = getTablaFavoritos();
+            echo json_encode($data);
+            exit;
+        }
+        case 'tablaReservas':
+        {
+            $data = getTablaReservas();
+            echo json_encode($data);
+            exit;
+        }
         case 'tablaUsuarios':
         {
             $data = getTablaUsuarios();

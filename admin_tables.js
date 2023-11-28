@@ -1,7 +1,22 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Hacer la solicitud Fetch para obtener los datos de registro
-    let formData = new FormData();
-    formData.append('action', 'tablaUsuarios');
+document.addEventListener('DOMContentLoaded', function () {
+    // Inicializar la página con la pestaña activa actual
+    const activeTab = document.querySelector('.nav-link.active');
+    actualizarTabla(activeTab);
+
+    // Agregar un manejador de clic a todas las pestañas
+    const tabs = document.querySelectorAll('.nav-link');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function (event) {
+            event.preventDefault(); // Prevenir el comportamiento predeterminado del enlace
+            actualizarTabla(this); // "this" hace referencia a la pestaña en la que se hizo clic
+        });
+    });
+});
+
+function actualizarTabla(tab) {
+    const formData = new FormData();
+    const action = obtenerActionSegunTab(tab.id);
+    formData.append('action', action);
 
     // Llamada a la función para obtener notificaciones no leídas
     fetch('backend.php', {
@@ -11,18 +26,59 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             // Crear el gráfico cuando se obtengan los datos
-            mostrarPagina(data, 0, 10);
-            llenarDropdown(data);
+            mostrarPagina(data, 0, 10, tab.id);
+            llenarDropdown(data, tab.id);
+            actualizarNombreColumna(data, tab.id); // Añadir esta llamada para actualizar el nombre de la columna
         })
         .catch(error => {
             console.error('Error:', error);
         });
-});
+}
 
-function llenarDropdown(data) {
-    const columnDropdown = document.getElementById('columnDropdown');
-    const columnButton = document.getElementById('columnButton');
-    const searchInput = document.getElementById('searchInput');
+// Función para obtener la acción según la pestaña activa
+function obtenerActionSegunTab(tabId) {
+    switch (tabId) {
+        case 'cochesTab':
+            return 'tablaCoches';
+        case 'favoritosTab':
+            return 'tablaFavoritos';
+        case 'reservasTab':
+            return 'tablaReservas';
+        case 'usuariosTab':
+            return 'tablaUsuarios';
+        default:
+            return '';
+    }
+}
+
+function actualizarNombreColumna(data, activeTab) {
+    const tabName = activeTab.replace('Tab', ''); // Eliminar "Tab" del nombre de la pestaña
+    const columnButtonId = `columnButton${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`;
+    const columnButton = document.getElementById(columnButtonId);
+    const columnNames = Object.keys(data[0]);
+    const defaultColumnName = 'Columna'; // Nombre por defecto si no hay columnas
+
+    if (columnNames.length > 0) {
+        columnButton.textContent = columnNames[0]; // Establecer el primer nombre de columna por defecto
+        llenarDropdown(data, activeTab);
+    } else {
+        columnButton.textContent = defaultColumnName;
+    }
+}
+
+
+function llenarDropdown(data, activeTab) {
+    const tabName = activeTab.charAt(0).toUpperCase() + activeTab.slice(1);
+    const columnDropdownId = `columnDropdown${tabName}`.replace('Tab', '');
+    const columnDropdown = document.getElementById(columnDropdownId) || document.createElement('ul');
+
+    columnDropdown.id = columnDropdownId;
+    columnDropdown.innerHTML = ''; // Limpiar elementos antiguos
+
+    const columnButtonId = `columnButton${tabName}`.replace('Tab', '');
+    const columnButton = document.getElementById(columnButtonId);
+    const searchInputId = `searchInput${tabName.replace('Tab', '')}`;
+    const searchInput = document.getElementById(searchInputId);
 
     // Obtener los nombres de las columnas
     const columnNames = Object.keys(data[0]);
@@ -38,7 +94,7 @@ function llenarDropdown(data) {
             // Cambiar el texto del botón al nombre de la columna seleccionada
             columnButton.textContent = columnName;
             // Llamar a la función de filtrado cuando se selecciona una nueva columna
-            filtrarDatos(data);
+            filtrarDatos(data, activeTab);
         });
         li.appendChild(a);
         columnDropdown.appendChild(li);
@@ -47,39 +103,63 @@ function llenarDropdown(data) {
     // Escuchar cambios en el input de búsqueda
     searchInput.addEventListener('input', () => {
         // Llamar a la función de filtrado cuando cambia el valor del input de búsqueda
-        filtrarDatos(data);
+        filtrarDatos(data, activeTab);
     });
 }
 
-function filtrarDatos(data) {
-    const columnButton = document.getElementById('columnButton');
-    const searchInput = document.getElementById('searchInput');
+function filtrarDatos(data, activeTab) {
+    const tabName = activeTab.replace('Tab', '');
+    const columnButtonId = `columnButton${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`;
+    const searchInputId = `searchInput${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`;
+
+    const selectedColumn = document.getElementById(columnButtonId).textContent;
+    const inputValue = document.getElementById(searchInputId).value.toLowerCase();
+
+    const filteredData = data.filter(rowData =>
+        (rowData[selectedColumn] || '').toString().toLowerCase().includes(inputValue)
+    );
+
+    mostrarPagina(filteredData, 0, 10, activeTab);
+}
+
+function mostrarPagina(data, startIndex, pageSize, activeTab) {
+    let tablaContainer;
+    let columnButton;
+    let searchInput;
+
+    switch (activeTab) {
+        case 'cochesTab':
+            tablaContainer = document.getElementById('cochesTablaContainer');
+            columnButton = document.getElementById('columnButtonCoches');
+            searchInput = document.getElementById('searchInputCoches');
+            break;
+        case 'favoritosTab':
+            tablaContainer = document.getElementById('favoritosTablaContainer');
+            columnButton = document.getElementById('columnButtonFavoritos');
+            searchInput = document.getElementById('searchInputFavoritos');
+            break;
+        case 'reservasTab':
+            tablaContainer = document.getElementById('reservasTablaContainer');
+            columnButton = document.getElementById('columnButtonReservas');
+            searchInput = document.getElementById('searchInputReservas');
+            break;
+        case 'usuariosTab':
+            tablaContainer = document.getElementById('usuariosTablaContainer');
+            columnButton = document.getElementById('columnButtonUsuarios');
+            searchInput = document.getElementById('searchInputUsuarios');
+            break;
+        default:
+            // Manejo de caso no especificado
+            console.error('Pestaña no reconocida:', activeTab);
+            return;
+    }
 
     // Obtén el nombre de la columna seleccionada
     let selectedColumn = columnButton.textContent;
 
     // Filtra los datos en función del valor introducido en el input y de la columna seleccionada
     const filteredData = data.filter(rowData => {
-        const cellValue = rowData[selectedColumn] || ''; // Si el valor es null, utiliza una cadena vacía
-        const inputValue = searchInput.value.toLowerCase();
-        return cellValue.toLowerCase().includes(inputValue);
-    });
-
-    // Actualiza la página con los datos filtrados
-    mostrarPagina(filteredData, 0, 10);
-}
-
-function mostrarPagina(data, startIndex, pageSize) {
-    const tablaContainer = document.getElementById('tablaContainer');
-    const columnButton = document.getElementById('columnButton');
-    const searchInput = document.getElementById('searchInput');
-
-    // Obtén el nombre de la columna seleccionada
-    let selectedColumn = columnButton.textContent;
-
-    // Filtra los datos en función del valor introducido en el input y de la columna seleccionada
-    const filteredData = data.filter(rowData => {
-        const cellValue = rowData[selectedColumn] || ''; // Si el valor es null, utiliza una cadena vacía
+        const cellValue = (rowData[selectedColumn] || '').toString(); // Convertir a cadena, incluso si es null
         const inputValue = searchInput.value.toLowerCase();
         return cellValue.toLowerCase().includes(inputValue);
     });
@@ -135,90 +215,93 @@ function mostrarPagina(data, startIndex, pageSize) {
 
         // Agregar las celdas de "Acciones"
         const accionesTd = document.createElement('td');
-        const editarBtn = document.createElement('button');
-        editarBtn.textContent = 'Editar';
-        editarBtn.classList.add('btn', 'btn-primary', 'btn-sm', 'me-2');
-        editarBtn.addEventListener('click', () => {
-            // Al hacer clic en "Editar", convierte los campos en inputs
-            Array.from(row.children).forEach(td => {
-                if (td !== accionesTd) {
-                    const input = document.createElement('input');
-                    input.type = 'text';
-                    input.value = td.textContent;
-                    input.classList.add('form-control');
-                    // No permitir cambios en el campo UserID
-                    if (td.cellIndex === 0) {
-                        input.disabled = true;
-                    }
-                    // Mostrar asteriscos en lugar de la contraseña
-                    if (td.cellIndex === 10) {
-                        input.type = 'password';
-                        input.value = '';
-                    }
-                    td.textContent = '';
-                    td.appendChild(input);
-                }
-            });
 
-            // Cambia el botón de "Editar" a "Aceptar" y agrega el botón de "Cancelar"
-            accionesTd.innerHTML = '';
-            const aceptarBtn = document.createElement('button');
-            aceptarBtn.textContent = 'Aceptar';
-            aceptarBtn.classList.add('btn', 'btn-success', 'btn-sm', 'me-2');
-            aceptarBtn.addEventListener('click', () => {
-                // Al hacer clic en "Aceptar", guarda los campos editados
-                const modifiedData = {};
-                const originalData = {};
-                Array.from(row.children).forEach((td, index) => {
-                    if (td !== accionesTd) {
-                        const inputValue = td.querySelector('input').value;
-                        modifiedData[Object.keys(data[0])[index]] = inputValue;
-                        originalData[Object.keys(data[0])[index]] = rowData[Object.keys(data[0])[index]];
-                        td.textContent = inputValue;
-                    }
-                });
-
-                // Cambia el botón de "Aceptar" a "Editar"
-                accionesTd.innerHTML = '';
-                accionesTd.appendChild(editarBtn);
-                accionesTd.appendChild(eliminarBtn);
-
-                // Llama a la función para enviar los datos modificados al servidor
-                modificarUsuarios(originalData, modifiedData);
-            });
-
-            const cancelarBtn = document.createElement('button');
-            cancelarBtn.textContent = 'Cancelar';
-            cancelarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
-            cancelarBtn.addEventListener('click', () => {
-                // Al hacer clic en "Cancelar", deja los campos tal como estaban antes
+            // Configuración específica para la pestaña de usuarios
+            const editarBtn = document.createElement('button');
+            editarBtn.textContent = 'Editar';
+            editarBtn.classList.add('btn', 'btn-primary', 'btn-sm', 'me-2');
+            editarBtn.addEventListener('click', () => {
+                // Al hacer clic en "Editar", convierte los campos en inputs
                 Array.from(row.children).forEach(td => {
                     if (td !== accionesTd) {
-                        const inputValue = td.querySelector('input').value;
-                        td.textContent = inputValue;
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.value = td.textContent;
+                        input.classList.add('form-control');
+                        // No permitir cambios en el campo UserID
+                        if (td.cellIndex === 0) {
+                            input.disabled = true;
+                        }
+                        // Mostrar asteriscos en lugar de la contraseña
+                        if (td.cellIndex === 10) {
+                            input.type = 'password';
+                            input.value = '';
+                        }
+                        td.textContent = '';
+                        td.appendChild(input);
                     }
                 });
 
-                // Cambia el botón de "Cancelar" a "Editar"
+                // Cambia el botón de "Editar" a "Aceptar" y agrega el botón de "Cancelar"
                 accionesTd.innerHTML = '';
-                accionesTd.appendChild(editarBtn);
-                accionesTd.appendChild(eliminarBtn);
+                const aceptarBtn = document.createElement('button');
+                aceptarBtn.textContent = 'Aceptar';
+                aceptarBtn.classList.add('btn', 'btn-success', 'btn-sm', 'me-2');
+                aceptarBtn.addEventListener('click', () => {
+                    // Al hacer clic en "Aceptar", guarda los campos editados
+                    const modifiedData = {};
+                    const originalData = {};
+                    Array.from(row.children).forEach((td, index) => {
+                        if (td !== accionesTd) {
+                            const inputValue = td.querySelector('input').value;
+                            modifiedData[Object.keys(data[0])[index]] = inputValue;
+                            originalData[Object.keys(data[0])[index]] = rowData[Object.keys(data[0])[index]];
+                            td.textContent = inputValue;
+                        }
+                    });
+
+                    // Cambia el botón de "Aceptar" a "Editar"
+                    accionesTd.innerHTML = '';
+                    accionesTd.appendChild(editarBtn);
+                    accionesTd.appendChild(eliminarBtn);
+
+                    // Llama a la función para enviar los datos modificados al servidor
+                    modificarUsuarios(originalData, modifiedData);
+                });
+
+                const cancelarBtn = document.createElement('button');
+                cancelarBtn.textContent = 'Cancelar';
+                cancelarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
+                cancelarBtn.addEventListener('click', () => {
+                    // Al hacer clic en "Cancelar", deja los campos tal como estaban antes
+                    Array.from(row.children).forEach(td => {
+                        if (td !== accionesTd) {
+                            const inputValue = td.querySelector('input').value;
+                            td.textContent = inputValue;
+                        }
+                    });
+
+                    // Cambia el botón de "Cancelar" a "Editar"
+                    accionesTd.innerHTML = '';
+                    accionesTd.appendChild(editarBtn);
+                    accionesTd.appendChild(eliminarBtn);
+                });
+
+                accionesTd.appendChild(aceptarBtn);
+                accionesTd.appendChild(cancelarBtn);
             });
 
-            accionesTd.appendChild(aceptarBtn);
-            accionesTd.appendChild(cancelarBtn);
-        });
+            const eliminarBtn = document.createElement('button');
+            eliminarBtn.textContent = 'Eliminar';
+            eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
+            eliminarBtn.addEventListener('click', () => {
+                // Lógica para eliminar la fila
+                // ...
+            });
 
-        const eliminarBtn = document.createElement('button');
-        eliminarBtn.textContent = 'Eliminar';
-        eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
-        eliminarBtn.addEventListener('click', () => {
-            // Lógica para eliminar la fila
-            // ...
-        });
+            accionesTd.appendChild(editarBtn);
+            accionesTd.appendChild(eliminarBtn);
 
-        accionesTd.appendChild(editarBtn);
-        accionesTd.appendChild(eliminarBtn);
         row.appendChild(accionesTd);
         tbody.appendChild(row);
     });
@@ -311,8 +394,6 @@ function agregarPaginacion(data, startIndex, pageSize) {
 }
 
 function modificarUsuarios(originalData, modifiedData) {
-    console.log(originalData);
-    console.log(modifiedData);
 
     const dataToSave = {};
     dataToSave['UserID'] = originalData['UserID'];

@@ -983,6 +983,60 @@ function getReservationEvolution() {
     }
 }
 
+function getTablaCoches() {
+    $conn = connectDB();
+
+    if ($conn === null) {
+        return null;
+    }
+
+    try {
+        $stmt = $conn->query("
+            SELECT *
+            FROM `coches`;
+        ");
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        return null;
+    }
+}
+function getTablaFavoritos() {
+    $conn = connectDB();
+
+    if ($conn === null) {
+        return null;
+    }
+
+    try {
+        $stmt = $conn->query("
+            SELECT *
+            FROM `favoritos`;
+        ");
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        return null;
+    }
+}
+function getTablaReservas() {
+    $conn = connectDB();
+
+    if ($conn === null) {
+        return null;
+    }
+
+    try {
+        $stmt = $conn->query("
+            SELECT *
+            FROM `reservas`;
+        ");
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        return null;
+    }
+}
 function getTablaUsuarios() {
     $conn = connectDB();
 

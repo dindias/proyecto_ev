@@ -105,28 +105,64 @@ include ("register.php");
 
         <div id="coches" class="tabContent" style="display: none; height: 100%;">
             <h2 class="mb-4">Datos de coches</h2>
+            <div class="d-flex justify-content-center">
+                <div class="input-group mb-3" style="max-width: 500px;">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="columnButtonCoches">Columna</button>
+                    <ul class="dropdown-menu" id="columnDropdownCoches">
+                        <!-- Los nombres de las columnas se agregarán aquí dinámicamente -->
+                    </ul>
+                    <input type="text" class="form-control" id="searchInputCoches" aria-label="Text input with dropdown button" placeholder="Buscar...">
+                </div>
+            </div>
+            <div class="container-fluid" id="cochesTablaContainer"></div>
         </div>
 
         <div id="favoritos" class="tabContent" style="display: none; height: 100%;">
             <h2 class="mb-4">Datos de favoritos</h2>
+            <div class="d-flex justify-content-center">
+                <div class="input-group mb-3" style="max-width: 500px;">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="columnButtonFavoritos">Columna</button>
+                    <ul class="dropdown-menu" id="columnDropdownFavoritos">
+                        <!-- Los nombres de las columnas se agregarán aquí dinámicamente -->
+                    </ul>
+                    <input type="text" class="form-control" id="searchInputFavoritos" aria-label="Text input with dropdown button" placeholder="Buscar...">
+                </div>
+            </div>
+            <div class="container-fluid" id="favoritosTablaContainer"></div>
+            <div id="paginacionReservas" class="mt-3">
+                <!-- Aquí se generarán los botones de paginación -->
+            </div>
         </div>
 
         <div id="reservas" class="tabContent" style="display: none; height: 100%;">
             <h2 class="mb-4">Datos de reservas</h2>
+            <div class="d-flex justify-content-center">
+                <div class="input-group mb-3" style="max-width: 500px;">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="columnButtonReservas">Columna</button>
+                    <ul class="dropdown-menu" id="columnDropdownReservas">
+                        <!-- Los nombres de las columnas se agregarán aquí dinámicamente -->
+                    </ul>
+                    <input type="text" class="form-control" id="searchInputReservas" aria-label="Text input with dropdown button" placeholder="Buscar...">
+                </div>
+            </div>
+            <div class="container-fluid" id="reservasTablaContainer"></div>
+            <div id="paginacionReservas" class="mt-3">
+                <!-- Aquí se generarán los botones de paginación -->
+            </div>
         </div>
 
         <div id="usuarios" class="tabContent" style="display: none; height: 100%;">
             <h2 class="mb-4">Datos de usuarios</h2>
             <div class="d-flex justify-content-center">
                 <div class="input-group mb-3" style="max-width: 500px;">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="columnButton">Columna</button>
-                    <ul class="dropdown-menu" id="columnDropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="columnButtonUsuarios">Columna</button>
+                    <ul class="dropdown-menu" id="columnDropdownUsuarios">
                         <!-- Los nombres de las columnas se agregarán aquí dinámicamente -->
                     </ul>
-                    <input type="text" class="form-control" id="searchInput" aria-label="Text input with dropdown button" placeholder="Buscar...">
+                    <input type="text" class="form-control" id="searchInputUsuarios" aria-label="Text input with dropdown button" placeholder="Buscar...">
                 </div>
             </div>
-            <div class="container-fluid" id="tablaContainer"></div>
+            <div class="container-fluid" id="usuariosTablaContainer"></div>
             <!-- Contenedor para la paginación -->
             <div id="paginacionContainer" class="mt-3">
                 <!-- Aquí se generarán los botones de paginación -->
