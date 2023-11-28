@@ -313,15 +313,17 @@ function mostrarPagina(data, startIndex, pageSize, activeTab) {
     tablaContainer.appendChild(rowContainer);
 
     // Agregar la paginación
-    agregarPaginacion(filteredData, startIndex, pageSize);
+    agregarPaginacion(filteredData, startIndex, pageSize, activeTab);
 }
 
-function agregarPaginacion(data, startIndex, pageSize) {
+function agregarPaginacion(data, startIndex, pageSize, activeTab) {
     // Calcula el número total de páginas
     const totalPages = Math.ceil(data.length / pageSize);
 
     // Obtén el elemento donde se insertará la paginación
-    const paginacionContainer = document.getElementById('paginacionContainer');
+    const paginacionContainerTabId = `paginacion${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}`;
+    const paginacionContainerId = paginacionContainerTabId.replace('Tab', '');
+    const paginacionContainer = document.getElementById(paginacionContainerId);
 
     // Crea el contenedor de fila (row) con clases de Bootstrap
     const rowContainer = document.createElement('div');
@@ -345,7 +347,7 @@ function agregarPaginacion(data, startIndex, pageSize) {
     previousLink.addEventListener('click', () => {
         if (startIndex > 0) {
             startIndex -= pageSize;
-            mostrarPagina(data, startIndex, pageSize);
+            mostrarPagina(data, startIndex, pageSize, activeTab);
         }
     });
     previousBtn.appendChild(previousLink);
@@ -361,7 +363,7 @@ function agregarPaginacion(data, startIndex, pageSize) {
         pageLink.textContent = i;
         pageLink.addEventListener('click', () => {
             startIndex = (i - 1) * pageSize;
-            mostrarPagina(data, startIndex, pageSize);
+            mostrarPagina(data, startIndex, pageSize, activeTab);
         });
         pageBtn.appendChild(pageLink);
         pagination.appendChild(pageBtn);
@@ -377,7 +379,7 @@ function agregarPaginacion(data, startIndex, pageSize) {
     nextLink.addEventListener('click', () => {
         if (startIndex + pageSize < data.length) {
             startIndex += pageSize;
-            mostrarPagina(data, startIndex, pageSize);
+            mostrarPagina(data, startIndex, pageSize, activeTab);
         }
     });
     nextBtn.appendChild(nextLink);
@@ -392,6 +394,7 @@ function agregarPaginacion(data, startIndex, pageSize) {
     paginacionContainer.innerHTML = '';
     paginacionContainer.appendChild(rowContainer);
 }
+
 
 function modificarUsuarios(originalData, modifiedData) {
 

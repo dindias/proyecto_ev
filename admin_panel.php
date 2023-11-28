@@ -115,6 +115,9 @@ include ("register.php");
                 </div>
             </div>
             <div class="container-fluid" id="cochesTablaContainer"></div>
+            <div id="paginacionCoches" class="mt-3">
+                <!-- Aquí se generarán los botones de paginación -->
+            </div>
         </div>
 
         <div id="favoritos" class="tabContent" style="display: none; height: 100%;">
@@ -129,7 +132,7 @@ include ("register.php");
                 </div>
             </div>
             <div class="container-fluid" id="favoritosTablaContainer"></div>
-            <div id="paginacionReservas" class="mt-3">
+            <div id="paginacionFavoritos" class="mt-3">
                 <!-- Aquí se generarán los botones de paginación -->
             </div>
         </div>
@@ -164,7 +167,7 @@ include ("register.php");
             </div>
             <div class="container-fluid" id="usuariosTablaContainer"></div>
             <!-- Contenedor para la paginación -->
-            <div id="paginacionContainer" class="mt-3">
+            <div id="paginacionUsuarios" class="mt-3">
                 <!-- Aquí se generarán los botones de paginación -->
             </div>
         </div>
