@@ -3,13 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-11-2023 a las 19:31:36
+-- Tiempo de generación: 28-11-2023 a las 07:40:28
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
-
-DROP DATABASE proyecto_ev;
-CREATE DATABASE proyecto_ev;
-USE proyecto_ev;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -180,9 +176,19 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`UserID`, `imagen`, `Nombre`, `Apellido`, `Email`, `email_verified_at`, `Privilegios`, `Nacimiento`, `NumeroCuenta`, `Direccion`, `password`, `Descripcion`, `registro`) VALUES
-(1, 'img/IMG_20220724_221039_998.jpg', 'Daniel', 'Indias', 'indiasdaniel@gmail.com', NULL, 1, '2000-06-20', NULL, 'inventada2', '$2y$10$ZYkCygPKFTpVURqe/Md0I.cAxrShSLvdbexE4T5/smTnftpG0hk0O', 'He empezado a convertir coches a electricos y a venderlos por aficion', '2023-11-21 12:21:09'),
+(1, 'img/IMG_20220724_221039_998.jpg', 'Daniel', 'Indias', 'indiasdaniel@gmail.com', NULL, 1, '2000-06-20', NULL, 'inventada2', '$2y$10$ZYkCygPKFTpVURqe/Md0I.cAxrShSLvdbexE4T5/smTnftpG0hk0O', 'He empezado a convertir coches a electricos y a venderlos por afición', '2023-11-21 12:21:09'),
 (2, NULL, 'Alvaro', '', 'alvaro@gmail.com', NULL, 0, '2000-06-20', NULL, 'inventada', '$2y$10$W9TQnruj1/MY/R3K.ElXSeYNUFl13.Jnnc9kJsQ/uvN49woJrqFGi', NULL, '2023-11-22 12:21:09'),
-(3, NULL, 'Pepito', 'Palotes', 'inventada@gmail.com', NULL, 0, '2000-06-20', NULL, 'inventada', '$2y$10$ZsW.wfsK0bhj6UHfaWwn2efEIp5wbnznwkYQc1IlCUt5.rb9E3lOm', NULL, '2023-11-23 12:21:09');
+(3, NULL, 'Pepito', 'Palotes', 'inventada@gmail.com', NULL, 0, '2000-06-20', NULL, 'inventada', '$2y$10$ZsW.wfsK0bhj6UHfaWwn2efEIp5wbnznwkYQc1IlCUt5.rb9E3lOm', NULL, '2023-11-23 12:21:09'),
+(24, 'imagen1.jpg', 'Juan', 'Perez', 'juan@example.com', NULL, 1, '1990-01-15', NULL, 'Calle 123', 'hashed_password1', 'Descripción del usuario 1', '2023-01-01 12:00:00'),
+(25, 'imagen2.jpg', 'Maria', 'Gomez', 'maria@example.com', NULL, 0, '1985-05-20', NULL, 'Avenida 456', 'hashed_password2', 'Descripción del usuario 2', '2023-02-01 14:30:00'),
+(26, 'imagen3.jpg', 'Carlos', 'Lopez', 'carlos@example.com', NULL, 1, '1995-08-10', NULL, 'Calle 789', 'hashed_password3', 'Descripción del usuario 3', '2023-03-05 10:45:00'),
+(27, 'imagen4.jpg', 'Ana', 'Rodriguez', 'ana@example.com', NULL, 0, '1980-12-03', NULL, 'Avenida 123', 'hashed_password4', 'Descripción del usuario 4', '2023-03-15 09:15:00'),
+(28, 'imagen5.jpg', 'Pedro', 'Martinez', 'pedro@example.com', NULL, 1, '1998-06-25', NULL, 'Calle 456', 'hashed_password5', 'Descripción del usuario 5', '2023-04-20 16:20:00'),
+(29, 'imagen6.jpg', 'Laura', 'Hernandez', 'laura@example.com', NULL, 0, '1987-09-12', NULL, 'Avenida 789', 'hashed_password6', 'Descripción del usuario 6', '2023-04-30 18:45:00'),
+(30, 'imagen7.jpg', 'Alejandro', 'Garcia', 'alejandro@example.com', NULL, 1, '1993-02-28', NULL, 'Calle 789', 'hashed_password7', 'Descripción del usuario 7', '2023-05-10 11:30:00'),
+(31, 'imagen8.jpg', 'Sofia', 'Diaz', 'sofia@example.com', NULL, 0, '1982-07-18', NULL, 'Avenida 123', 'hashed_password8', 'Descripción del usuario 8', '2023-05-15 07:00:00'),
+(32, 'imagen9.jpg', 'Daniel', 'Ramirez', 'daniel@example.com', NULL, 1, '1996-11-05', NULL, 'Calle 456', 'hashed_password9', 'Descripción del usuario 9', '2023-06-02 14:10:00'),
+(33, 'imagen10.jpg', 'Carmen', 'Luna', 'carmen@example.com', NULL, 0, '1989-04-08', NULL, 'Avenida 789', 'hashed_password10', 'Descripción del usuario 10', '2023-06-10 16:30:00');
 
 --
 -- Índices para tablas volcadas
@@ -272,7 +278,7 @@ ALTER TABLE `reservas`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `UserID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `UserID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- Restricciones para tablas volcadas
