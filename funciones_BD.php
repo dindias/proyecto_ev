@@ -111,7 +111,8 @@ function getReservas($userID)
                         FROM reservas r
                         JOIN coches c ON c.CarID = r.CarID
                         LEFT JOIN imagenes i ON i.CarID = c.CarID AND i.UserID = r.UserID
-                        WHERE r.UserID = :userID");
+                        WHERE r.UserID = :userID
+                        ORDER BY r.fecha_reserva DESC"); // Ordenar por fecha_reserva en orden descendente
 
         $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
         $stmt->execute();
@@ -141,6 +142,7 @@ function getReservas($userID)
         return [];
     }
 }
+
 
 
 function getTotalCars($filters = []) {

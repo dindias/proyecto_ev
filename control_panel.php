@@ -252,7 +252,7 @@ include ("register.php");
                             $reservas = getReservas($_SESSION['user_id']); // Obtiene las reservas del usuario
                             foreach ($reservas as $reserva) {
                                 ?>
-                                <div class="card border shadow-none mb-4 reservas" data-fecha-inicio="<?php echo $reserva['FechaInicio']; ?>" data-fecha-fin="<?php echo $reserva['FechaFin']; ?>">
+                                <div class="card border shadow-none mb-4 reservas" data-fecha-inicio="<?php echo $reserva['FechaInicio']; ?>" data-fecha-fin="<?php echo $reserva['FechaFin']; ?>" data-reserva-id="<?php echo $reserva['ReservationID']; ?>">
                                     <div class="card-body">
                                         <div class="d-flex align-items-start border-bottom pb-3 flex-md-row flex-column">
                                             <div class="me-4">

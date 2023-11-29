@@ -325,9 +325,12 @@ function eliminarReserva(reservationID, UserID) {
     })
         .then(response => response.json())
         .then(data => {
-            if(data.success) {
-                // Eliminamos el div que contiene la reserva
-                document.getElementById(`reserva-${reservationID}`).remove();
+            if (data.success) {
+                // Eliminar la tarjeta visualmente
+                const tarjeta = document.querySelector(`.reservas[data-reserva-id="${reservationID}"]`);
+                if (tarjeta) {
+                    tarjeta.remove();
+                }
             } else {
                 alert(data.message);
             }
@@ -336,6 +339,7 @@ function eliminarReserva(reservationID, UserID) {
             console.error('Error:', error);
         });
 }
+
 
 document.addEventListener('DOMContentLoaded', function () {
     // Obtener la fecha actual en formato DateTime
@@ -366,7 +370,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const btnEliminar = tarjeta.querySelector('.eliminarReserva');
 
         // Mostrar u ocultar el botón de eliminar según la condición
-        btnEliminar.style.display = mostrarEliminar ? 'block' : 'none';
+        btnEliminar.style.display = mostrarEliminar ? 'none' : 'block';
     });
 });
 
