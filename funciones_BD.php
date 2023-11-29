@@ -1255,3 +1255,22 @@ function updateUsuarios($requestData)
         return ['success' => false, 'message' => 'Error al actualizar usuarios: ' . $e->getMessage()];
     }
 }
+
+function eliminarFila($tabla, $campoID, $id)
+{
+    $conn = connectDB();
+
+    try {
+        $conn->beginTransaction();
+        $stmt = $conn->prepare("DELETE FROM $tabla WHERE $campoID = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $conn->commit();
+        $conn = null;
+
+        return ['success' => true, 'message' => 'Fila eliminada correctamente'];
+    } catch (PDOException $e) {
+        $conn->rollBack();
+        return ['success' => false, 'message' => 'Error al eliminar: ' . $e->getMessage()];
+    }
+}

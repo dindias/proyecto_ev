@@ -303,15 +303,21 @@ function mostrarPagina(data, startIndex, pageSize, activeTab) {
                 accionesTd.appendChild(cancelarBtn);
             });
 
-            const eliminarBtn = document.createElement('button');
-            eliminarBtn.textContent = 'Eliminar';
-            eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
-            eliminarBtn.addEventListener('click', () => {
-                // Lógica para eliminar la fila
-                // ...
-            });
+        const eliminarBtn = document.createElement('button');
+        eliminarBtn.textContent = 'Eliminar';
+        eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
+        eliminarBtn.addEventListener('click', () => {
+            // Confirmar que el usuario realmente quiere eliminar la fila
+            if (confirm("¿Estás seguro que deseas eliminar esta fila?")) {
+                const fila = eliminarBtn.closest('tr');
+                const primeraColumna = Object.keys(data[0])[0];
+                const id = rowData[Object.keys(rowData)[0]];
+                eliminarFila(id, fila, activeTab, primeraColumna);
+            }
+        });
 
-            accionesTd.appendChild(editarBtn);
+
+        accionesTd.appendChild(editarBtn);
             accionesTd.appendChild(eliminarBtn);
 
         row.appendChild(accionesTd);
@@ -561,7 +567,6 @@ function modificarReservas(dataToSave){
             console.error('Error:', error);
         });
 }
-
 function modificarUsuarios(dataToSave){
     let formData = new FormData();
     formData.append('action', 'modificarUsuarios');
@@ -582,6 +587,36 @@ function modificarUsuarios(dataToSave){
                 alert('Usuarios actualizados correctamente');
             } else {
                 alert('Error al actualizar usuarios: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+function eliminarFila(id, fila, activeTab, CampoID) {
+    let formData = new FormData();
+    formData.append('action', 'eliminarFila');
+    formData.append('tabla', activeTab.replace('Tab', ''));
+    formData.append('rowId', id);
+    formData.append('campoID', CampoID);
+
+    // Llamada a la función para modificar usuarios
+    fetch('backend.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Maneja la respuesta del servidor si es necesario
+            console.log(data);
+
+            // Muestra el mensaje de éxito en la interfaz
+            if (data.success) {
+                alert('Datos eliminados correctamente');
+                fila.remove();
+            } else {
+                alert('Error al actualizar coches: ' + data.message);
             }
         })
         .catch(error => {

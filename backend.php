@@ -423,5 +423,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo json_encode($data);
             exit;
         }
+        case 'eliminarFila':
+        {
+            $tabla = $_POST['tabla'];
+            $campoID = $_POST['campoID'];
+            $id = $_POST['rowId'];
+
+            $data = eliminarFila($tabla, $campoID, $id);
+
+            echo json_encode($data);
+            exit;
+        }
     }
 }
