@@ -370,9 +370,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const btnEliminar = tarjeta.querySelector('.eliminarReserva');
 
         // Mostrar u ocultar el botón de eliminar según la condición
-        btnEliminar.style.display = mostrarEliminar ? 'none' : 'block';
+        btnEliminar.style.display = mostrarEliminar ? 'block' : 'none';
     });
 });
+
 
 document.addEventListener('DOMContentLoaded', function () {
     let userID = document.getElementById('notificacionesAccordion').dataset.userId;
