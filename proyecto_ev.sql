@@ -58,8 +58,8 @@ CREATE TABLE `coches` (
 --
 
 INSERT INTO `coches` (`CarID`, `UserID`, `Marca`, `Modelo`, `Ano`, `Matricula`, `Potencia`, `Autonomia`, `Kilometraje`, `Motorizacion`, `Contaminacion`, `Precio`, `Tipo`, `ubicacion`, `Descripcion`, `Exterior`, `Interior`, `Seguridad`, `Tecnologia`, `fecha_adicion`) VALUES
-(82, 1, 'BMW', 'X3', '2023', 'AAA1111', 500, 800, 25000, 'Hibrido', 0, 600, 'Suv', 'Mérida', 'Nuevo', 'Negro', 'Beige', 'Es de hierro coño', 'ABS', '2023-11-16'),
-(84, 1, 'Ford', 'Focus', '2022', 'ZZZ1111', 200, 600, 10000, 'Hibrido', 0, 200, 'Compacto', 'Mérida', 'Nuevo', '', '', '', '', '2023-11-22');
+(82, 1, 'BMW', 'X3', '2023', 'AAA1111', 500, 800, 25000, 'Hibrido', 100, 600, 'Suv', 'Mérida', 'Nuevo', 'Negro', 'Beige', 'Es de hierro coño', 'ABS', '2023-11-16'),
+(84, 1, 'Ford', 'Focus', '2022', 'ZZZ1111', 200, 600, 10000, 'Hibrido', 80, 200, 'Compacto', 'Mérida', 'Nuevo', '', '', '', '', '2023-11-22');
 
 -- --------------------------------------------------------
 
