@@ -450,8 +450,10 @@ include ("register.php");
                                                 <input type="number" id="ano" name="Ano" class="form-control" placeholder="Año" required min="1900" max="2099" step="1"/>
                                             </li>
                                             <li>
-                                                <label for="matricula" class="form-label">Matricula:</label>
-                                                <input type="text" id="matricula" name="Matricula" class="form-control" placeholder="Matricula" required/>
+                                                <fieldset disabled>
+                                                    <label for="matricula" class="form-label">Matricula:</label>
+                                                    <input type="text" id="matricula" name="Matricula" class="form-control" placeholder="Matricula" required/>
+                                                <fieldset>
                                             </li>
                                             <li class="mb-2">
                                                 <label for="potencia" class="form-label">Potencia:</label>
