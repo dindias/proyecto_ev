@@ -376,7 +376,7 @@ function insertImages($userID, $carID, $images) {
 
         foreach ($images['name'] as $key => $name) {
             $fileName = basename($name);
-            $targetDir = "img/";
+            $targetDir = "./img/";
             $targetFilePath = $targetDir . $fileName;
 
             if (move_uploaded_file($images["tmp_name"][$key], $targetFilePath)) {
