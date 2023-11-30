@@ -56,12 +56,12 @@ if (session_status() === PHP_SESSION_NONE) {
                 <li class="nav-item dropdown d-flex align-items-center">
                         <a href="control_panel.php#notificaciones" class="btn btn-light position-relative" style="margin-right: 15px;">
                             <i id="notificationBell" class="far fa-bell fa-lg"></i>
-                            <?php
-                                $unreadNotifications = count(getUnreadNotifications($_SESSION['user_id']));
-                                if ($unreadNotifications > 0) {?>
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                 <?php
-                                echo $unreadNotifications;
+                                    $unreadNotifications = count(getUnreadNotifications($_SESSION['user_id']));
+                                    if ($unreadNotifications > 0) {?>
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    <?php
+                                    echo $unreadNotifications;
                                 ?>
                                 <span class="visually-hidden">unread notifications</span>
                                 <?php }?>

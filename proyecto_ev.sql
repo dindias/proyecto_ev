@@ -50,7 +50,7 @@ CREATE TABLE `coches` (
   `Interior` text NOT NULL,
   `Seguridad` text NOT NULL,
   `Tecnologia` text NOT NULL,
-  `fecha_adicion` date NOT NULL DEFAULT current_timestamp()
+  `fecha_adicion` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
