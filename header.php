@@ -42,9 +42,9 @@ if (session_status() === PHP_SESSION_NONE) {
         </button>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="/proyecto_ev/index.php">Inicio</a></li>
-                <li class="nav-item"><a class="nav-link" href="/proyecto_ev/busqueda.php">Alquilar</a></li>
-                <li class="nav-item"><a class="nav-link" href="/proyecto_ev/info.php">Precios</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.php">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="busqueda.php">Alquilar</a></li>
+                <li class="nav-item"><a class="nav-link" href="/info.php">Precios</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Sobre nosotros</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
             </ul>
@@ -54,7 +54,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <?php }?>
             <?php if(isset($_SESSION['user_id'])):?>
                 <li class="nav-item dropdown d-flex align-items-center">
-                        <a href="/proyecto_ev/control_panel.php#notificaciones" class="btn btn-light position-relative" style="margin-right: 15px;">
+                        <a href="control_panel.php#notificaciones" class="btn btn-light position-relative" style="margin-right: 15px;">
                             <i id="notificationBell" class="far fa-bell fa-lg"></i>
                             <?php
                                 $unreadNotifications = count(getUnreadNotifications($_SESSION['user_id']));
@@ -72,7 +72,7 @@ if (session_status() === PHP_SESSION_NONE) {
                     </a>
                     <!-- Campana de notificaciones -->
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="/proyecto_ev/control_panel.php">Panel de control</a></li>
+                        <li><a class="dropdown-item" href="control_panel.php">Panel de control</a></li>
                         <li><a class="dropdown-item" id="logoutlink" href="#">Cerrar sesión</a></li>
                     </ul>
                 </li>
