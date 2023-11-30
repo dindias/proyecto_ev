@@ -100,10 +100,9 @@ if (session_status() === PHP_SESSION_NONE) {
 
     document.addEventListener('DOMContentLoaded', (event) => {
         document.getElementById('logoutlink').addEventListener('click', function(e){
-            console.log("hola");
             e.preventDefault();
 
-            fetch('/proyecto_ev/backend.php', {
+            fetch('backend.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',

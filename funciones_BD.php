@@ -595,7 +595,9 @@ function getUnreadNotifications($userID) {
         $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
         $stmt->execute();
 
-        return $stmt->fetchAll();
+        $notificaciones = $stmt->fetchAll();
+        echo $notificaciones;
+        return $notificaciones;
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
         return [];
