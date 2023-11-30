@@ -244,7 +244,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $startDate = $_POST['startDate'];
                 $endDate = $_POST['endDate'];
                 $precioTotal = $_POST['precioTotal'];
-                $observaciones = '';
+                $observaciones = $_POST['observaciones'] ?? '';
 
                 insertarReserva($userID, $carId, $startDate, $endDate, $precioTotal, $observaciones);
 

@@ -353,6 +353,10 @@ $car = getCar($carID);
                                         <ul class="list-group" id="precioTotal" data-precio-base="<?php echo $car[0]['Precio']; ?>">
                                             <li class="list-group-item active">Coste total: <span id="precioValor"><?php echo number_format($car[0]['Precio'], 2); ?></span></li>
                                         </ul>
+                                    </div><br>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Pon tus observaciones o peticiones sobre el servicio aquí." id="observaciones" style="height: 100px"></textarea>
+                                        <label for="observaciones">Pon tus observaciones o peticiones sobre el servicio aquí.</label>
                                     </div>
                                 </div>
                                 <div class="modal-footer">

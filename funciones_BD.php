@@ -552,7 +552,7 @@ function sendNotificationToCarOwner($carID, $userID, $reservaInicio, $reservaFin
             $reservaMomento = $reservaResult['fecha_reserva'];
 
             // Elaborar el mensaje
-            $message = "El usuario $userName ($userEmail) ha alquilado tu coche $carMarca $carModelo ($carAno) por un coste de $reservaCoste € entre los días $reservaFechaInicio - $reservaFechaFin a día $reservaMomento. Ha dejado las siguientes Observaciones: $reservaObservaciones";
+            $message = "El usuario $userName ($userEmail) ha alquilado tu coche $carMarca $carModelo ($carAno) por un coste de $reservaCoste € entre los días $reservaFechaInicio - $reservaFechaFin a día $reservaMomento." . ($reservaObservaciones == '' ? '' : "Ha dejado las siguientes Observaciones: $reservaObservaciones");
 
             // Insertar notificación en la tabla
             sendNotification($ownerID, $reservaID, $carID, $message);
@@ -563,7 +563,7 @@ function sendNotificationToCarOwner($carID, $userID, $reservaInicio, $reservaFin
         }
     } catch (PDOException $e) {
         echo "Error al enviar notificación al propietario: " . $e->getMessage();
-        return false; // Ocurrió un error durante la operación
+        return false; // Ocurrió un error durante la operaciónççç+
     }
 }
 

@@ -77,6 +77,8 @@ function loadCarDetails(car) {
             let startDate = picker.getStartDate().format('YYYY-MM-DD');
             let endDate = picker.getEndDate().format('YYYY-MM-DD');
             let precioTotal = document.getElementById('precioValor').textContent;
+            let observaciones = document.getElementById('observaciones').value;
+            console.log(observaciones);
 
             let formData = new FormData();
             formData.append('action', 'reservar_coche');
@@ -84,6 +86,7 @@ function loadCarDetails(car) {
             formData.append('startDate', startDate);
             formData.append('endDate', endDate);
             formData.append('precioTotal', precioTotal);
+            formData.append('observaciones', observaciones);
 
             // Enviar los datos de carID, userID, startDate y endDate al servidor
             fetch('backend.php', {
