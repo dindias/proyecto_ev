@@ -72,22 +72,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!empty($_POST['descripcion'])) {
                 $valuesToUpdate['descripcion'] = $_POST['descripcion'];
             }
-
+            print_r($valuesToUpdate);
             if (!empty($_FILES['imagen']['name'])) {
-                $uploadDir = './img/'; // Ruta absoluta a la carpeta de imágenes
+                $uploadDir = './img/'; // Cambia esto con la ruta deseada
                 $uploadFile = $uploadDir . basename($_FILES['imagen']['name']);
 
                 if (move_uploaded_file($_FILES['imagen']['tmp_name'], $uploadFile)) {
                     // Imagen cargada exitosamente, guarda la ruta en la base de datos o realiza otras acciones necesarias
-                    $valuesToUpdate['imagen'] = $uploadDir;
+                    $valuesToUpdate['imagen'] = $uploadFile;
                 } else {
                     echo "Error al cargar la imagen.";
                     exit;
                 }
             }
-            print_r($valuesToUpdate);
             $user = updateUser($userID, $valuesToUpdate);
-
             //header("Refresh:0");
             break;
         }
