@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             print_r($valuesToUpdate);
             if (!empty($_FILES['imagen']['name'])) {
-                $uploadDir = 'img/'; // Cambia esto con la ruta deseada
+                $uploadDir = './img/'; // Cambia esto con la ruta deseada
                 $uploadFile = $uploadDir . basename($_FILES['imagen']['name']);
 
                 if (move_uploaded_file($_FILES['imagen']['tmp_name'], $uploadFile)) {
@@ -86,6 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
             $user = updateUser($userID, $valuesToUpdate);
+
             //header("Refresh:0");
             break;
         }
