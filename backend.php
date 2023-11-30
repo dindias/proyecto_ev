@@ -188,9 +188,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!empty($_POST['Ano'])) {
                 $valuesToUpdate['Ano'] = $_POST['Ano'];
             }
-            if (!empty($_POST['Matricula'])) {
-                $valuesToUpdate['Matricula'] = $_POST['Matricula'];
-            }
             if (!empty($_POST['Potencia'])) {
                 $valuesToUpdate['Potencia'] = $_POST['Potencia'];
             }

@@ -423,9 +423,7 @@ include ("register.php");
             <div class="modal fade" id="editCarModal" tabindex="-1" role="dialog" aria-labelledby="editCarModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                        <form id="editCarForm">
-                            <input type="hidden" name="action" value="editar_coche">
-                            <input type="hidden" name="carID" id="editCarID" value="">
+                        <form id="editCarForm" enctype="multipart/form-data">
                             <div class="modal-body py-3 mb-3">
                                 <h2 class="h4 mb-4">Especificaciones</h2>
                                 <div class="row">
@@ -603,7 +601,7 @@ include ("register.php");
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <form action="backend.php" method="post" enctype="multipart/form-data">
+                        <form action="backend.php" enctype="multipart/form-data">
                             <input type="hidden" name="action" value="añadir_coche">
                             <div class="modal-body py-3 mb-3">
                                 <h2 class="h4 mb-4">Especificaciones</h2>

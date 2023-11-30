@@ -137,7 +137,7 @@ function actualizarPerfil(userID) {
     })
         .then(response => response.text())
         .then(response => {
-            //window.location.reload();
+            window.location.reload();
         });
 }
 
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     var carButtons = document.querySelectorAll('.editCarBtn, .deleteCarBtn');
-
+    var originalData;
     carButtons.forEach(function(button) {
         button.addEventListener('click', function(e) {
             e.preventDefault();
@@ -223,6 +223,26 @@ document.addEventListener('DOMContentLoaded', function() {
                             imagenPreview.appendChild(imgElement);
                         });
 
+                         originalData = {
+                            marca: carDetails[0].Marca,
+                            modelo: carDetails[0].Modelo,
+                            ano: carDetails[0].Ano,
+                            matricula: carDetails[0].Matricula,
+                            potencia: carDetails[0].Potencia,
+                            autonomia: carDetails[0].Autonomia,
+                            kilometraje: carDetails[0].Kilometraje,
+                            motorizacion: carDetails[0].Motorizacion,
+                            contaminacion: carDetails[0].Contaminacion,
+                            precio: carDetails[0].Precio,
+                            tipo: carDetails[0].Tipo,
+                            ubicacion: carDetails[0].Ubicacion,
+                            descripcion: carDetails[0].Descripcion,
+                            exterior: carDetails[0].Exterior,
+                            interior: carDetails[0].Interior,
+                            seguridad: carDetails[0].Seguridad,
+                            tecnologia: carDetails[0].Tecnologia
+                        };
+
                         // Asigna el ID del coche al botón de guardar cambios.
                         var saveChangesButton = document.querySelector('#editCarModal .saveChanges');
                         saveChangesButton.dataset.carId = carID;
@@ -248,30 +268,57 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Selecciona el formulario
         var form = document.querySelector("#editCarForm");
+        var formData = new FormData(form);
+        var processedformData = processFormData(formData);
+        console.log(processedformData);
 
-        // Verifica si el formulario existe antes de intentar crear el objeto FormData
-        if(form){
-            // El objeto FormData se construye a partir del formulario en el modal de edición
-            var formData = new FormData(form); // Pasa el formulario en lugar de 'this'
-            formData.append("action", "editar_coche"); // Acción para el backend
+        processedformData.append("action", "editar_coche");
 
-            fetch('backend.php', {
-                method: 'POST',
-                body: formData
+        fetch('backend.php', {
+            method: 'POST',
+            body: processedformData
+        })
+            .then(response => response.text())
+            .then(data => {
+                console.log('Coche editado con éxito');
+                var editModal = bootstrap.Modal.getInstance(document.getElementById('editCarModal'));
+                editModal.hide();
             })
-                .then(response => response.text())
-                .then(data => {
-                    console.log('Coche editado con éxito');
-                    var editModal = bootstrap.Modal.getInstance(document.getElementById('editCarModal'));
-                    editModal.hide();
-                })
-                .catch(error => {
-                    console.error('Error al intentar editar el coche', error);
-                });
-        } else {
-            console.error('No se encontró el formulario para editar el coche');
-        }
+            .catch(error => {
+                console.error('Error al intentar editar el coche', error);
+            });
     });
+
+    function processFormData(formData) {
+        var modifiedData = {
+            marca: formData.get('Marca'),
+            modelo: formData.get('Modelo'),
+            ano: formData.get('Ano'),
+            matricula: formData.get('Matricula'),
+            potencia: formData.get('Potencia'),
+            autonomia: formData.get('Autonomia'),
+            kilometraje: formData.get('Kilometraje'),
+            motorizacion: formData.get('Motorizacion'),
+            contaminacion: formData.get('Contaminacion'),
+            precio: formData.get('Precio'),
+            tipo: formData.get('Tipo'),
+            ubicacion: formData.get('Ubicacion'),
+            descripcion: formData.get('Descripcion'),
+            exterior: formData.get('Exterior'),
+            interior: formData.get('Interior'),
+            seguridad: formData.get('Seguridad'),
+            tecnologia: formData.get('Tecnologia')
+        };
+
+        for (var key in originalData) {
+            if (originalData.hasOwnProperty(key) && originalData[key] === modifiedData[key]) {
+                // Si el campo es igual al original, elimínalo de formData
+                formData.delete(key);
+            }
+        }
+
+        return formData;
+    }
 
     // Para el botón de confirmación del borrado
     document.querySelector('#deleteCarModal .confirmDelete').addEventListener('click', function() {

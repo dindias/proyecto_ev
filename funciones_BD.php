@@ -7,7 +7,7 @@ function connectDB()
     $servername = "localhost";
     $DB = "proyecto_ev";
     $username = "root";
-    $password_bd = "i2011164";
+    $password_bd = "";
 
     try {
         $conn = new PDO("mysql:host=$servername;dbname=$DB", $username, $password_bd);
@@ -370,6 +370,7 @@ function insertCar($userID, $marca, $modelo, $ano, $matricula, $potencia, $auton
 }
 
 function insertImages($userID, $carID, $images) {
+    print_r($images);
     try {
         $conn = connectDB();
         $insertedImages = 0;
@@ -466,8 +467,8 @@ function updateValues($valuesToUpdate, string $sql, ?PDO $conn, $userID): bool
     }
 
     $stmt->bindValue(':userId', $userID, PDO::PARAM_INT);
-    $result = $stmt->execute();
-    return $result;
+
+    return $stmt->execute();
 }
 function updateCar($userID, $valuesToUpdate) {
     $conn = connectDB();
