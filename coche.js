@@ -73,7 +73,13 @@ function loadCarDetails(car) {
         // Agregar un evento de clic al botón "Siguiente" dentro del modal
         const btnSiguiente = modalElement.querySelector('.btn-siguiente');
         btnSiguiente.addEventListener('click', function () {
+            const alertaFechas = document.getElementById('alertaFechas');
             let carID = car;
+            if (picker.getStartDate() == null || picker.getEndDate() == null) {
+                alertaFechas.style.display = 'block';
+            } else {
+                alertaFechas.style.display = 'none';
+            }
             let startDate = picker.getStartDate().format('YYYY-MM-DD');
             let endDate = picker.getEndDate().format('YYYY-MM-DD');
             let precioTotal = document.getElementById('precioValor').textContent;

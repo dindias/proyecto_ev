@@ -299,6 +299,9 @@ $car = getCar($carID);
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="alert alert-danger mt-3" role="alert" id="alertaFechas" style="display: none;">
+                                        Por favor, selecciona las fechas de inicio y fin.
+                                    </div>
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingSeven">
                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
