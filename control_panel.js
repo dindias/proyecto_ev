@@ -137,7 +137,7 @@ function actualizarPerfil(userID) {
     })
         .then(response => response.text())
         .then(response => {
-            window.location.reload();
+            //window.location.reload();
         });
 }
 

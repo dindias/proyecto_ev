@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!empty($_POST['descripcion'])) {
                 $valuesToUpdate['descripcion'] = $_POST['descripcion'];
             }
-            print_r($valuesToUpdate);
+
             if (!empty($_FILES['imagen']['name'])) {
                 $uploadDir = './img/'; // Ruta absoluta a la carpeta de imágenes
                 $uploadFile = $uploadDir . basename($_FILES['imagen']['name']);
@@ -85,6 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     exit;
                 }
             }
+            print_r($valuesToUpdate);
             $user = updateUser($userID, $valuesToUpdate);
 
             //header("Refresh:0");
