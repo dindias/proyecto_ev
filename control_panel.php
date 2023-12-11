@@ -7,6 +7,9 @@ if (!isset($_SESSION['user_id'])) {
     header('Location: index.php');
     exit();
 }
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 include("funciones_BD.php");
 ?>
 <!DOCTYPE html>
@@ -447,8 +450,10 @@ include ("register.php");
                                                 <input type="number" id="ano" name="Ano" class="form-control" placeholder="Año" required min="1900" max="2099" step="1"/>
                                             </li>
                                             <li>
-                                                <label for="matricula" class="form-label">Matricula:</label>
-                                                <input type="text" id="matricula" name="Matricula" class="form-control" placeholder="Matricula" required/>
+                                                <fieldset disabled>
+                                                    <label for="matricula" class="form-label">Matricula:</label>
+                                                    <input type="text" id="matricula" name="Matricula" class="form-control" placeholder="Matricula" required/>
+                                                <fieldset>
                                             </li>
                                             <li class="mb-2">
                                                 <label for="potencia" class="form-label">Potencia:</label>

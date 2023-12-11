@@ -270,9 +270,10 @@ document.addEventListener('DOMContentLoaded', function() {
         var form = document.querySelector("#editCarForm");
         var formData = new FormData(form);
         var processedformData = processFormData(formData);
-        console.log(processedformData);
+        var carId = this.dataset.carId;
 
         processedformData.append("action", "editar_coche");
+        processedformData.append("carID", carId);
 
         fetch('backend.php', {
             method: 'POST',
@@ -283,6 +284,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Coche editado con éxito');
                 var editModal = bootstrap.Modal.getInstance(document.getElementById('editCarModal'));
                 editModal.hide();
+                window.location.reload();
             })
             .catch(error => {
                 console.error('Error al intentar editar el coche', error);

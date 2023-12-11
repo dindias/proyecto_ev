@@ -229,8 +229,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
             updateCar($userID, $valuesToUpdate);
-            header('Location: control_panel.php');
-            break;
+            //header('Location: control_panel.php');
+            exit;
         }
 
         case 'reservar_coche':
