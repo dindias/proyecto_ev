@@ -417,7 +417,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const btnEliminar = tarjeta.querySelector('.eliminarReserva');
 
         // Mostrar u ocultar el botón de eliminar según la condición
-        btnEliminar.style.display = mostrarEliminar ? 'block' : 'none';
+        btnEliminar.style.display = mostrarEliminar ? 'none' : 'block';
     });
 });
 
