@@ -346,13 +346,10 @@ include ("register.php");
 
             <div id="favoritos" class="tabContent" style="display: none;">
                 <div class="container"style="max-height: 100vh;">
-                    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addCarModal">
-                        Añadir coche
-                    </button>
-                    <div class="input-group mb-3">
+                    <!--<div class="input-group mb-3">
                         <input type="text" class="form-control search-car" id="searchBar" placeholder="Buscar coche..." aria-label="Buscar coche" aria-describedby="button-search">
                         <button class="btn btn-outline-secondary" type="button" id="button-search">Buscar</button>
-                    </div>
+                    </div>-->
                     <!-- Contenedor con barra de desplazamiento -->
                     <div class="container-fluid" style="overflow-y: auto; max-height: 75vh;">
                         <div class="d-flex flex-column align-items-stretch"> <!-- Asegurarse de estirar los elementos de la columna -->
