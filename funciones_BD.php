@@ -443,9 +443,6 @@ function eliminar_coche($carId) {
     }
 }
 
-eliminar_coche(80);
-
-
 function updateUser($userID, $valuesToUpdate) {
     $conn = connectDB();
 
