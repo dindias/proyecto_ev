@@ -2,15 +2,12 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 function connectDB()
 {
     $servername = "localhost";
     $DB = "proyecto_ev";
     $username = "root";
-    $password_bd = "";
+    $password_bd = "i2011164";
 
     try {
         $conn = new PDO("mysql:host=$servername;dbname=$DB", $username, $password_bd);
