@@ -30,18 +30,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <header>
     <?php
-    require ("header.php");
+    require("header.php");
     ?>
 </header>
 
 <!-- Formulario login -->
 <?php
-include ("login.php");
+include("login.php");
 ?>
 
 <!-- Formulario login -->
 <?php
-include ("register.php");
+include("register.php");
 ?>
 
 <div class="container-fluid">
@@ -311,7 +311,7 @@ include ("register.php");
 </div>
 
 <?php
-include ("footer.php");
+include("footer.php");
 ?>
 
 <script src="busqueda.js"></script>

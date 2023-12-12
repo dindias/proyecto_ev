@@ -25,18 +25,18 @@ if (!isset($_SESSION['user_id']) || !isAdmin($_SESSION['user_id'])) {
 
 <header>
     <?php
-    require ("header.php");
+    require("header.php");
     ?>
 </header>
 
 <!-- Formulario login -->
 <?php
-include ("login.php");
+include("login.php");
 ?>
 
 <!-- Formulario registro -->
 <?php
-include ("register.php");
+include("register.php");
 ?>
 <!-- Resto del body aquí -->
 
@@ -179,7 +179,7 @@ include ("register.php");
 </div>
 
 <?php
-include ("footer.php");
+include("footer.php");
 ?>
 
 <script src="admin_panel.js"></script>

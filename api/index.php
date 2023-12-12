@@ -19,18 +19,18 @@ include("funciones_BD.php");
 
 <header class="sticky-top">
     <?php
-    require ("header.php");
+    require("header.php");
     ?>
 </header>
 
 <!-- Formulario login -->
 <?php
-include ("login.php");
+include("login.php");
 ?>
 
 <!-- Formulario login -->
 <?php
-include ("register.php");
+include("register.php");
 ?>
 
 <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
@@ -211,7 +211,7 @@ include ("register.php");
 
 
 <?php
-include ("footer.php");
+include("footer.php");
 ?>
 
 <script src="index.js"></script>

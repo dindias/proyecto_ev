@@ -26,18 +26,18 @@ include("funciones_BD.php");
 
 <header>
     <?php
-    require ("header.php");
+    require("header.php");
     ?>
 </header>
 
 <!-- Formulario login -->
 <?php
-include ("login.php");
+include("login.php");
 ?>
 
 <!-- Formulario login -->
 <?php
-include ("register.php");
+include("register.php");
 ?>
 <!-- Resto del body aquí -->
 
@@ -759,7 +759,7 @@ include ("register.php");
 </div>
 
 <?php
-include ("footer.php");
+include("footer.php");
 ?>
 
 <script src="control_panel.js"></script>
