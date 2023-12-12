@@ -823,10 +823,11 @@ function getUltimasAdiciones()
     $conn = connectDB();
 
     try {
-        // Consultar las 4 últimas adiciones en la tabla de coches
-        $stmt = $conn->prepare('SELECT coches.*, GROUP_CONCAT(imagenes.Imagen SEPARATOR ",") AS Imagenes 
+        // Consultar las 4 últimas adiciones en la tabla de coches, agrupadas por fecha
+        $stmt = $conn->prepare('SELECT coches.fecha_adicion, GROUP_CONCAT(imagenes.Imagen SEPARATOR ",") AS Imagenes 
                                       FROM coches
                                       LEFT JOIN imagenes ON coches.CarID = imagenes.CarID 
+                                      GROUP BY coches.fecha_adicion
                                       ORDER BY coches.fecha_adicion DESC
                                       LIMIT 4');
         $stmt->execute();
@@ -834,7 +835,7 @@ function getUltimasAdiciones()
         // Establecer el modo de resultado en modo asociativo
         $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
-        // Retornar las 4 últimas adiciones
+        // Retornar las 4 últimas adiciones agrupadas por fecha
         return $stmt->fetchAll();
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
