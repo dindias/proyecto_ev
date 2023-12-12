@@ -44,8 +44,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="index.php">Inicio</a></li>
                 <li class="nav-item"><a class="nav-link" href="busqueda.php">Alquilar</a></li>
-                <li class="nav-item"><a class="nav-link" href="info.php">Precios</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Sobre nosotros</a></li>
+                <li class="nav-item"><a class="nav-link" href="info.php">Sobre nosotros</a></li>
             </ul>
             <!-- Dropdown -->
             <?php if (isset($_SESSION['user_id']) && isAdmin($_SESSION['user_id'])) {?>
