@@ -19,7 +19,7 @@ if (!isset($_SESSION['user_id']) || !isAdmin($_SESSION['user_id'])) {
     <script src="https://kit.fontawesome.com/305aef3688.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3"></script>
-    <link rel="stylesheet" href="control_panel.css">
+    <link rel="stylesheet" href="css/control_panel.css">
 </head>
 <body>
 
@@ -182,9 +182,9 @@ include("register.php");
 include("footer.php");
 ?>
 
-<script src="admin_panel.js"></script>
-<script src="admin_tables.js"></script>
-<script src="notification.js" type="module"></script>
+<script src="js/admin_panel.js"></script>
+<script src="js/admin_tables.js"></script>
+<script src="js/notification.js" type="module"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 </html>
