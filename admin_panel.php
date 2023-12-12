@@ -79,7 +79,7 @@ include("register.php");
                 <div class="col-sm-6 col-md-3 mb-3">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Evolucion de registros</h5>
+                            <h5 class="card-title">Evolucion de reservas</h5>
                             <canvas id="reservasChart" width="800" height="400"></canvas>
                         </div>
                     </div>
